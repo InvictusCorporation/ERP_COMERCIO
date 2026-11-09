@@ -1,4 +1,5 @@
 import { Pool, type PoolClient } from "pg";
+import { auditRequestId } from "../audit/request-context";
 export class AuthStore {
   private readonly pool: Pool;
   constructor(url: string) {
@@ -20,8 +21,9 @@ export class AuthStore {
         await client.query(`SELECT rolname,rolsuper,rolbypassrls,rolcreatedb,rolcreaterole,rolinherit,rolreplication,
         EXISTS(SELECT 1 FROM pg_database WHERE datname=current_database() AND datdba=pg_roles.oid) AS database_owner,
         EXISTS(SELECT 1 FROM pg_auth_members WHERE member=pg_roles.oid) AS member,
-        EXISTS(SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE c.relowner=pg_roles.oid AND n.nspname IN ('identity','tenancy','access','organizations')) AS owner,
-        NOT(SELECT count(*)=9 AND coalesce(bool_and(c.relrowsecurity AND c.relforcerowsecurity),false) FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE (n.nspname,c.relname) IN (('access','roles'),('access','invitations'),('access','events'),('identity','memberships'),('tenancy','tenants'),('organizations','companies'),('organizations','units'),('organizations','membership_units'),('organizations','invitation_units'))) AS unsafe_rls,
+        EXISTS(SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE c.relowner=pg_roles.oid AND n.nspname IN ('identity','tenancy','access','organizations','audit')) AS owner,
+        NOT(SELECT count(*)=10 AND coalesce(bool_and(c.relrowsecurity AND c.relforcerowsecurity),false) FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE (n.nspname,c.relname) IN (('access','roles'),('access','invitations'),('access','events'),('identity','memberships'),('tenancy','tenants'),('organizations','companies'),('organizations','units'),('organizations','membership_units'),('organizations','invitation_units'),('audit','events'))) AS unsafe_rls,
+        NOT(SELECT count(*)=9 AND coalesce(bool_and(tgenabled IN('O','A')),false) FROM pg_trigger WHERE tgname LIKE 'audit_capture_%' AND NOT tgisinternal) AS unsafe_audit,
         to_regclass('identity.sessions') IS NULL AS missing FROM pg_roles WHERE rolname=current_user`)
       ).rows[0];
       if (
@@ -33,6 +35,9 @@ export class AuthStore {
       )
         throw new Error("Papel de autenticação inválido.");
       await client.query("BEGIN");
+      await client.query("SELECT set_config('app.audit_request_id',$1,true)", [
+        auditRequestId(),
+      ]);
       const result = await action(client);
       await client.query("COMMIT");
       return result;

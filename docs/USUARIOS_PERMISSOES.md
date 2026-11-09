@@ -41,6 +41,7 @@ Perfis padrão são protegidos contra edição. Perfis personalizados podem comb
 | `users.read` | Consultar equipe e perfis; convites aparecem apenas para quem gerencia usuários |
 | `users.manage` | Convidar/revogar e alterar perfil/situação de vínculos autorizados |
 | `roles.manage` | Criar e editar perfis personalizados autorizados |
+| `audit.read` | Consultar histórico autorizado, com MFA; escopo restrito permite somente eventos de unidades atribuídas |
 | `organizations.read` | Consultar estrutura autorizada |
 | `organizations.manage` | Gerenciar empresas e unidades com MFA e escopo global |
 | `ownership.manage` | Convidar/alterar proprietários; exclusiva do proprietário |
@@ -76,3 +77,7 @@ Migração `004_access_control.sql` cria schema `access`, perfis, convites, even
 Eventos de acesso contêm empresa, ator, ação, alvo e data, na mesma transação da alteração; o papel da aplicação não pode apagá-los ou alterá-los. Falha no evento desfaz a alteração. Auditoria unificada com antes/depois, correlação, consulta e retenção continua em 01.6.
 
 Decisões de autorização seguem [OWASP — Authorization Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html): negar por padrão e verificar autorização em cada requisição. Evidências de implementação em [Testes](../TESTES.md).
+
+## Histórico de acesso — 01.6
+
+Alterações de vínculo, perfil, escopo e convite são capturadas atomicamente no histórico. Administrador padrão recebe `audit.read`; perfil personalizado precisa de concessão explícita e MFA. Auditor de filial não recebe dados de equipe, perfis ou convites fora de seu escopo de consulta. Segurança de outra conta não é visível por ser proprietário da rede. Guia em [Auditoria](AUDITORIA.md).

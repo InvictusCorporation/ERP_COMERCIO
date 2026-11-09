@@ -93,7 +93,7 @@ const steps = [
     title: "Auditoria e validação",
     description: "Histórico, testes e revisão dos fluxos.",
     icon: ClipboardList,
-    status: "Próximo incremento",
+    status: "Disponível nesta versão",
   },
 ];
 
@@ -116,7 +116,7 @@ export function Workspace({
 }: {
   initialSession: AuthSession;
   children?: React.ReactNode;
-  section?: "access" | "organizations";
+  section?: "access" | "organizations" | "audit";
 }) {
   const router = useRouter();
   const [session, setSession] = useState(initialSession);
@@ -296,10 +296,20 @@ export function Workspace({
     };
   }, [menuOpen]);
 
+  const sectionTitle =
+    section === "audit"
+      ? "Auditoria e histórico"
+      : section === "organizations"
+        ? "Empresas e unidades"
+        : "Usuários e permissões";
+  const SectionIcon =
+    section === "audit"
+      ? ClipboardList
+      : section === "organizations"
+        ? Building2
+        : Users;
   const title = children
-    ? section === "organizations"
-      ? "Empresas e unidades"
-      : "Usuários e permissões"
+    ? sectionTitle
     : view === "dashboard"
       ? "Dashboard administrativo"
       : view === "foundation"
@@ -394,6 +404,15 @@ export function Workspace({
               Usuários e permissões
             </Link>
           )}
+          <Link
+            className={`nav-item ${children && section === "audit" ? "active" : ""}`}
+            href="/auditoria"
+            aria-current={children && section === "audit" ? "page" : undefined}
+          >
+            <ClipboardList size={19} />
+            Auditoria e histórico
+          </Link>
+
           <Link
             className="nav-item"
             href="/seguranca"
@@ -503,9 +522,7 @@ export function Workspace({
             Workspace <ChevronRight size={12} />{" "}
             <span>
               {children
-                ? section === "organizations"
-                  ? "Empresas e unidades"
-                  : "Usuários e permissões"
+                ? sectionTitle
                 : view === "dashboard"
                   ? "Visão geral"
                   : view === "foundation"
@@ -518,11 +535,7 @@ export function Workspace({
               <span className="eyebrow">SEU COMÉRCIO, CONECTADO</span>
               <h1>
                 {children ? (
-                  section === "organizations" ? (
-                    <Building2 className="heading-icon" size={42} />
-                  ) : (
-                    <Users className="heading-icon" size={42} />
-                  )
+                  <SectionIcon className="heading-icon" size={42} />
                 ) : (
                   view === "dashboard" && (
                     <BarChart3 className="heading-icon" size={42} />
@@ -532,9 +545,11 @@ export function Workspace({
               </h1>
               <p>
                 {children
-                  ? section === "organizations"
-                    ? "Matriz, filiais e depósitos conectados em uma só gestão."
-                    : "Gerencie sua equipe e os acessos à empresa selecionada."
+                  ? section === "audit"
+                    ? "Acompanhe quem alterou, quando e o que mudou, com acesso ao histórico autorizado."
+                    : section === "organizations"
+                      ? "Matriz, filiais e depósitos conectados em uma só gestão."
+                      : "Gerencie sua equipe e os acessos à empresa selecionada."
                   : view === "dashboard"
                     ? "Visão geral do seu negócio em tempo real"
                     : "Acompanhe a construção de uma gestão segura e integrada."}

@@ -1,5 +1,11 @@
 export const PERMISSIONS = [
   {
+    key: "audit.read",
+    label: "Consultar auditoria e histórico",
+    description:
+      "Ver alterações autorizadas na rede ou nas unidades atribuídas; exige autenticação em duas etapas.",
+  },
+  {
     key: "organizations.read",
     label: "Consultar empresas e unidades",
     description: "Ver empresas e unidades autorizadas na rede.",

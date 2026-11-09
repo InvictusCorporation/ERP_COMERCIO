@@ -2,9 +2,17 @@ import { randomBytes, randomUUID } from "node:crypto";
 import pg from "pg";
 import { readLocalConfig } from "../../scripts/database/local-config.mjs";
 import { provision } from "../../scripts/database/provision.mjs";
-import { migrate } from "../../scripts/database/migrations.mjs";
+import { mkdtemp, copyFile, readdir } from "node:fs/promises";
+import { join } from "node:path";
+import {
+  migrate,
+  migrationDirectory,
+} from "../../scripts/database/migrations.mjs";
 import { TEST_PASSWORD } from "./test-credentials.mjs";
-export async function authDatabase(origin = "http://127.0.0.1:3001") {
+export async function authDatabase(
+  origin = "http://127.0.0.1:3001",
+  { beforeAudit = false } = {},
+) {
   const local = readLocalConfig();
   const name = "invictus_test_" + randomBytes(8).toString("hex");
   await provision({ ...local, database: name, createDatabase: true });
@@ -16,12 +24,17 @@ export async function authDatabase(origin = "http://127.0.0.1:3001") {
   const appUrl = databaseUrl(local.appUrl),
     authUrl = databaseUrl(local.authUrl),
     adminUrl = databaseUrl(local.adminUrl);
-  await migrate(databaseUrl(local.migrationUrl));
+  if (beforeAudit) {
+    const directory = await mkdtemp(".local/before-audit-");
+    for (const file of await readdir(migrationDirectory))
+      if (/^00[1-5]_.*\.sql$/.test(file))
+        await copyFile(join(migrationDirectory, file), join(directory, file));
+    await migrate(databaseUrl(local.migrationUrl), directory);
+  } else await migrate(databaseUrl(local.migrationUrl));
   const admin = new pg.Client({ connectionString: adminUrl });
   await admin.connect();
-  const { hashPassword, encrypt } = await import(
-    "../../apps/api/dist/modules/identity/crypto.js"
-  );
+  const { hashPassword, encrypt } =
+    await import("../../apps/api/dist/modules/identity/crypto.js");
   const passwordHash = await hashPassword(TEST_PASSWORD);
   const key = randomBytes(32).toString("hex");
   const tenantA = randomUUID(),
@@ -84,6 +97,7 @@ export async function authDatabase(origin = "http://127.0.0.1:3001") {
     adminUrl,
     appUrl,
     authUrl,
+    migrationUrl: databaseUrl(local.migrationUrl),
     tenantA,
     tenantB,
     key,

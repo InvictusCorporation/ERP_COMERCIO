@@ -65,3 +65,14 @@
 - Disponibilidade precisa considerar empresa e ancestrais; preservar estados dos descendentes permite reativação sem perder histórico.
 - Redes fictícias isoladas por teste evitam misturar a árvore organizacional de cenários diferentes nas capturas.
 - Mensagens de erro em testes de navegador devem ser buscadas na região do módulo, pois o anunciador de navegação do Next também usa role alert.
+
+## Incremento 01.6
+
+- FORCE RLS também restringe o proprietário migrador. A importação da fonte legada de acesso precisou de política de SELECT exclusiva do migrador, em uma nova migração, mantendo a anterior imutável.
+- Snapshots precisam de allowlist por entidade; copiar registros inteiros ou bodies poderia levar credenciais ao histórico.
+- Eventos globais de conta não devem ser replicados a todos os tenants; histórico de segurança é pessoal.
+- Antes/depois não pode ser inventado a partir do estado atual quando a fonte antiga não o armazenou.
+- Correlacionar pela requisição gerada no servidor preserva agrupamento sem confiar em dados do cliente e sem expor contador global do banco.
+- Histórico de unidade inativa e autorização de operação são controles diferentes: um auditor pode ler passado autorizado sem reabrir a unidade.
+
+- A substituição completa de atribuições criaria revogações/concessões fictícias mesmo sem mudança. O salvamento agora aplica somente a diferença entre conjuntos; permissões equivalentes preservam a representação anterior.

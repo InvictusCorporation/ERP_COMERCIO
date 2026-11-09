@@ -21,6 +21,8 @@ O incremento 01.4 adiciona `access.roles`, convites de uso único, vínculo/perf
 
 O incremento 01.5 adiciona `organizations.companies`, `units`, `membership_units` e `invitation_units`, com RLS forçada e FKs compostas. Empresa legal pertence ao tenant/rede existente. `withUnit` e disponibilidade por hierarquia limitam leitura comercial; a API reavalia permissões/escopos em cada requisição. CNPJ numérico e alfanumérico aceitos, sem consulta fiscal externa. Guia em [Empresas e unidades](docs/EMPRESAS_UNIDADES.md).
 
+O incremento 01.6 adiciona `audit.events` com RLS forçada, triggers de captura por allowlist, snapshots, ator congelado e correlação gerada pelo servidor via AsyncLocalStorage. Eventos da rede não se misturam com segurança pessoal. Escrita é interna aos triggers; serviço HTTP só consulta e recusa desativação da captura. Histórico legível e migração em [Auditoria](docs/AUDITORIA.md). CI preparada, sem execução remota comprovada.
+
 ## Decisão inicial
 
 Monólito modular com web e API separadas no mesmo workspace npm. Uma API centraliza regras, autorização e transações para desktop e celular. Sem microsserviços nesta fase. A divisão reduz complexidade operacional e preserva limites entre módulos.

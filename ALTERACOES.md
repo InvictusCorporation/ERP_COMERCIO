@@ -84,3 +84,11 @@ Não houve programação, instalação de dependências, criação de banco, alt
 - Escopo global/selecionado em vínculos e convites; autorização atual, contexto persistido e RLS/withUnit no papel comercial.
 - Tela `/empresas` (alias `/unidades`), árvore de vínculos reais, filtros, paginação e editor; seletores acessíveis no celular.
 - Testes reais de isolamento/inativação/reinício e navegador. Nenhuma operação de estoque/vendas ou empresa real criada. Resultados em `TESTES.md`.
+
+## Incremento 01.6 — Auditoria e histórico — 09/11/2026
+
+- Migrações 006/007: tabela unificada com RLS, nove triggers, snapshots por allowlist e importação legada preservando limites da fonte.
+- Correlação de requisição gerada pelo servidor; responsáveis/rótulos congelados, dados de credenciais excluídos.
+- Consulta por rede/unidade autorizada e própria segurança, sem escrita HTTP ou expiração automática.
+- Tela `/auditoria` com busca, filtros, paginação, comparação e agrupamento de operação, responsiva às referências.
+- Testes de migração anterior, isolamento, segredo, concorrência, rollback inclusive de recuperação e persistência. CI preparada sem publicação/execução remota. Resultados em `TESTES.md`.

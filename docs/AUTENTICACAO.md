@@ -125,3 +125,7 @@ Sessão agora inclui as permissões atuais da empresa selecionada. Administraç�
 ## Contexto de unidades — 01.5
 
 Sessão inclui unidades disponíveis/autorizadas, escopo global e unidade selecionada. `POST auth/unit` valida Origin/CSRF e recusa unidade alheia ou consolidado para vínculo restrito. Troca de rede ou perda de acesso/disponibilidade limpa seleção. Permissões administrativas exigem escopo global; organização não habilita operação comercial. Guia em [Empresas e unidades](EMPRESAS_UNIDADES.md).
+
+## Histórico pessoal — 01.6
+
+Eventos de identidade alimentam auditoria unificada sem copiar credenciais. Senha aceita não significa MFA concluído. Recuperação solicitada e senha inválida têm ator não autenticado; redefinição e contexto ficam na própria conta. Eventos globais não são replicados às redes da pessoa. UUID de requisição é gerado pelo servidor. Guia em [Auditoria](AUDITORIA.md).

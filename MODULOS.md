@@ -1,6 +1,6 @@
 # Módulos e dependências
 
-Fundação em desenvolvimento: análise (01.0), bootstrap (01.1), persistência/isolamento (01.2) autenticação/sessões/recuperação (01.3) e administração de usuários/perfis por empresa (01.4) entregues localmente. Empresas/unidades e restrições por filial entregues em 01.5. Auditoria comercial unificada permanece pendente. SMTP externo ainda não homologado. Os módulos comerciais continuam planejados.
+Fundação em desenvolvimento: análise (01.0), bootstrap (01.1), persistência/isolamento (01.2) autenticação/sessões/recuperação (01.3) e administração de usuários/perfis por empresa (01.4) entregues localmente. Empresas/unidades e restrições por filial entregues em 01.5. Auditoria dos fluxos da fundação entregue em 01.6; auditoria comercial será integrada aos módulos futuros. SMTP externo ainda não homologado. Os módulos comerciais continuam planejados.
 
 | Etapa | Módulo | Dependências principais |
 | --- | --- | --- |
@@ -21,6 +21,10 @@ Fundação em desenvolvimento: análise (01.0), bootstrap (01.1), persistência/
 Matriz e filiais cadastrais pertencem à fundação; transferência de mercadorias e consolidação operacional pertencem à Etapa 10. Permissões, escopos e auditoria são transversais desde a Etapa 01. Assinaturas não substituem autorização: recurso habilitado pelo plano ainda exige permissão.
 
 Antes de comercializar o PDV, a Etapa 06 deverá garantir confirmação de pagamento e baixa atômica de estoque. O PDV da Etapa 05 será validado em ambiente de teste com adaptador local explícito; não simular recebimentos externos como reais.
+
+## Incremento 01.6
+
+Histórico unificado dos fluxos da fundação, antes/depois, ator e correlação, consulta por escopo atual e segurança pessoal, sem credenciais. Captura e alteração atômicas, migração legada e UI responsiva. CI preparada não equivale a execução remota; guia em [Auditoria](docs/AUDITORIA.md).
 
 ## Incremento 01.4
 

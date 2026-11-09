@@ -13,6 +13,9 @@ import { AccessController } from "./modules/access/access.controller";
 import { OrganizationsService } from "./modules/organizations/organizations.service";
 import { OrganizationsController } from "./modules/organizations/organizations.controller";
 
+import { AuditService } from "./modules/audit/audit.service";
+import { AuditController } from "./modules/audit/audit.controller";
+
 @Module({})
 export class AppModule {
   static register(
@@ -25,7 +28,12 @@ export class AppModule {
       controllers: [
         HealthController,
         ...(authConfig
-          ? [AuthController, AccessController, OrganizationsController]
+          ? [
+              AuthController,
+              AccessController,
+              OrganizationsController,
+              AuditController,
+            ]
           : []),
       ],
       providers: [
@@ -35,6 +43,11 @@ export class AppModule {
         },
         ...(authConfig
           ? [
+              {
+                provide: AuditService,
+                useFactory: (auth: AuthService) => new AuditService(auth),
+                inject: [AuthService],
+              },
               {
                 provide: OrganizationsService,
                 useFactory: (auth: AuthService) =>

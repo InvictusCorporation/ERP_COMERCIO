@@ -37,6 +37,7 @@ const systemRoles: [string, Permission[]][] = [
       "roles.manage",
       "organizations.read",
       "organizations.manage",
+      "audit.read",
     ],
   ],
   ["Gerente", ["users.read", "organizations.read"]],
@@ -53,7 +54,8 @@ const missing = () =>
 const sensitive = (p: Permission[]) =>
   p.includes("users.manage") ||
   p.includes("roles.manage") ||
-  p.includes("organizations.manage");
+  p.includes("organizations.manage") ||
+  p.includes("audit.read");
 export class AccessService {
   constructor(private readonly auth: AuthService) {}
   private require(ctx: Context, p: Permission) {
@@ -297,12 +299,12 @@ export class AccessService {
       );
       if (scopeInput) {
         await c.query(
-          "DELETE FROM organizations.membership_units WHERE tenant_id=$1 AND membership_id=$2",
-          [ctx.tenantId, id],
+          "DELETE FROM organizations.membership_units WHERE tenant_id=$1 AND membership_id=$2 AND NOT(unit_id=ANY($3::uuid[]))",
+          [ctx.tenantId, id, scope.unitIds],
         );
         for (const unitId of scope.unitIds)
           await c.query(
-            "INSERT INTO organizations.membership_units(tenant_id,membership_id,unit_id) VALUES($1,$2,$3)",
+            "INSERT INTO organizations.membership_units(tenant_id,membership_id,unit_id) VALUES($1,$2,$3) ON CONFLICT DO NOTHING",
             [ctx.tenantId, id, unitId],
           );
       }
@@ -321,6 +323,7 @@ export class AccessService {
     name: string,
     permissions: Permission[],
   ) {
+    permissions = [...new Set(permissions)].sort();
     return this.auth.withAccess(raw, async (c, ctx) => {
       this.require(ctx, "roles.manage");
       if (
@@ -364,6 +367,11 @@ export class AccessService {
           name,
           sensitive: sensitive(old.permissions),
         });
+        if (
+          old.permissions.length === permissions.length &&
+          old.permissions.every((p: Permission) => permissions.includes(p))
+        )
+          permissions = old.permissions;
       }
       const duplicate = (
         await c.query(
@@ -536,6 +544,7 @@ export class AccessService {
           [user.id, hash, i.is_owner || sensitive(i.permissions)],
         );
       }
+      await c.query("SELECT set_config('app.auth_user_id',$1,true)", [user.id]);
       const existing = (
         await c.query(
           "SELECT id FROM identity.memberships WHERE tenant_id=$1 AND user_id=$2",

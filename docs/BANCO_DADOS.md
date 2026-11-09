@@ -95,3 +95,7 @@ Migração imutável `004_access_control.sql` adiciona schema `access` com RLS f
 ## Estrutura organizacional — 01.5
 
 Migração `005_organizations.sql` acrescenta empresas, unidades, matriz única, FKs compostas de empresa/vínculo/atribuição, escopos e contexto de unidade em sessão. Quatro tabelas novas com RLS forçada. O papel comercial tem somente SELECT limitado à unidade do contexto e ao vínculo autorizado; `withUnit` falha sem autorização/disponibilidade e limpa contexto ao terminar. A disponibilidade considera empresa e ancestrais por função booleana definer de escopo limitado, sem leitura arbitrária. Empresas e unidades não podem ser removidas pelo papel de execução. Guia em [Empresas e unidades](EMPRESAS_UNIDADES.md).
+
+## Auditoria unificada — 01.6
+
+Migrações 006/007 criam `audit.events` e importam fontes anteriores. FORCE RLS também vale para o migrador proprietário: a importação legada de acesso precisou de política explícita de leitura, adicionada em nova migração, sem alterar checksum já aplicado. Nove triggers capturam mudanças/autenticação/contexto na transação; a conta HTTP só recebe SELECT limitado. Colunas de credenciais nunca são copiadas. Readiness valida RLS e triggers ativos. Não há expiração/purge automática. Guia em [Auditoria](AUDITORIA.md).

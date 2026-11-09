@@ -1,6 +1,6 @@
 # Etapa 01 — Fundação
 
-Este plano atende à primeira ordem do escopo: apresentar arquitetura, tarefas, arquivos, aceitação e testes antes de programar. Incrementos 01.0 a 01.5 entregues localmente, incluindo isolamento, autenticação, sessões e recuperação. A Etapa 01 completa permanece em desenvolvimento. Cada incremento deve passar por seus testes e atualizar a documentação antes do seguinte.
+Este plano atende à primeira ordem do escopo: apresentar arquitetura, tarefas, arquivos, aceitação e testes antes de programar. Incrementos 01.0 a 01.6 entregues funcionalmente no ambiente local, incluindo isolamento, autenticação, sessões e recuperação. A validação funcional local da fundação está registrada; CI remota, infraestrutura e condições de produção permanecem pendentes. Cada incremento deve passar por seus testes e atualizar a documentação antes do seguinte.
 
 ## 01.0 — Análise e planejamento (entregue)
 
@@ -69,6 +69,8 @@ Aceitação: matriz, filial e CD persistem e podem ser consultados após reinici
 Testes: cadastro válido/inválido, duplicidade, relacionamento cruzado, escopo de unidades e tentativas de mover depósitos entre tenants. Operações não autorizadas não produzem alterações parciais.
 
 ## 01.6 — Auditoria, integração e validação visual
+
+Situação: auditoria/histórico entregues localmente com ator, snapshots, correlação, captura transacional, migração legada e consulta por rede/unidade ou própria conta. UI e fluxo integrado verificados. CI preparada e sintaxe conferida, mas não executada no GitHub/Linux. Retenção padrão preserva registros sem expiração; política de produção ainda precisa ser definida. Guia em [Auditoria](AUDITORIA.md). Não considerar fundação homologada para produção.
 
 Arquivos previstos: `apps/api/src/modules/audit/*`, `database/migrations/*_audit.sql`, `tests/integration/audit.spec.ts`, `tests/e2e/foundation.spec.ts`, configuração de CI e atualização de todos os documentos afetados.
 

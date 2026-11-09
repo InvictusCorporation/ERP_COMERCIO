@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import { auditRequestMiddleware } from "./modules/audit/request-context";
 import { NestFactory } from "@nestjs/core";
 import type { Type } from "@nestjs/common";
 import type { DynamicModule } from "@nestjs/common";
@@ -13,6 +14,7 @@ export async function createApplication(
     logger,
     bodyParser: false,
   });
+  app.use(auditRequestMiddleware);
   app.useBodyParser("json", { limit: "16kb" });
   app.useGlobalFilters({
     catch(error: unknown, host: ArgumentsHost) {
@@ -27,27 +29,23 @@ export async function createApplication(
               ? 413
               : 500;
       if (status === 400 || status === 413) {
-        response
-          .status(status)
-          .json({
-            statusCode: status,
-            message:
-              status === 413
-                ? "Solicitação muito grande."
-                : "Solicitação inválida.",
-          });
+        response.status(status).json({
+          statusCode: status,
+          message:
+            status === 413
+              ? "Solicitação muito grande."
+              : "Solicitação inválida.",
+        });
         return;
       }
-      response
-        .status(status)
-        .json(
-          error instanceof HttpException
-            ? error.getResponse()
-            : {
-                statusCode: 500,
-                message: "Serviço temporariamente indisponível.",
-              },
-        );
+      response.status(status).json(
+        error instanceof HttpException
+          ? error.getResponse()
+          : {
+              statusCode: 500,
+              message: "Serviço temporariamente indisponível.",
+            },
+      );
     },
   });
   app.setGlobalPrefix("api/v1");

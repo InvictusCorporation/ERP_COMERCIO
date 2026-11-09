@@ -1,9 +1,14 @@
 # Pendências
 
-## Próximo incremento — 01.6
+## Próximos passos
 
-- Auditoria unificada: antes/depois, correlação, consulta autorizada e retenção. Eventos atômicos de autenticação/acesso/organização já existem, mas não concluem o módulo.
-- Fluxo integrado de fundação e CI, revisão de logs e validação final antes de iniciar cadastros comerciais.
+- Próxima etapa funcional do escopo: produtos e cadastros comerciais, depois da revisão local da fundação. Nenhum módulo comercial foi adiantado nesta entrega.
+- CI está preparada, mas sua execução no GitHub/Linux depende de publicação/autorização e permanece sem evidência remota.
+- Antes de produção: SMTP real, recuperação de fator perdido, infraestrutura/HTTPS, backup/restauração e política definitiva de retenção/arquivamento do histórico.
+
+## Entregue em 01.6
+
+Auditoria unificada de mudanças cadastrais/acesso, segurança pessoal e contexto, com snapshots permitidos, responsável preservado, correlação por requisição, RLS e consulta limitada à rede/unidades atuais. Histórico anterior importado sem inventar antes/depois. Eventos atômicos: falha na auditoria reverte a alteração. Tela responsiva com filtros, paginação, comparação e mesma operação. Guia em [Auditoria](docs/AUDITORIA.md). Sem purge/exclusão automática, assinatura externa ou publicação.
 
 ## Entregue em 01.5
 

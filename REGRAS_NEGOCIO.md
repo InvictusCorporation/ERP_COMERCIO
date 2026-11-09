@@ -40,3 +40,7 @@ Vínculo é por empresa e não agrega permissões de outros vínculos. Convites 
 ## Organização e filial — 01.5
 
 Rede/tenant é a fronteira do cliente; pessoas jurídicas e estabelecimentos ficam dentro dela. Empresa e matriz são criadas atomicamente. Filiais/CDs vinculam-se à matriz; depósitos à matriz/filial/CD da mesma empresa. Identidade, tipo, código e vínculos da unidade são permanentes. CNPJ tem formato/DV verificados, com suporte alfanumérico e raiz coerente; sem consulta fiscal. Inativação preserva histórico e bloqueia dependentes. Escopo restrito não inclui pais/filhos automaticamente, não concede administração global nem soma outras redes; proprietário mantém escopo global. Seleção de unidade só aceita atribuição ativa e é limpa quando invalidada. Guia em [Empresas e unidades](docs/EMPRESAS_UNIDADES.md).
+
+## Auditoria — 01.6
+
+Mudança real e seu histórico são atômicos. A conta HTTP não edita/apaga/insere diretamente o histórico. Snapshots usam campos permitidos, sem credenciais. Ator e rótulo são preservados; registros antigos não recebem antes/depois inventado. `audit.read` exige MFA; escopo global lê rede, restrito lê somente eventos de unidades atribuídas, inclusive inativas, sem liberar operação. Segurança da conta é pessoal e não é compartilhada entre redes. Correlação é UUID gerado no servidor, sem confiar em header do cliente. Retenção preserva tudo, sem exclusão automática. Guia em [Auditoria](docs/AUDITORIA.md).

@@ -4,9 +4,9 @@ Plataforma modular da Invictus Systems para comércio, estivas, mercados e redes
 
 ## Estado atual — 09/11/2026
 
-Entrega 01.5: cadastro de empresas legais, matriz, filiais, centros de distribuição e depósitos, com permissões por unidade, sobre a equipe, autenticação e PostgreSQL já existentes. Telas responsivas seguem as referências Invictus. O painel exige sessão válida; indicadores comerciais permanecem vazios.
+Entrega 01.6: auditoria unificada com histórico de alterações, responsável, antes/depois e correlação, sobre os cadastros, acessos e permissões por unidade existentes. Telas responsivas seguem as referências Invictus. O painel exige sessão válida; indicadores comerciais permanecem vazios.
 
-Estrutura da rede em `/empresas`; equipe e acessos em `/usuarios` e `/permissoes`. Administração global exige escopo de toda a rede; operadores podem ficar limitados às filiais/depósitos selecionados. Módulos comerciais permanecem nas próximas etapas. Não foram criadas contas reais automaticamente; o primeiro administrador é cadastrado por comando interativo local e deve configurar MFA. O envio externo de recuperação depende de configurar e homologar SMTP. A fundação completa continua em desenvolvimento.
+Histórico em `/auditoria`; estrutura da rede em `/empresas`; equipe e acessos em `/usuarios` e `/permissoes`. Administração global exige escopo de toda a rede; operadores podem ficar limitados às filiais/depósitos selecionados. Módulos comerciais permanecem nas próximas etapas. Não foram criadas contas reais automaticamente; o primeiro administrador é cadastrado por comando interativo local e deve configurar MFA. O envio externo de recuperação depende de configurar e homologar SMTP. A fundação funcional está validada localmente; CI remota e homologação de produção continuam pendentes.
 
 O repositório recebido continha somente `.git`, sem commits, código, dependências, banco ou remoto configurado. Nenhum módulo operacional foi encontrado. A inspeção ficou restrita ao projeto e à busca de instruções aplicáveis.
 
@@ -15,6 +15,8 @@ Repositório remoto informado posteriormente pelo usuário: [InvictusCorporation
 Guia de uso e matriz de autorização: [Usuários e permissões](docs/USUARIOS_PERMISSOES.md).
 
 Guia de cadastro e acesso por filial: [Empresas e unidades](docs/EMPRESAS_UNIDADES.md). Após atualizar o código, aplique as migrações com o banco local e reinicie a API/interface para carregar a versão atual.
+
+Guia do histórico e controles: [Auditoria](docs/AUDITORIA.md). CI preparada em `.github/workflows/ci.yml`, sem execução remota ou publicação nesta entrega.
 
 ## Documentação
 

@@ -1,5 +1,26 @@
 # Testes e evidências
 
+## Entrega 01.6 — 09/11/2026
+
+- PostgreSQL real 18.6; migrações 006/007 incrementais e testes em bancos fictícios separados. Nenhuma empresa/conta real criada automaticamente.
+- `npm.cmd test`: 15 testes aprovados, incluindo filtros (datas reais, ano zero, campos e limites) e correlação assíncrona isolada por requisição.
+- `npm.cmd run test:integration`: 96 testes aprovados no relatório Node, incluindo agrupadores. Nova suíte de auditoria tem 17 subcenários e o agrupador, além das regressões anteriores.
+- Migração de fonte anterior: banco primeiro preparado até 005; eventos de acesso/identidade e datas antigas criados antes de 006/007. Importação preservou fontes/data, marcou legacy e deixou antes/depois/correlação ausentes. Reexecução de migração idempotente.
+- A primeira verificação detectou que FORCE RLS impedia SELECT da fonte legada pelo proprietário migrador. Corrigido por política exclusiva e nova migração 007, mantendo 006 já aplicada intacta; suíte repetida com sucesso.
+- Empresa/matriz têm correlação comum gerada pelo servidor, imune ao header do cliente; alterações mostram valores anteriores/posteriores e ator correto. Nome/rótulo históricos não mudam quando o cadastro é renomeado. Salvar os mesmos dados e consultar sessões sem mudança não criam evento falso. Escopo inalterado e reordenação das mesmas permissões também foram confirmados sem novos eventos.
+- Perfil, vínculo e atribuição de filial capturados; auditor restrito vê somente eventos de unidades atribuídas, sem metadados, opções, contagens, registros de equipe/perfil/empresa ou outra rede. Histórico de unidade inativa permanece autorizado sem liberar operação; retirada de atribuição/suspensão afeta consultas na mesma sessão.
+- Segurança pessoal não se mistura entre contas/redes: operador não consulta rede e proprietário não recebe segurança de funcionário. Credenciais, hashes, tokens, chave, segredos MFA e mensagens cifradas foram buscados nos eventos reais sem ocorrência.
+- Papel HTTP sem INSERT/UPDATE/DELETE/TRUNCATE/EXECUTE em auditoria; papel comercial sem SELECT. Detalhes alheios respondem 404. Período, ação, UUID, consulta literal, paginação e filtros adulterados testados.
+- Falha induzida na auditoria reverte empresa/matriz e alteração de vínculo; redefine senha com erro 503 preservando hash anterior e sessões válidas. Eventos e recursos são atômicos.
+- Operações simultâneas de contas diferentes têm atores/correlações separados. Reinício da API preserva histórico e consulta.
+- `npm.cmd run test:e2e`: 42 cenários aprovados integralmente. Nove novos cenários de histórico/antes-depois, mesma operação, busca/período, segurança pessoal, consulta/revogação de filial, falha de conexão e 360/390/768/1440 px. As 33 regressões de login, equipe e unidades continuam aprovadas, incluindo foco do menu móvel.
+- Capturas revisadas em `.local/qa/auditoria-1440.png`, `auditoria-768.png`, `auditoria-390.png` e `auditoria-360.png`; somente redes e pessoas fictícias. Visual preto/branco/dourado e comparação lateral/no celular conferidos.
+- `npm.cmd run build`: aprovado em contratos, API e web, com TypeScript e geração das páginas. `npm.cmd run typecheck`: aprovado nos três workspaces. Tipos normais gerados sem caminhos aleatórios do cache E2E.
+- Verificação final: nenhum segredo real no diff preparado ou JavaScript público; arquivos privados, caches, banco e capturas fora do Git. Escopo original SHA-256 preservado, links locais válidos e `git diff --cached --check` aprovado. PostgreSQL de QA encerrado com dados preservados.
+- CI preparada em `.github/workflows/ci.yml`: sintaxe conferida pelo formatador, com PostgreSQL descartável e comandos de validação. Não executada remotamente ou homologada em Linux neste host Windows; sem upload de arquivos privados ou publicação.
+
+Limites: registros anteriores não têm snapshots recuperáveis; retenção local preserva tudo, sem purge/exclusão automática. Proteções da aplicação não limitam administrador privilegiado do banco; não há assinatura externa. Módulos comerciais permanecem futuros. SMTP real, recuperação de fator perdido, infraestrutura, backup/restauração e política final de retenção ainda pendentes antes de produção.
+
 ## Entrega 01.5 — 09/11/2026
 
 - Migração 005 aplicada incrementalmente em PostgreSQL real 18.6, sem editar migrações anteriores ou criar empresas reais.

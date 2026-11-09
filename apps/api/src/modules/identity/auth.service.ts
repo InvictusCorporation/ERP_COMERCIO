@@ -191,7 +191,9 @@ export class AuthService implements OnApplicationShutdown {
       : member.permissions || (member.role_id ? [] : ["organizations.read"]);
     return member.is_owner || member.all_units
       ? permissions
-      : permissions.filter((p) => p === "organizations.read");
+      : permissions.filter(
+          (p) => p === "organizations.read" || p === "audit.read",
+        );
   }
   async withAccess<T>(
     raw: string,
@@ -249,6 +251,19 @@ export class AuthService implements OnApplicationShutdown {
         [row.id],
       );
       return result;
+    });
+  }
+  async withIdentity<T>(
+    raw: string,
+    action: (client: PoolClient, userId: string) => Promise<T>,
+  ) {
+    return this.store.transaction(async (client) => {
+      const row = await this.lookup(client, raw, false);
+      this.full(row);
+      await client.query("SELECT set_config('app.auth_user_id',$1,true)", [
+        row.user_id,
+      ]);
+      return action(client, row.user_id);
     });
   }
   async identityTransaction<T>(action: (client: PoolClient) => Promise<T>) {

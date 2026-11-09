@@ -42,3 +42,7 @@ Estrutura inspirada no painel de produtos: indicadores pretos com ícones dourad
 ## Estrutura da rede — 01.5
 
 Referências de gestão multiloja e produtos orientam seis indicadores escuros, árvore hierárquica com vínculos reais, lista de unidades e editor lateral. Menu e cabeçalho seguem o ERP preto/branco/dourado. No celular, contexto de rede/unidade é exibido no conteúdo, cards substituem linhas e o editor fica abaixo. Capturas usam redes fictícias isoladas e não inserem números comerciais simulados no dashboard.
+
+## Histórico e comparação — 01.6
+
+Quatro indicadores escuros, lista clara com destaque dourado e painel lateral de comparação. Abas separam rede e própria segurança. Filtros de categoria, responsável, unidade, período e texto, identificação de histórico anterior e agrupamento por operação. No celular, eventos viram cartões e o detalhe ocupa o conteúdo abaixo da lista. Capturas usam somente redes fictícias.

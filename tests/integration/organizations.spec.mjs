@@ -626,7 +626,7 @@ test(
           assert.equal((await saveCompany(session)).status, 403);
           assert.deepEqual(
             (await req("auth/session", { session })).data.permissions,
-            ["organizations.read"],
+            ["organizations.read", "audit.read"],
           );
         },
       );

@@ -41,7 +41,7 @@ Convites levam o escopo explícito até o aceite. Se uma unidade convidada ficar
 
 Proprietário tem todas as permissões. Administrador padrão passa a consultar/gerenciar empresas e unidades. Gerente e perfis comerciais padrão podem consultar estrutura, conforme seu escopo. Perfis personalizados existentes não recebem novas permissões automaticamente. Perfis padrão existentes são atualizados pela migração; novos são criados com o mesmo catálogo.
 
-Mesmo que um perfil administrativo seja atribuído a um vínculo restrito, a sessão não recebe administração global: somente `organizations.read`, caso conste no perfil. Isso impede consultar equipe de outras filiais, alterar a rede ou ampliar os próprios acessos. A exigência de MFA já persistida continua conservadora e não é removida ao restringir/diminuir privilégios.
+Mesmo que um perfil administrativo seja atribuído a um vínculo restrito, a sessão não recebe administração global: somente `organizations.read` e `audit.read`, caso constem no perfil; a auditoria continua limitada às unidades atribuídas. Isso impede consultar equipe de outras filiais, alterar a rede ou ampliar os próprios acessos. A exigência de MFA já persistida continua conservadora e não é removida ao restringir/diminuir privilégios.
 
 ## Contexto e inativação
 
@@ -61,7 +61,7 @@ No celular e tablet, os seletores ficam no conteúdo da página para permanecere
 | POST `/api/v1/organizations/units/save` | Mesmos controles; valida hierarquia, CNPJ, imutabilidade e unicidade |
 | POST `/api/v1/auth/unit` | Sessão completa, Origin, JSON, CSRF e unidade disponível/autorizada |
 
-Tenant/ator não são aceitos no corpo. Rede vem da sessão validada. Mudanças de cadastro e seus eventos são atômicos. Eventos usam a estrutura de acesso já imutável para a conta de execução; auditoria unificada de antes/depois e consulta fica em 01.6.
+Tenant/ator não são aceitos no corpo. Rede vem da sessão validada. Mudanças de cadastro e seus eventos são atômicos. Eventos usam a estrutura de acesso já imutável para a conta de execução; auditoria unificada de antes/depois e consulta foi integrada em 01.6.
 
 Migração imutável `005_organizations.sql`: empresas, unidades com FK composta e matriz única, atribuições de unidades de vínculos/convites, escopo global, unidade selecionada e catálogo de permissões ampliado. Nenhuma empresa real é criada automaticamente.
 
@@ -73,4 +73,6 @@ Migração imutável `005_organizations.sql`: empresas, unidades com FK composta
 
 Com os serviços anteriores parados, inicie `npm.cmd run db:portable` para aplicar as migrações e, em outro terminal, `npm.cmd run dev`. Reinicie a API após mudanças de código. Primeiro administrador continua pelo comando interativo `npm.cmd run auth:bootstrap`; nenhuma conta padrão é criada. SMTP real segue sem configuração/homologação; os convites locais são consultados por `npm.cmd run auth:mail`.
 
-Evidências em [Testes](../TESTES.md). Estoques próprios, transferências, compras centralizadas, consolidação de resultados comerciais, fiscal e Master SaaS continuam nas etapas posteriores. A fundação ainda precisa da auditoria unificada e validação final em 01.6.
+Evidências em [Testes](../TESTES.md). Estoques próprios, transferências, compras centralizadas, consolidação de resultados comerciais, fiscal e Master SaaS continuam nas etapas posteriores. O histórico detalhado da fundação foi integrado em 01.6; CI remota e condições de produção continuam pendentes.
+
+Guia do histórico: [Auditoria](AUDITORIA.md). A inativação do superior não gera uma alteração artificial em cada filho; a origem é registrada no cadastro realmente alterado e respeita o escopo do leitor.
