@@ -117,3 +117,7 @@ E2E inicia API/web próprias nas portas 3334/3001, cria banco fictício `invictu
 - [OWASP — recuperação de senha](https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html)
 
 Os testes e decisões locais não substituem validação da infraestrutura, do provedor de e-mail e revisão de segurança antes da produção.
+
+## Continuação em 01.4
+
+Sessão agora inclui as permissões atuais da empresa selecionada. Administração e convite usam o mesmo serviço confiável de identidade e outbox cifrada, sem conceder acesso comercial à conta de autenticação. O leitor local `auth:mail` consulta pelo destinatário e atende convites antes da criação da conta. MFA passa a ser obrigatório também ao conceder administração por perfil. Guia em [Usuários e permissões](USUARIOS_PERMISSOES.md).

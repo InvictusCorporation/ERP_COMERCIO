@@ -1,10 +1,16 @@
 # Pendências
 
-## Próximo incremento — 01.4
+## Próximo incremento — 01.5
 
-- Administração de usuários, convites, papéis e permissões por ação, sem escalada ou remoção do último proprietário.
-- Escopo de unidades e efeito imediato de mudanças de permissão nas sessões existentes.
-- Em seguida, implementar matriz/filiais/depósitos (01.5) e auditoria comercial integrada (01.6). A fundação completa continua pendente.
+- Cadastro persistente de empresas legais, matriz, filiais, centro de distribuição e depósitos.
+- Integrar restrições por unidade aos vínculos/permissões e validar IDs de filiais adulterados. Escopo atual de acesso é a empresa.
+- Depois, auditoria unificada e validação final (01.6). A fundação completa continua pendente.
+
+## Entregue em 01.4
+
+Cadastro de usuários por convite de uso único, perfis padrão/personalizados por empresa, suspensão/reativação de vínculo, limites de concessão, proteção concorrente do último proprietário e eventos transacionais imutáveis. API reavalia permissões e vínculos em cada ação. Telas responsivas de equipe, perfis e aceite seguem as referências. Guia em [Usuários e permissões](docs/USUARIOS_PERMISSOES.md).
+
+SMTP real segue pendente; nenhuma mensagem externa enviada. Escopo de filial aguarda 01.5. Perfis comerciais não liberam módulos ainda ausentes. Master SaaS e edição de identidade global permanecem fora deste módulo.
 
 ## Entregue em 01.3
 

@@ -80,15 +80,15 @@ const steps = [
   },
   {
     title: "Usuários e permissões",
-    description: "Perfis de acesso e escopo por unidade.",
+    description: "Equipe, convites e perfis por empresa.",
     icon: Users,
-    status: "Próximo incremento",
+    status: "Disponível nesta versão",
   },
   {
     title: "Matriz, filiais e depósitos",
     description: "Estrutura organizacional da sua empresa.",
     icon: Store,
-    status: "Planejado",
+    status: "Próximo incremento",
   },
   {
     title: "Auditoria e validação",
@@ -110,7 +110,13 @@ function Brand() {
   );
 }
 
-export function Workspace({ initialSession }: { initialSession: AuthSession }) {
+export function Workspace({
+  initialSession,
+  children,
+}: {
+  initialSession: AuthSession;
+  children?: React.ReactNode;
+}) {
   const router = useRouter();
   const [session, setSession] = useState(initialSession);
   const [sessionError, setSessionError] = useState("");
@@ -182,6 +188,10 @@ export function Workspace({ initialSession }: { initialSession: AuthSession }) {
   const menuButton = useRef<HTMLButtonElement>(null);
   const sidebar = useRef<HTMLElement>(null);
   const navigate = (next: View) => {
+    if (children) {
+      router.push("/");
+      return;
+    }
     setView(next);
     setMenuOpen(false);
   };
@@ -270,8 +280,9 @@ export function Workspace({ initialSession }: { initialSession: AuthSession }) {
     };
   }, [menuOpen]);
 
-  const title =
-    view === "dashboard"
+  const title = children
+    ? "Usuários e permissões"
+    : view === "dashboard"
       ? "Dashboard administrativo"
       : view === "foundation"
         ? "Fundação do sistema"
@@ -313,8 +324,10 @@ export function Workspace({ initialSession }: { initialSession: AuthSession }) {
         <nav aria-label="Navegação principal">
           <span className="nav-label">PRINCIPAL</span>
           <button
-            className={`nav-item ${view === "dashboard" ? "active" : ""}`}
-            aria-current={view === "dashboard" ? "page" : undefined}
+            className={`nav-item ${!children && view === "dashboard" ? "active" : ""}`}
+            aria-current={
+              !children && view === "dashboard" ? "page" : undefined
+            }
             onClick={() => navigate("dashboard")}
           >
             <LayoutDashboard size={19} />
@@ -339,6 +352,16 @@ export function Workspace({ initialSession }: { initialSession: AuthSession }) {
           </button>
         </nav>
         <div className="sidebar-bottom">
+          {session.permissions.includes("users.read") && (
+            <Link
+              className={`nav-item ${children ? "active" : ""}`}
+              href="/usuarios"
+              aria-current={children ? "page" : undefined}
+            >
+              <Users size={19} />
+              Usuários e permissões
+            </Link>
+          )}
           <Link
             className="nav-item"
             href="/seguranca"
@@ -433,56 +456,69 @@ export function Workspace({ initialSession }: { initialSession: AuthSession }) {
           <div className="breadcrumb">
             Workspace <ChevronRight size={12} />{" "}
             <span>
-              {view === "dashboard"
-                ? "Visão geral"
-                : view === "foundation"
-                  ? "Fundação"
-                  : "Configurações"}
+              {children
+                ? "Usuários e permissões"
+                : view === "dashboard"
+                  ? "Visão geral"
+                  : view === "foundation"
+                    ? "Fundação"
+                    : "Configurações"}
             </span>
           </div>
           <div className="page-heading">
             <div>
               <span className="eyebrow">SEU COMÉRCIO, CONECTADO</span>
               <h1>
-                {view === "dashboard" && (
-                  <BarChart3 className="heading-icon" size={42} />
+                {children ? (
+                  <Users className="heading-icon" size={42} />
+                ) : (
+                  view === "dashboard" && (
+                    <BarChart3 className="heading-icon" size={42} />
+                  )
                 )}
                 <span>{title}</span>
               </h1>
               <p>
-                {view === "dashboard"
-                  ? "Visão geral do seu negócio em tempo real"
-                  : "Acompanhe a construção de uma gestão segura e integrada."}
+                {children
+                  ? "Gerencie sua equipe e os acessos à empresa selecionada."
+                  : view === "dashboard"
+                    ? "Visão geral do seu negócio em tempo real"
+                    : "Acompanhe a construção de uma gestão segura e integrada."}
               </p>
             </div>
-            <button
-              className="button secondary refresh"
-              onClick={() => void refresh()}
-              disabled={checking}
-            >
-              <RefreshCw size={16} className={checking ? "spin" : ""} />
-              {checking ? "Verificando" : "Atualizar"}
-            </button>
+            {!children && (
+              <button
+                className="button secondary refresh"
+                onClick={() => void refresh()}
+                disabled={checking}
+              >
+                <RefreshCw size={16} className={checking ? "spin" : ""} />
+                {checking ? "Verificando" : "Atualizar"}
+              </button>
+            )}
           </div>
 
-          <div className="environment-banner">
-            <span>
-              <span className="status-dot gold" />
-              <strong>Primeiros passos</strong>
-              <span className="banner-divider">/</span>Fundação em
-              desenvolvimento
-            </span>
-            <button onClick={() => navigate("foundation")}>
-              Acompanhar implantação <ArrowRight size={14} />
-            </button>
-          </div>
+          {!children && (
+            <div className="environment-banner">
+              <span>
+                <span className="status-dot gold" />
+                <strong>Primeiros passos</strong>
+                <span className="banner-divider">/</span>Fundação em
+                desenvolvimento
+              </span>
+              <button onClick={() => navigate("foundation")}>
+                Acompanhar implantação <ArrowRight size={14} />
+              </button>
+            </div>
+          )}
 
           {sessionError && (
             <p className="auth-error" role="alert">
               {sessionError}
             </p>
           )}
-          {view === "dashboard" && (
+          {children}
+          {!children && view === "dashboard" && (
             <>
               <section className="metrics" aria-label="Indicadores comerciais">
                 {[

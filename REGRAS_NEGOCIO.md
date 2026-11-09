@@ -32,3 +32,7 @@ Sessões parciais não acessam o painel antes de concluir MFA. Senha redefinida 
 - Integrações fiscais e pagamentos só operam com documentação, credenciais e homologação válidas. Não guardar dados sensíveis de cartão.
 - IA sugere ações dentro das permissões do usuário; não compra, altera preço nem movimenta dinheiro automaticamente.
 - Contingência offline exige testes próprios de conflitos, duplicidades e reconciliação antes da habilitação.
+
+## Acessos — 01.4
+
+Vínculo é por empresa e não agrega permissões de outros vínculos. Convites duram sete dias, têm uso único e exigem sessão da pessoa convidada quando a conta já existe. Ninguém concede permissões acima das suas; Master não é concedível por empresa. Proprietário/administradores exigem MFA. Alterações de permissões e suspensão valem nas requisições seguintes; preservar ao menos um proprietário ativo, inclusive sob concorrência. Auditoria da alteração é atômica. Restrição por unidade será integrada em 01.5. Matriz e detalhes em [Usuários e permissões](docs/USUARIOS_PERMISSOES.md).

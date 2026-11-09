@@ -13,7 +13,7 @@ async function main() {
   try {
     const row = (
       await client.query(
-        "SELECT o.payload_enc FROM identity.mail_outbox o JOIN identity.users u ON u.id=o.user_id WHERE u.email=$1 ORDER BY o.created_at DESC LIMIT 1",
+        "SELECT payload_enc FROM identity.mail_outbox WHERE recipient=$1 ORDER BY created_at DESC LIMIT 1",
         [email],
       )
     ).rows[0];
@@ -23,7 +23,7 @@ async function main() {
     }
     const message = JSON.parse(decrypt(row.payload_enc, config.authKey));
     process.stdout.write(
-      "\nMensagem local de recuperação (não compartilhe este link):\n" +
+      "\nMensagem local de acesso (não compartilhe este link):\n" +
         message.url +
         "\n",
     );

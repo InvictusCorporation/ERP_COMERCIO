@@ -20,7 +20,8 @@ export class AuthStore {
         await client.query(`SELECT rolname,rolsuper,rolbypassrls,rolcreatedb,rolcreaterole,rolinherit,rolreplication,
         EXISTS(SELECT 1 FROM pg_database WHERE datname=current_database() AND datdba=pg_roles.oid) AS database_owner,
         EXISTS(SELECT 1 FROM pg_auth_members WHERE member=pg_roles.oid) AS member,
-        EXISTS(SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE c.relowner=pg_roles.oid AND n.nspname IN ('identity','tenancy')) AS owner,
+        EXISTS(SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE c.relowner=pg_roles.oid AND n.nspname IN ('identity','tenancy','access')) AS owner,
+        NOT(SELECT count(*)=5 AND coalesce(bool_and(c.relrowsecurity AND c.relforcerowsecurity),false) FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE (n.nspname,c.relname) IN (('access','roles'),('access','invitations'),('access','events'),('identity','memberships'),('tenancy','tenants'))) AS unsafe_rls,
         to_regclass('identity.sessions') IS NULL AS missing FROM pg_roles WHERE rolname=current_user`)
       ).rows[0];
       if (

@@ -1,6 +1,6 @@
 # Módulos e dependências
 
-Fundação em desenvolvimento: análise (01.0), bootstrap (01.1), persistência/isolamento (01.2) e autenticação/sessões/recuperação (01.3) entregues localmente. Autorização por ação, gestão de usuários/unidades e auditoria comercial permanecem pendentes. SMTP externo ainda não homologado. Os módulos comerciais continuam planejados.
+Fundação em desenvolvimento: análise (01.0), bootstrap (01.1), persistência/isolamento (01.2) autenticação/sessões/recuperação (01.3) e administração de usuários/perfis por empresa (01.4) entregues localmente. Unidades, restrições por filial e auditoria comercial unificada permanecem pendentes. SMTP externo ainda não homologado. Os módulos comerciais continuam planejados.
 
 | Etapa | Módulo | Dependências principais |
 | --- | --- | --- |
@@ -21,3 +21,7 @@ Fundação em desenvolvimento: análise (01.0), bootstrap (01.1), persistência/
 Matriz e filiais cadastrais pertencem à fundação; transferência de mercadorias e consolidação operacional pertencem à Etapa 10. Permissões, escopos e auditoria são transversais desde a Etapa 01. Assinaturas não substituem autorização: recurso habilitado pelo plano ainda exige permissão.
 
 Antes de comercializar o PDV, a Etapa 06 deverá garantir confirmação de pagamento e baixa atômica de estoque. O PDV da Etapa 05 será validado em ambiente de teste com adaptador local explícito; não simular recebimentos externos como reais.
+
+## Incremento 01.4
+
+Administração de usuários entregue por empresa: convites, perfis padrão e personalizados, permissões, suspensão e proteção de propriedade. Perfis comerciais não liberam operações de módulos futuros. Escopo por unidade depende de 01.5. Ver [Usuários e permissões](docs/USUARIOS_PERMISSOES.md).

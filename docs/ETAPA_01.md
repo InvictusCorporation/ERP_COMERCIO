@@ -1,6 +1,6 @@
 # Etapa 01 — Fundação
 
-Este plano atende à primeira ordem do escopo: apresentar arquitetura, tarefas, arquivos, aceitação e testes antes de programar. Incrementos 01.0 a 01.3 entregues localmente, incluindo isolamento, autenticação, sessões e recuperação. A Etapa 01 completa permanece em desenvolvimento. Cada incremento deve passar por seus testes e atualizar a documentação antes do seguinte.
+Este plano atende à primeira ordem do escopo: apresentar arquitetura, tarefas, arquivos, aceitação e testes antes de programar. Incrementos 01.0 a 01.4 entregues localmente, incluindo isolamento, autenticação, sessões e recuperação. A Etapa 01 completa permanece em desenvolvimento. Cada incremento deve passar por seus testes e atualizar a documentação antes do seguinte.
 
 ## 01.0 — Análise e planejamento (entregue)
 
@@ -45,6 +45,8 @@ Aceitação: nenhuma senha/token em texto claro no banco/logs; sessão revogada 
 Testes: credenciais corretas e incorretas, conta inativa, brute force, cookies, CSRF, fixação de sessão, logout/revogação, recuperação expirada/reutilizada e MFA inválido. Transporte de e-mail real só é considerado validado após teste do provedor escolhido.
 
 ## 01.4 — Usuários, vínculos e permissões
+
+Situação: núcleo por empresa entregue localmente: usuários por convite, perfis, permissões, suspensão, MFA sensível e proteção do último proprietário. Guia em [Usuários e permissões](USUARIOS_PERMISSOES.md). A restrição por unidade será integrada ao cadastro de unidades em 01.5 e permanece necessária para concluir a fundação. SMTP real ainda sem homologação.
 
 Arquivos previstos: `apps/api/src/modules/access/*`, extensão de `tenancy/*`, `apps/web/src/app/(erp)/usuarios/*`, `apps/web/src/app/(erp)/permissoes/*`, `tests/integration/permissions.spec.ts` e migrações necessárias.
 

@@ -49,3 +49,11 @@
 - Disponibilidade de executável não confirma compatibilidade ou instalação completa. Registrar saídas observadas e pendências separadamente.
 
 - No runner Node, cenários independentes devem ser registrados fora do callback de outro cenário; aguardar um teste irmão dentro do teste em execução bloqueia a sequência. A regressão Unicode foi corrigida e os 34 testes de integração passaram.
+
+## Incremento 01.4
+
+- Propriedade deve ser protegida com serialização por empresa, não apenas uma contagem antes do UPDATE.
+- Convite de conta existente não pode redefinir senha ou nome global. O aceite exige a sessão da pessoa convidada e revalidação da autoridade do remetente.
+- Em Strict Mode, o efeito é executado novamente: guardar o fragmento em referência antes de remover da URL evita perder o token no aceite. O teste real de navegador identificou essa falha e motivou a correção.
+- Sessão é atualizada após a ação administrativa para preservar a ordem de locks credencial → sessão dos fluxos de autenticação.
+- Perfis comerciais podem existir antes dos módulos; não devem conceder permissões operacionais que ainda não foram implementadas.

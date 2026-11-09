@@ -13,6 +13,7 @@ export type AuthSession = {
   };
   tenants: { id: string; name: string; isOwner: boolean }[];
   activeTenantId: string | null;
+  permissions: import("./access").Permission[];
 };
 export type SessionEntry = {
   id: string;

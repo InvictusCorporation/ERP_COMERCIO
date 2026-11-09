@@ -7,6 +7,8 @@ import {
   type MailDelivery,
 } from "./modules/identity/auth.service";
 import type { AuthConfig } from "./modules/identity/auth-config";
+import { AccessService } from "./modules/access/access.service";
+import { AccessController } from "./modules/access/access.controller";
 
 @Module({})
 export class AppModule {
@@ -17,7 +19,10 @@ export class AppModule {
   ): DynamicModule {
     return {
       module: AppModule,
-      controllers: [HealthController, ...(authConfig ? [AuthController] : [])],
+      controllers: [
+        HealthController,
+        ...(authConfig ? [AuthController, AccessController] : []),
+      ],
       providers: [
         {
           provide: DatabaseService,
@@ -25,6 +30,11 @@ export class AppModule {
         },
         ...(authConfig
           ? [
+              {
+                provide: AccessService,
+                useFactory: (auth: AuthService) => new AccessService(auth),
+                inject: [AuthService],
+              },
               {
                 provide: AuthService,
                 useFactory: () => new AuthService(authConfig, mailDelivery),

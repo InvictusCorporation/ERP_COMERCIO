@@ -87,3 +87,7 @@ O executor cria um banco `invictus_test_<identificador aleatório>`, aplica as m
 - [Distribuição dos binários portáteis](https://www.npmjs.com/package/@embedded-postgres/windows-x64)
 
 Os testes locais são evidência desta implementação, não homologação de segurança ou infraestrutura de produção.
+
+## Administração de acessos — 01.4
+
+Migração imutável `004_access_control.sql` adiciona schema `access` com RLS forçado em perfis, convites e eventos, FK composta de vínculo/perfil e destinatário da outbox para pessoas sem conta. `invictus_auth` passa a inserir usuários e inserir/alterar vínculos no contexto confiável do serviço; não atualiza identidade global nem escreve recursos comerciais. Autoridade vem da sessão, não do corpo HTTP. Readiness recusa a ausência de RLS de acessos. Alterações e aceite usam lock transacional por empresa. Ver [Usuários e permissões](USUARIOS_PERMISSOES.md).

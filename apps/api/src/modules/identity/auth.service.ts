@@ -13,6 +13,7 @@ import type {
 } from "@invictus/contracts";
 import QRCode from "qrcode";
 import nodemailer from "nodemailer";
+import { OWNER_PERMISSIONS, type Permission } from "@invictus/contracts";
 import type { AuthConfig } from "./auth-config";
 import { AuthStore } from "./auth-store";
 import {
@@ -41,7 +42,7 @@ type Row = {
   active_tenant_id: string | null;
   expires_at: Date;
 };
-type RecoveryMessage = { to: string; url: string };
+type RecoveryMessage = { to: string; url: string; kind?: "invitation" };
 export type MailDelivery = (message: RecoveryMessage) => Promise<void>;
 const denied = () => new UnauthorizedException("E-mail ou senha inválidos.");
 export class AuthService implements OnApplicationShutdown {
@@ -167,6 +168,80 @@ export class AuthService implements OnApplicationShutdown {
     if (row.stage !== "authenticated")
       throw new ForbiddenException("Conclua a autenticação em duas etapas.");
   }
+  async accessPermissions(
+    client: PoolClient,
+    userId: string,
+    tenantId: string,
+  ): Promise<Permission[]> {
+    await client.query(
+      "SELECT set_config('app.auth_user_id',$1,true),set_config('app.auth_tenant_id',$2,true)",
+      [userId, tenantId],
+    );
+    const member = (
+      await client.query(
+        `SELECT m.is_owner,r.permissions FROM identity.memberships m JOIN tenancy.tenants t ON t.id=m.tenant_id LEFT JOIN access.roles r ON r.tenant_id=m.tenant_id AND r.id=m.role_id WHERE m.user_id=$1 AND m.tenant_id=$2 AND m.active AND t.active`,
+        [userId, tenantId],
+      )
+    ).rows[0];
+    return member?.is_owner
+      ? [...OWNER_PERMISSIONS]
+      : member?.permissions || [];
+  }
+  async withAccess<T>(
+    raw: string,
+    action: (
+      client: PoolClient,
+      context: { userId: string; tenantId: string; permissions: Permission[] },
+    ) => Promise<T>,
+  ): Promise<T> {
+    return this.store.transaction(async (client) => {
+      const initial = await this.lookup(client, raw, false);
+      this.full(initial);
+      const tenants = await this.tenants(client, initial.user_id);
+      const tenant =
+        tenants.find((t) => t.id === initial.active_tenant_id) ||
+        (tenants.length === 1 ? tenants[0] : undefined);
+      if (!tenant)
+        throw new ForbiddenException(
+          "Selecione uma empresa com vínculo ativo.",
+        );
+      await client.query(
+        "SELECT pg_advisory_xact_lock(hashtextextended($1,0))",
+        [tenant.id],
+      );
+      const row = await this.lookup(client, raw, false);
+      this.full(row);
+      const permissions = await this.accessPermissions(
+        client,
+        row.user_id,
+        tenant.id,
+      );
+      const member = (
+        await client.query(
+          "SELECT id FROM identity.memberships WHERE tenant_id=$1 AND user_id=$2 AND active",
+          [tenant.id, row.user_id],
+        )
+      ).rows[0];
+      if (!member)
+        throw new ForbiddenException("Vínculo suspenso nesta empresa.");
+      const result = await action(client, {
+        userId: row.user_id,
+        tenantId: tenant.id,
+        permissions,
+      });
+      await client.query(
+        "UPDATE identity.sessions SET last_seen_at=now() WHERE id=$1",
+        [row.id],
+      );
+      return result;
+    });
+  }
+  async identityTransaction<T>(action: (client: PoolClient) => Promise<T>) {
+    return this.store.transaction(action);
+  }
+  async limitInvitation(ip: string) {
+    await this.rate("invitation:ip", ip, 30, 300);
+  }
   private async tenants(client: PoolClient, userId: string) {
     await client.query("SELECT set_config('app.auth_user_id',$1,true)", [
       userId,
@@ -209,6 +284,9 @@ export class AuthService implements OnApplicationShutdown {
         },
         tenants,
         activeTenantId: selected,
+        permissions: selected
+          ? await this.accessPermissions(client, row.user_id, selected)
+          : [],
       };
     });
   }
@@ -555,8 +633,14 @@ export class AuthService implements OnApplicationShutdown {
                 await transport.sendMail({
                   from: this.config.mailFrom,
                   to: message.to,
-                  subject: "Recupere seu acesso — Invictus ERP",
-                  text: `Use este link em até 30 minutos para redefinir sua senha: ${message.url}\nSe você não solicitou, ignore esta mensagem.`,
+                  subject:
+                    message.kind === "invitation"
+                      ? "Convite para a equipe — Invictus ERP"
+                      : "Recupere seu acesso — Invictus ERP",
+                  text:
+                    message.kind === "invitation"
+                      ? `Você recebeu um convite para uma empresa no Invictus ERP. Confira a empresa e o perfil antes de aceitar. Link válido por 7 dias: ${message.url}`
+                      : `Use este link em até 30 minutos para redefinir sua senha: ${message.url}\nSe você não solicitou, ignore esta mensagem.`,
                   disableFileAccess: true,
                   disableUrlAccess: true,
                 });

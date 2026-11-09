@@ -1,5 +1,25 @@
 # Testes e evidências
 
+## Entrega 01.4 — 09/11/2026
+
+- PostgreSQL real 18.6, bancos fictícios próprios, sem criar equipe no banco de desenvolvimento. Migração 004 aplicada incrementalmente; migrações anteriores preservadas.
+- `npm.cmd test`: 11 testes unitários/HTTP aprovados.
+- `npm.cmd run test:integration`: 54 testes aprovados no relatório Node (incluindo agrupadores). Cobrem regressão de identidade/isolamento e 19 cenários de administração de acessos.
+- Matriz de autorização real: anônimo/operador negados, consulta limitada, concessão atual/nova limitada ao ator, Master indisponível, perfis padrão protegidos, CSRF/Origin/corpos estritos, IDs de outra empresa e FK composta recusados.
+- Mudança de perfil afeta sessão já aberta; suspensão/reativação respeita empresa e conta global inativa. Pessoa com dois vínculos não soma permissões. Perfil sensível exige MFA inclusive em conta nova convidada.
+- Convites com fila cifrada, token ausente no HTTP de criação, uso único, conta existente autenticada sem trocar dados globais, expiração/revogação/adulteração, substituição do link anterior e autoridade do remetente revogada.
+- Duas confirmações concorrentes criam um único vínculo. Duas suspensões concorrentes preservam um proprietário ativo. Falha induzida no evento reverte a criação do perfil; conta de execução não pode atualizar/apagar eventos.
+- `npm.cmd run typecheck`: aprovado nos três workspaces.
+- `npm.cmd run test:e2e`: 25 cenários aprovados em uma execução integral, incluindo os 7 novos cenários de administração e as 18 regressões de login/dashboard. Convite → conta nova → aceite → suspensão aprovado com duas sessões de navegador.
+- Capturas revisadas: `.local/qa/usuarios-1440.png`, `usuarios-768.png`, `usuarios-390.png` e `usuarios-360.png`. Contas e indicadores dessas capturas são exclusivamente fictícios.
+- Durante QA, Strict Mode revelou perda do fragmento na segunda montagem do formulário de convite; corrigido mantendo-o em referência somente em memória. O teste do campo de situação passou a usar o papel acessível combobox, evitando o texto das opções no seletor de label exato.
+- `npm.cmd run build`: aprovado em contratos, API e Next.js, incluindo TypeScript e geração das páginas. O build normal restaurou os tipos gerados sem caminhos aleatórios de cache de teste.
+- Busca por segredos reais no diff preparado e no JavaScript público: nenhum encontrado. `.env*`, `.local`, caches, dependências e artefatos de execução ficaram fora do Git; `git diff --cached --check` aprovado.
+- Prévia funcional validada pelo servidor isolado E2E nas portas 3001/3334; uma tentativa adicional de `dev` em 3000 encontrou a porta ocupada. O orquestrador encerrou seus filhos, sem interromper serviços alheios. Captura desktop aberta no painel do Codex.
+- Escopo mestre conferido byte a byte por SHA-256; links locais da documentação conferidos sem destinos ausentes.
+
+Limites: SMTP real sem configuração/homologação; nenhum e-mail externo enviado. Escopo atual é por empresa; restrições por filial dependem de 01.5. Módulos comerciais, Master SaaS, recuperação de fator perdido e auditoria unificada permanecem futuros. Sem implantação/publicação.
+
 ## Entrega 01.3 — 09/11/2026
 
 - `npm.cmd test`: 11 testes aprovados de configuração, health, Argon2id, cifra autenticada, CSRF e cookie Secure de produção.

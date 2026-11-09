@@ -57,7 +57,7 @@ export async function latestE2ERecovery(email) {
   try {
     const row = (
       await client.query(
-        "SELECT o.payload_enc FROM identity.mail_outbox o JOIN identity.users u ON u.id=o.user_id WHERE u.email=$1 ORDER BY o.created_at DESC LIMIT 1",
+        "SELECT payload_enc FROM identity.mail_outbox WHERE recipient=$1 ORDER BY created_at DESC LIMIT 1",
         [email],
       )
     ).rows[0];

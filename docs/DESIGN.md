@@ -34,3 +34,7 @@ No incremento de autenticação, login/recuperação/MFA compartilham a marca, o
 Semelhança visual não significa implementar vários módulos ao mesmo tempo. Indicadores e ranking ficam vazios até existirem dados reais. Atalhos futuros permanecem desabilitados e identificados como “Em breve”. Não copiar os valores, empresas, produtos ou alertas ilustrativos das imagens como dados reais.
 
 O dashboard foi ajustado nesta revisão. Produtos/estoque, multiloja e PDV ainda seguem a sequência oficial do escopo; suas referências devem ser retomadas na implementação de cada módulo.
+
+## Usuários e perfis — 01.4
+
+Estrutura inspirada no painel de produtos: indicadores pretos com ícones dourados, lista clara e editor lateral com cabeçalho preto. Menu/header compartilhados com o dashboard. No celular, lista vira cartões; busca, filtro, paginação e ações têm labels. Convite usa o mesmo layout do login. Dados das capturas vêm exclusivamente de contas fictícias do banco de teste, sem inserir equipe no banco operacional.

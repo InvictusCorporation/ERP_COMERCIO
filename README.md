@@ -4,13 +4,15 @@ Plataforma modular da Invictus Systems para comércio, estivas, mercados e redes
 
 ## Estado atual — 09/11/2026
 
-Entrega 01.3: login, sessões persistentes, encerramento de acessos, recuperação de senha e autenticação em duas etapas, sobre a base PostgreSQL com isolamento por empresa. Telas responsivas seguem as referências Invictus. O painel exige sessão válida; indicadores comerciais permanecem vazios.
+Entrega 01.4: cadastro de equipe por convite, perfis configuráveis, suspensão de vínculos e permissões verificadas na API, sobre a autenticação e o PostgreSQL com isolamento por empresa. Telas responsivas seguem as referências Invictus. O painel exige sessão válida; indicadores comerciais permanecem vazios.
 
-Administração de usuários, permissões por ação, unidades e módulos comerciais ainda não foram implementados. Não foram criadas contas reais automaticamente; o primeiro administrador é cadastrado por comando interativo local e deve configurar MFA. O envio externo de recuperação depende de configurar e homologar SMTP. A fundação completa continua em desenvolvimento.
+A administração está em `/usuarios` e `/permissoes`. Unidades, restrições por filial e módulos comerciais permanecem nos próximos incrementos. Não foram criadas contas reais automaticamente; o primeiro administrador é cadastrado por comando interativo local e deve configurar MFA. O envio externo de recuperação depende de configurar e homologar SMTP. A fundação completa continua em desenvolvimento.
 
 O repositório recebido continha somente `.git`, sem commits, código, dependências, banco ou remoto configurado. Nenhum módulo operacional foi encontrado. A inspeção ficou restrita ao projeto e à busca de instruções aplicáveis.
 
 Repositório remoto informado posteriormente pelo usuário: [InvictusCorporation/ERP_COMERCIO](https://github.com/InvictusCorporation/ERP_COMERCIO). Configurado como `origin`; a documentação inicial usa a branch `codex/fundacao-planejamento`.
+
+Guia de uso e matriz de autorização: [Usuários e permissões](docs/USUARIOS_PERMISSOES.md).
 
 ## Documentação
 

@@ -67,3 +67,12 @@ Não houve programação, instalação de dependências, criação de banco, alt
 - Configurado `origin` para `https://github.com/InvictusCorporation/ERP_COMERCIO.git`, informado pelo usuário.
 - Confirmado com `git ls-remote` que o remoto estava vazio antes do envio.
 - Preparada a documentação na branch `codex/fundacao-planejamento`, preservando o escopo original e o histórico local.
+
+## Incremento 01.4 — Usuários e permissões — 09/11/2026
+
+- Migração 004: perfis por empresa, FK composta de vínculos, convites com hash, destinatário da outbox e eventos imutáveis.
+- `AccessService`/controller: autorização em cada requisição, convite/aceite/revogação, perfis, suspensão, MFA sensível e proteção concorrente do último proprietário.
+- Rotas `/usuarios`, `/permissoes` e `/aceitar-convite`, visual preto/branco/dourado, lista responsiva, busca, filtro e paginação.
+- Outbox SMTP/local atende contas convidadas ainda inexistentes. Sem e-mails externos enviados.
+- Escopo atual é a empresa; unidades e restrições por filial continuam em 01.5.
+- Testes reais de autorização/concorrência e navegador; resultados finais em `TESTES.md`. Sem publicação.

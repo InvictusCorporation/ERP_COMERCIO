@@ -21,7 +21,7 @@ import { AuthService } from "./auth.service";
 import { csrfToken, equalSecret } from "./crypto";
 
 @Catch()
-class AuthExceptionFilter implements ExceptionFilter {
+export class AuthExceptionFilter implements ExceptionFilter {
   catch(error: unknown, host: ArgumentsHost) {
     const response = host.switchToHttp().getResponse<Response>();
     const status = error instanceof HttpException ? error.getStatus() : 503;
@@ -33,7 +33,7 @@ class AuthExceptionFilter implements ExceptionFilter {
     response.status(status).json({ statusCode: status, message });
   }
 }
-function body(value: unknown, allowed: string[]) {
+export function body(value: unknown, allowed: string[]) {
   if (
     !value ||
     typeof value !== "object" ||
@@ -43,18 +43,18 @@ function body(value: unknown, allowed: string[]) {
     throw new BadRequestException("Dados de acesso inválidos.");
   return value as Record<string, unknown>;
 }
-function text(value: unknown, max = 128) {
+export function text(value: unknown, max = 128) {
   if (typeof value !== "string" || value.length === 0 || value.length > max)
     throw new BadRequestException("Confira os campos informados.");
   return value;
 }
-function email(value: unknown) {
+export function email(value: unknown) {
   const result = text(value, 254).trim().toLowerCase();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(result))
     throw new BadRequestException("Informe um e-mail válido.");
   return result;
 }
-function passwordText(value: unknown) {
+export function passwordText(value: unknown) {
   if (
     typeof value !== "string" ||
     Array.from(value).length === 0 ||
@@ -63,7 +63,7 @@ function passwordText(value: unknown) {
     throw new BadRequestException("Confira a senha informada.");
   return value;
 }
-function uuid(value: unknown) {
+export function uuid(value: unknown) {
   const result = text(value, 36);
   if (
     !/^[a-f0-9]{8}-[a-f0-9]{4}-[1-8][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i.test(
