@@ -1,5 +1,39 @@
 export const PERMISSIONS = [
   {
+    key: "suppliers.read",
+    label: "Consultar fornecedores",
+    description: "Consultar o cadastro central de fornecedores.",
+  },
+  {
+    key: "suppliers.manage",
+    label: "Gerenciar fornecedores",
+    description:
+      "Cadastrar e inativar fornecedores; exige escopo global e duas etapas.",
+  },
+  {
+    key: "purchases.read",
+    label: "Consultar compras",
+    description:
+      "Ver pedidos e recebimentos nas unidades autorizadas; requer consulta de produtos e fornecedores.",
+  },
+  {
+    key: "purchases.manage",
+    label: "Gerenciar pedidos de compra",
+    description:
+      "Criar, editar rascunhos e cancelar pedidos sem recebimento; exige duas etapas.",
+  },
+  {
+    key: "purchases.approve",
+    label: "Aprovar compras",
+    description: "Aprovar pedidos nas unidades autorizadas; exige duas etapas.",
+  },
+  {
+    key: "purchases.receive",
+    label: "Conferir e receber compras",
+    description:
+      "Receber e estornar recebimentos; exige movimentação de estoque e duas etapas.",
+  },
+  {
     key: "products.read",
     label: "Consultar produtos",
     description: "Consultar o catálogo central da rede.",

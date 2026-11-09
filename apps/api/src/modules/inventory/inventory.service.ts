@@ -163,7 +163,7 @@ export class InventoryService {
       const movements = stock
         ? (
             await c.query(
-              `SELECT id,kind,quantity::text,factor::text,base_quantity::text AS "baseQuantity",cost::text,physical_delta::text AS "physicalDelta",reserved_delta::text AS "reservedDelta",value_delta::text AS "valueDelta",physical_after::text AS "physicalAfter",reserved_after::text AS "reservedAfter",value_after::text AS "valueAfter",actor_name AS "actorName",reason,reversal_of AS "reversalOf",created_at AS "createdAt" FROM inventory.movements WHERE tenant_id=$1 AND unit_id=$2 AND product_id=$3 ORDER BY created_at DESC,id DESC LIMIT 20 OFFSET $4`,
+              `SELECT purchase_receipt_id AS "purchaseReceiptId",id,kind,quantity::text,factor::text,base_quantity::text AS "baseQuantity",cost::text,physical_delta::text AS "physicalDelta",reserved_delta::text AS "reservedDelta",value_delta::text AS "valueDelta",physical_after::text AS "physicalAfter",reserved_after::text AS "reservedAfter",value_after::text AS "valueAfter",actor_name AS "actorName",reason,reversal_of AS "reversalOf",created_at AS "createdAt" FROM inventory.movements WHERE tenant_id=$1 AND unit_id=$2 AND product_id=$3 ORDER BY created_at DESC,id DESC LIMIT 20 OFFSET $4`,
               [ctx.tenantId, unit, id, page * 20],
             )
           ).rows

@@ -61,3 +61,7 @@ Este incremento entrega o cadastro básico e o estoque manual persistente, audit
 Lotes, validade e alertas de vencimento pertencem à etapa 08 e ainda não são coletados ou controlados; o produto não deve ser tratado como rastreado por lote. Inventário contado/aprovação de divergências, ajustes em lote, transferências com trânsito/recebimento, devoluções vinculadas a documentos e reservas ligadas a pedidos serão entregas próprias. As saídas manuais não representam venda, receita, caixa ou comprovante fiscal. Dashboard consolidado e notificações externas também não foram integrados. Os indicadores desta tela usam exclusivamente dados persistidos e autorizados.
 
 Não há implantação, publicação, conta real criada automaticamente ou integração externa realizada nesta entrega. CI remota, SMTP, recuperação de MFA perdido, política de retenção, backup/restauração e infraestrutura de produção continuam pendentes.
+
+## Integração posterior — 02.2 / 04.1
+
+O recebimento manual de compra passou a criar movimentos vinculados, com fator aprovado e valor rateado exato. O histórico de estoque indica a origem e direciona estorno pela compra. Alertas após receber sugerem revisão do preço sem alteração automática. As pendências anteriores de fornecedores/recebimento manual foram atendidas por este incremento; XML, fiscal, lotes e outros complementos continuam pendentes. Guia em [Fornecedores e compras](FORNECEDORES_COMPRAS.md).

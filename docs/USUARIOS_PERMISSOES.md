@@ -85,3 +85,7 @@ Alterações de vínculo, perfil, escopo e convite são capturadas atomicamente 
 ## Permissões comerciais 02.1 / 03.1
 
 products.read/products.manage e stock.read/stock.manage integram o catálogo. Escrita de produto exige escopo global; movimentação pode ser limitada à filial. Escritas exigem MFA, inclusive no perfil personalizado, sem conceder poderes sobre pessoas/estrutura. Administrador recebe o módulo; demais perfis padrão permanecem sem ampliação automática. Consultas são dependências da escrita. Ver [Produtos e estoque](PRODUTOS_ESTOQUE.md).
+
+## Fornecedores e compras
+
+suppliers.read/manage e purchases.read/manage/approve/receive acrescentados ao catálogo. Gerenciar fornecedor exige escopo global; ações de compra podem ser restritas à filial, com MFA nas escritas. Recebimento requer stock.manage explicitamente e suas consultas; comprador não ganha aprovação/recebimento automaticamente. Guia e dependências em [Fornecedores e compras](FORNECEDORES_COMPRAS.md).

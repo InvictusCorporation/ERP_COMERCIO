@@ -103,3 +103,7 @@ Migrações 006/007 criam `audit.events` e importam fontes anteriores. FORCE RLS
 ## Produtos e estoque manual
 
 Migrações aditivas 008/009 e módulo inventory; 15 tabelas protegidas no verificador de autenticação e 12 triggers de auditoria exigidos. Nenhum papel HTTP recebe UPDATE em inventory.levels ou DELETE em movements. Regras de instalação, numeric, RLS e atualização em [Produtos e estoque](PRODUTOS_ESTOQUE.md).
+
+## Compras e recebimentos
+
+Migrações aditivas 010/011 acrescentam três tabelas purchasing em RLS forçada e três capturas de auditoria. AuthStore verifica 18 tabelas e 15 triggers. A ponte de estoque conserva o valor exato do recebimento e impede estorno manual isolado de entrada de compra. Pedidos/recibos não recebem escrita HTTP direta. Guia em [Fornecedores e compras](FORNECEDORES_COMPRAS.md).

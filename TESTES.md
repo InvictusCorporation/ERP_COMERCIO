@@ -1,5 +1,30 @@
 # Testes e evidências
 
+## Fornecedores e compras — 02.2 / 04.1 — 09/11/2026
+
+- PostgreSQL real 18.6; migrações aditivas 010/011, aplicadas também no banco local sem criar cadastros comerciais reais. Migrações 001–009 e escopo mestre original preservados. Fixtures somente em bancos separados com nomes invictus_test_*.
+- npm.cmd test: 21 testes unitários aprovados, incluindo três de validações de compras/calendário/versão e campos indevidos.
+- npm.cmd run test:integration: 130 testes aprovados no relatório Node, com agrupadores. Nova suíte contém 15 subcenários e agrupador; todas as regressões de autenticação, acessos, unidades, estoque e auditoria passaram.
+- Cadastro/versão/CNPJ único e permanente, anonimato, Origin/CSRF/Sec-Fetch-Site, filtros inválidos, inativação, pedidos e isolamento entre redes/filiais verificados.
+- Rascunho e aprovação não criam saldo. Edição após aprovação é recusada. Recebimento parcial respeita saldo e versão, conclui integralmente e repete idempotentemente a mesma confirmação; payload diferente com mesma chave falha. Confirmações concorrentes retornam um único recebimento/entrada.
+- Exemplo 100 a 3 + 100 a 4 conserva 200 unidades, valor 700 e média 3,50 sem mudar preço de venda. Frete/despesas/desconto rateados cumulativamente; recebimentos parciais conservam o valor exato até seis casas. Itens de valores 1 e 3 com frete 0,01 recebem 1,0025 e 3,0075.
+- Fator aprovado é preservado mesmo quando a embalagem do catálogo muda. A ponte do estoque usa valor total exato do recebimento, sem reconstrução por custo unitário arredondado.
+- Estorno pela compra preserva origem, cria movimentos novos e recompõe pedido/custo; estorno manual isolado da entrada é recusado. Quando um item do conjunto tem movimento posterior, falha no estorno reverte também os itens já processados. Auditoria induzida a falhar no UPDATE final do pedido reverte recibo, movimentos e saldo que já haviam sido criados.
+- Comprador restrito à filial recebe MFA obrigatório, cria rascunho local e não aprova/recebe sem as permissões. Conferente limitado recebe na filial, não administra fornecedor central e perde a escrita na próxima requisição após revogação. Papel HTTP não insere diretamente pedidos, não atualiza recibos ou apaga fornecedores.
+- Vinte e um recebimentos confirmaram paginação 20/1. Unidade inativa bloqueia operação/consulta sem excluir histórico. Renomear fornecedor não reescreve snapshot de compra. Custos crescentes geram aviso/sugestão com preço vigente preservado.
+- Primeiro banco real detectou colisão da variável id na captura de auditoria; migração 011 corrigiu a função, preservando 010 já aplicada. Suíte repetida com sucesso.
+
+- npm.cmd run test:e2e: 62 cenários aprovados na rodada completa final, com 51 regressões e 11 cenários novos de fornecedores/compras. Cadastro/edição, ciclo de compra na tela, parcial/integral, cancelamento, estorno, conexão, permissões e aviso de margem com preço preservado validados.
+- Itens de compra na auditoria exibem nome, quantidade, fator, custo e valores de forma legível. Consulta de detalhe com fonte de compras verificada no navegador.
+- Capturas em 360/390/768/1440 px revisadas em .local/qa/fornecedores-*.png, compras-*.png e compras-recebimento-*.png. Sem overflow da página e somente dados fictícios. Menu/cabeçalho preto, cartões e ações douradas e editor lateral/empilhado preservados.
+- Uma rodada intermediária durante atualização do ambiente apresentou atrasos de navegação e resposta da API anterior sem o campo de avisos. O cliente passou a tolerar avisos ausentes; a rodada final repetiu integralmente login, MFA, contexto/unidade e compras com sucesso. Avisos de stream cancelado em navegações no dev server continuam possíveis; não equivalem a homologação de produção.
+- npm.cmd run build e npm.cmd run typecheck: aprovados em contratos, API e web. /fornecedores e /compras são páginas privadas dinâmicas. next-env normal gerado sem caminho do cache de E2E.
+
+- Conferência final aprovada: nenhum segredo real no diff preparado ou JavaScript público; nenhum .env, banco, cache, dependência, captura ou resultado privado versionado. Links locais válidos, escopo idêntico ao anexo, migrações anteriores preservadas e git diff --cached --check aprovado. Serviços de QA encerrados com dados do PostgreSQL preservados.
+
+Guia e limitações em [Fornecedores e compras](docs/FORNECEDORES_COMPRAS.md).
+
+
 ## Produtos e estoque manual — 02.1 / 03.1 — 09/11/2026
 
 - PostgreSQL real 18.6, migrações aditivas 008/009 com checksum; migrações 001–007 preservadas e escopo original idêntico ao anexo. Banco de desenvolvimento atualizado sem criar cadastros reais; dados fictícios somente em bancos de teste separados.

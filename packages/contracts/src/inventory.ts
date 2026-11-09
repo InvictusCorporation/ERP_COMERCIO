@@ -60,6 +60,7 @@ export type InventoryPage = {
   summary: { products: number; value: string; low: number; empty: number };
 };
 export type StockMovement = {
+  purchaseReceiptId?: string | null;
   id: string;
   kind: MovementKind;
   quantity: string;

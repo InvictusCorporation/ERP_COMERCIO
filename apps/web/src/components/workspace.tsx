@@ -116,7 +116,13 @@ export function Workspace({
 }: {
   initialSession: AuthSession;
   children?: React.ReactNode;
-  section?: "access" | "organizations" | "audit" | "inventory";
+  section?:
+    | "access"
+    | "organizations"
+    | "audit"
+    | "inventory"
+    | "suppliers"
+    | "purchases";
 }) {
   const router = useRouter();
   const [session, setSession] = useState(initialSession);
@@ -297,21 +303,29 @@ export function Workspace({
   }, [menuOpen]);
 
   const sectionTitle =
-    section === "inventory"
-      ? "Produtos e estoque"
-      : section === "audit"
-        ? "Auditoria e histórico"
-        : section === "organizations"
-          ? "Empresas e unidades"
-          : "Usuários e permissões";
+    section === "suppliers"
+      ? "Fornecedores"
+      : section === "purchases"
+        ? "Compras e recebimentos"
+        : section === "inventory"
+          ? "Produtos e estoque"
+          : section === "audit"
+            ? "Auditoria e histórico"
+            : section === "organizations"
+              ? "Empresas e unidades"
+              : "Usuários e permissões";
   const SectionIcon =
-    section === "inventory"
-      ? Package
-      : section === "audit"
-        ? ClipboardList
-        : section === "organizations"
-          ? Building2
-          : Users;
+    section === "suppliers"
+      ? Truck
+      : section === "purchases"
+        ? ShoppingBag
+        : section === "inventory"
+          ? Package
+          : section === "audit"
+            ? ClipboardList
+            : section === "organizations"
+              ? Building2
+              : Users;
   const title = children
     ? sectionTitle
     : view === "dashboard"
@@ -393,8 +407,46 @@ export function Workspace({
               <span>Produtos e estoque</span>
             </Link>
           )}
+          {session.permissions.includes("suppliers.read") && (
+            <Link
+              href="/fornecedores"
+              className={
+                "nav-item " +
+                (children && section === "suppliers" ? "active" : "")
+              }
+              aria-current={
+                children && section === "suppliers" ? "page" : undefined
+              }
+              onClick={() => setMenuOpen(false)}
+            >
+              <Truck size={19} />
+              <span>Fornecedores</span>
+            </Link>
+          )}
+          {session.permissions.includes("purchases.read") && (
+            <Link
+              href="/compras"
+              className={
+                "nav-item " +
+                (children && section === "purchases" ? "active" : "")
+              }
+              aria-current={
+                children && section === "purchases" ? "page" : undefined
+              }
+              onClick={() => setMenuOpen(false)}
+            >
+              <ShoppingBag size={19} />
+              <span>Compras</span>
+            </Link>
+          )}
           {modules
-            .filter(([label]) => label !== "Produtos" && label !== "Estoque")
+            .filter(
+              ([label]) =>
+                label !== "Produtos" &&
+                label !== "Estoque" &&
+                label !== "Compras" &&
+                label !== "Fornecedores",
+            )
             .map(([label, Icon]) => (
               <button
                 key={label}
@@ -567,13 +619,17 @@ export function Workspace({
               </h1>
               <p>
                 {children
-                  ? section === "inventory"
-                    ? "Cadastro, saldos, custos e movimentações por unidade."
-                    : section === "audit"
-                      ? "Acompanhe quem alterou, quando e o que mudou, com acesso ao histórico autorizado."
-                      : section === "organizations"
-                        ? "Matriz, filiais e depósitos conectados em uma só gestão."
-                        : "Gerencie sua equipe e os acessos à empresa selecionada."
+                  ? section === "suppliers"
+                    ? "Parceiros, contatos e condições de abastecimento."
+                    : section === "purchases"
+                      ? "Planeje, aprove e confira as compras da sua unidade."
+                      : section === "inventory"
+                        ? "Cadastro, saldos, custos e movimentações por unidade."
+                        : section === "audit"
+                          ? "Acompanhe quem alterou, quando e o que mudou, com acesso ao histórico autorizado."
+                          : section === "organizations"
+                            ? "Matriz, filiais e depósitos conectados em uma só gestão."
+                            : "Gerencie sua equipe e os acessos à empresa selecionada."
                   : view === "dashboard"
                     ? "Visão geral do seu negócio em tempo real"
                     : "Acompanhe a construção de uma gestão segura e integrada."}

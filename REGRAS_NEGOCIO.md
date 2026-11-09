@@ -1,5 +1,9 @@
 # Regras de negócio
 
+## Fornecedores e compras — 02.2 / 04.1
+
+Fornecedor central com CNPJ permanente e versão. Pedido/quantidade aprovada não é saldo disponível. Somente recebimento conferido cria entrada, com custo/fator preservados e rateio cumulativo de frete, despesas e desconto. Parcial não recebe além do saldo. Pedido, recibo, estoque e auditoria confirmam ou falham juntos. Estorno exige preservar a cadeia do estoque, sem apagar a origem. Margem gera sugestão e exige aprovação manual do preço. Regras e limites em [Fornecedores e compras](docs/FORNECEDORES_COMPRAS.md).
+
 ## Produtos e estoque manual — 02.1 / 03.1
 
 Implementadas as regras de catálogo e versão, embalagem única convertida, custo médio móvel, físico/reservado/disponível, limites por filial, alertas na igualdade, saída sem negativo e estorno do último movimento original. Cada confirmação é idempotente e atômica com a auditoria. Sem alteração automática de preço. Sem lote/validade, trânsito ou baixa de venda nesta entrega. Regras exatas em [Produtos e estoque](docs/PRODUTOS_ESTOQUE.md).

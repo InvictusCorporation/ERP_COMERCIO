@@ -93,3 +93,7 @@ A configuração foi preparada e teve sintaxe conferida; não foi executada no G
 ## Fontes de produtos e estoque
 
 Incrementos 02.1/03.1 acrescentam categorias products e inventory: cadastro/preço/inativação do produto, limites da unidade e movimentos confirmados. Produto central é evento global da rede; estoquista/auditor restrito recebe somente eventos com unidade atribuída conforme audit.read. Movimentos preservam deltas, fator e saldos após confirmação, com responsável e correlação. Captura é atômica e não altera eventos anteriores. Guia em [Produtos e estoque](PRODUTOS_ESTOQUE.md).
+
+## Fornecedores e compras
+
+Categorias suppliers e purchases capturam cadastro/inativação, rascunho, aprovação, cancelamento, recebimento e estorno com snapshots permitidos. Eventos de pedido/recebimento têm unidade, responsável e correlação com as entradas de estoque; fornecedor central exige escopo global na auditoria. Falha posterior aos movimentos reverte o recebimento inteiro. Guia em [Fornecedores e compras](FORNECEDORES_COMPRAS.md).

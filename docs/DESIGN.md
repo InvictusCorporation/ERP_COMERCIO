@@ -50,3 +50,7 @@ Quatro indicadores escuros, lista clara com destaque dourado e painel lateral de
 ## Produtos e estoque — 02.1 / 03.1
 
 Quarta imagem como referência principal: cartões pretos/dourados, listagem com busca e destaque do produto, cabeçalho preto no editor lateral e abas Dados/Estoque/Histórico. No celular, editor abaixo da lista, dois indicadores por linha e campos em duas colunas. Ícones vetoriais representam produtos enquanto foto/upload aguarda incremento próprio; não foram inventadas fotos reais. Capturas usam exclusivamente cinco produtos fictícios em rede de teste.
+
+## Fornecedores e compras — 02.2 / 04.1
+
+Lista clara e editor lateral com cabeçalho preto, métricas escuras e ícones/ações douradas. Fornecedores têm contatos/condições e pedidos recentes; compras usam abas Pedido, Receber e Histórico. No celular, campos/editor empilham, métricas em duas colunas e tabelas ficam contidas. Capturas usam quatro fornecedores e pedidos fictícios em redes de teste isoladas.

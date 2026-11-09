@@ -1,5 +1,9 @@
 # Arquitetura proposta
 
+## Compras — 02.2 / 04.1
+
+Módulo purchasing com fornecedores, pedidos e recebimentos em RLS forçada. Funções de domínio restritas executam transições, congelam snapshots e confirmam a ponte para o ledger de estoque. HTTP não escreve diretamente em pedidos/recibos. Valores cumulativos numeric e transporte decimal textual, locks/versão e chaves idempotentes. Captura transacional na auditoria; verificador exige 18 tabelas e 15 triggers. Guia em [Fornecedores e compras](docs/FORNECEDORES_COMPRAS.md).
+
 ## Incrementos comerciais 02.1 / 03.1
 
 Módulo inventory (API e contratos compartilhados), cinco tabelas com RLS forçada, índices de identidade de barras e saldo derivado por tenant/unidade/produto. Triggers restritos confirmam movimento e capturam auditoria na mesma transação. PostgreSQL numeric e transporte decimal textual; versão otimista do produto e confirmação idempotente. UI cliente usa API privada com sessão/CSRF existentes. Matriz de acesso, limitações e fluxos em [Produtos e estoque](docs/PRODUTOS_ESTOQUE.md).

@@ -1,5 +1,9 @@
 # Módulos e dependências
 
+## Incrementos 02.2 / 04.1 — fornecedores e ciclo manual de compra
+
+Cadastro de fornecedores, pedidos por unidade, aprovação, recebimento parcial/integral com rateio/custo médio, estorno vinculado e auditoria. Escritas com MFA; comprador, aprovador e conferente têm autorizações separadas. Não concluir a etapa 04 completa: cotações, comparação agregada, XML fiscal, devoluções e financeiro seguem pendentes. Guia em [Fornecedores e compras](docs/FORNECEDORES_COMPRAS.md).
+
 ## Incrementos 02.1 / 03.1 — disponíveis localmente
 
 A pedido do usuário, catálogo básico e controle manual de estoque avançam juntos sobre a fundação: produtos, conversão de uma embalagem, custos, saldos, movimentos, reservas, perdas, estorno e limites por unidade. Não concluir as etapas completas 02/03: fornecedores, fiscal/fotos de produto, inventário aprovado e demais integrações seguem pendentes. Guia em [Produtos e estoque](docs/PRODUTOS_ESTOQUE.md).

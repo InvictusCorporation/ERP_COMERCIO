@@ -4,7 +4,7 @@ Plataforma modular da Invictus Systems para comércio, estivas, mercados e redes
 
 ## Estado atual — 09/11/2026
 
-Incrementos 02.1 / 03.1: cadastro básico de produtos e controle manual de estoque por filial/depósito, integrados a permissões e auditoria. Custo médio, embalagem, reservas, limites e estorno persistentes. Telas responsivas seguem as fotos Invictus. O dashboard consolidado ainda não consome o novo módulo.
+Incrementos 02.2 / 04.1: fornecedores e compras por unidade, com rascunho, aprovação e recebimento parcial/integral vinculado ao estoque. Custos rateados, idempotência, estorno, alertas de margem e auditoria, sobre os produtos e saldos anteriores. Telas responsivas seguem as fotos Invictus. O dashboard consolidado ainda não consome o novo módulo.
 
 Histórico em `/auditoria`; estrutura da rede em `/empresas`; equipe e acessos em `/usuarios` e `/permissoes`. Administração global exige escopo de toda a rede; operadores podem ficar limitados às filiais/depósitos selecionados. Produtos e estoque manual disponíveis em /produtos e /estoque. Os demais módulos e complementos avançados seguem nas próximas etapas. Não foram criadas contas reais automaticamente; o primeiro administrador é cadastrado por comando interativo local e deve configurar MFA. O envio externo de recuperação depende de configurar e homologar SMTP. A fundação funcional está validada localmente; CI remota e homologação de produção continuam pendentes.
 
@@ -19,6 +19,8 @@ Guia de cadastro e acesso por filial: [Empresas e unidades](docs/EMPRESAS_UNIDAD
 Guia do histórico e controles: [Auditoria](docs/AUDITORIA.md). CI preparada em `.github/workflows/ci.yml`, sem execução remota ou publicação nesta entrega.
 
 Guia de operação, regras e limites: [Produtos e estoque](docs/PRODUTOS_ESTOQUE.md).
+
+Guia de fornecedores e recebimentos: [Fornecedores e compras](docs/FORNECEDORES_COMPRAS.md). Rotas /fornecedores e /compras. XML fiscal, cotações e contas a pagar permanecem previstos em próximos incrementos.
 
 ## Documentação
 

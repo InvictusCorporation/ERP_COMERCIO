@@ -1,5 +1,15 @@
 # Aprendizados e decisões reutilizáveis
 
+## Fornecedores e compras
+
+- Quantidade pedida, conferida e disponível são estados distintos: somente a conferência confirmada vira estoque.
+- Rateio cumulativo evita sobra e linhas negativas por arredondamento; recebimento parcial precisa usar diferença do valor acumulado, não repetir arredondamentos independentes.
+- Quantidade-base vezes custo unitário arredondado pode perder frações: a ponte do recebimento deve preservar o total exato aprovado.
+- Estornar estoque isoladamente quebra o vínculo de compras; o fluxo de origem deve confirmar o conjunto ou reverter tudo.
+- Funções trigger com variáveis genéricas como id podem colidir com colunas. A falha foi detectada em banco real e corrigida por nova migração, sem editar a aplicada.
+- Busca de opções não pode apagar os nomes/fatores dos itens já selecionados. Avisos de margem devem ser limpos junto à seleção ao revalidar acesso.
+- Capturas fullPage de telas com cabeçalho/menu fixo precisam cancelar a rolagem programática e confirmar o topo após renderizar, evitando artefato de posicionamento.
+
 ## Produtos e estoque
 
 - Saldo deve ser projeção do ledger, atualizado apenas pela confirmação transacional; o HTTP não precisa de UPDATE na tabela de saldos.

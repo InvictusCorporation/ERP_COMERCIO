@@ -1,5 +1,11 @@
 # Pendências
 
+## Incrementos 02.2 / 04.1
+
+Entregues fornecedores e ciclo manual de compras: rascunho, aprovação, recebimento parcial/integral, custo rateado, entrada de estoque vinculada, estorno, margem e auditoria. Guia em [Fornecedores e compras](docs/FORNECEDORES_COMPRAS.md).
+
+Próximos: cotação/comparação, consultas agregadas 30/60/90 dias, fornecedor principal/alternativo no produto, XML/NF-e com conferência fiscal, contas a pagar, revisão após aprovação/entregas, fechamento de saldo não entregue e devoluções. Lotes/validade continuam na etapa 08. Sem mensagens a fornecedores ou integrações externas.
+
 ## Incrementos 02.1 / 03.1
 
 Entregues catálogo básico e estoque manual por unidade, com custos, reservas, limites, estornos e auditoria. Ver [Produtos e estoque](docs/PRODUTOS_ESTOQUE.md). Etapas 02 e 03 completas permanecem em evolução.
@@ -8,7 +14,7 @@ Próximos complementos: foto, fornecedores e dados fiscais de produto; compras/r
 
 ## Próximos passos
 
-- Próximo avanço: complementar o cadastro comercial e integrar fornecedores/compras ao estoque manual já disponível.
+- Próximo avanço: complementar compras (cotação/XML/devoluções conforme dependências) e preparar a integração financeira, seguindo o escopo.
 - CI está preparada, mas sua execução no GitHub/Linux depende de publicação/autorização e permanece sem evidência remota.
 - Antes de produção: SMTP real, recuperação de fator perdido, infraestrutura/HTTPS, backup/restauração e política definitiva de retenção/arquivamento do histórico.
 

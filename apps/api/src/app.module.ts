@@ -1,3 +1,5 @@
+import { PurchasingService } from "./modules/purchasing/purchasing.service";
+import { PurchasingController } from "./modules/purchasing/purchasing.controller";
 import { InventoryService } from "./modules/inventory/inventory.service";
 import { InventoryController } from "./modules/inventory/inventory.controller";
 import { Module, type DynamicModule } from "@nestjs/common";
@@ -36,6 +38,7 @@ export class AppModule {
               OrganizationsController,
               AuditController,
               InventoryController,
+              PurchasingController,
             ]
           : []),
       ],
@@ -46,6 +49,11 @@ export class AppModule {
         },
         ...(authConfig
           ? [
+              {
+                provide: PurchasingService,
+                useFactory: (auth: AuthService) => new PurchasingService(auth),
+                inject: [AuthService],
+              },
               {
                 provide: InventoryService,
                 useFactory: (auth: AuthService) => new InventoryService(auth),

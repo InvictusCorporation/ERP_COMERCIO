@@ -42,6 +42,12 @@ const systemRoles: [string, Permission[]][] = [
       "products.manage",
       "stock.read",
       "stock.manage",
+      "suppliers.read",
+      "suppliers.manage",
+      "purchases.read",
+      "purchases.manage",
+      "purchases.approve",
+      "purchases.receive",
     ],
   ],
   ["Gerente", ["users.read", "organizations.read"]],
@@ -61,7 +67,11 @@ const sensitive = (p: Permission[]) =>
   p.includes("organizations.manage") ||
   p.includes("audit.read") ||
   p.includes("products.manage") ||
-  p.includes("stock.manage");
+  p.includes("stock.manage") ||
+  p.includes("suppliers.manage") ||
+  p.includes("purchases.manage") ||
+  p.includes("purchases.approve") ||
+  p.includes("purchases.receive");
 export class AccessService {
   constructor(private readonly auth: AuthService) {}
   private require(ctx: Context, p: Permission) {
@@ -340,6 +350,26 @@ export class AccessService {
           "Permissões não autorizadas para este perfil.",
         );
       await this.roles(c, ctx.tenantId);
+      if (
+        (permissions.includes("suppliers.manage") &&
+          !permissions.includes("suppliers.read")) ||
+        (permissions.includes("purchases.read") &&
+          (!permissions.includes("suppliers.read") ||
+            !permissions.includes("products.read"))) ||
+        (permissions.some((p) =>
+          [
+            "purchases.manage",
+            "purchases.approve",
+            "purchases.receive",
+          ].includes(p),
+        ) &&
+          !permissions.includes("purchases.read")) ||
+        (permissions.includes("purchases.receive") &&
+          !permissions.includes("stock.manage"))
+      )
+        throw new BadRequestException(
+          "Inclua as consultas de fornecedores, produtos e compras e, para recebimento, a movimentação de estoque.",
+        );
       if (
         (permissions.includes("products.manage") &&
           !permissions.includes("products.read")) ||

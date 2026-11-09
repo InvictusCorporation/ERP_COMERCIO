@@ -1002,12 +1002,21 @@ export function InventoryPanel({ session }: { session: AuthSession }) {
                           {qty(m.reservedAfter)}
                         </p>
                         <p>{m.reason}</p>
+                        {m.purchaseReceiptId && (
+                          <p>
+                            <Link href="/compras">
+                              Origem: recebimento de compra. Consulte ou estorne
+                              pelo pedido.
+                            </Link>
+                          </p>
+                        )}
                         <small>
                           Responsável: {m.actorName} · Horário de Fortaleza
                         </small>
                         {index === 0 &&
                           detail.movementPage === 0 &&
                           m.kind !== "reverse" &&
+                          !m.purchaseReceiptId &&
                           data?.canManageStock &&
                           form.active && (
                             <form onSubmit={(e) => void movement(e, m.id)}>

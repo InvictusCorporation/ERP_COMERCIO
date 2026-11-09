@@ -1,4 +1,6 @@
 export const AUDIT_CATEGORIES = {
+  suppliers: "Fornecedores",
+  purchases: "Compras",
   products: "Produtos",
   inventory: "Estoque",
   organizations: "Empresas e unidades",
@@ -10,6 +12,12 @@ export const AUDIT_CATEGORIES = {
 } as const;
 export type AuditCategory = keyof typeof AUDIT_CATEGORIES;
 export const AUDIT_ACTIONS: Record<string, string> = {
+  "supplier.created": "Fornecedor cadastrado",
+  "supplier.changed": "Fornecedor alterado",
+  "purchase.created": "Pedido de compra criado",
+  "purchase.changed": "Pedido de compra alterado",
+  "receipt.created": "Compra recebida",
+  "receipt.changed": "Recebimento estornado",
   "product.created": "Produto cadastrado",
   "product.changed": "Produto alterado",
   "stock.created": "Estoque movimentado",
@@ -46,6 +54,26 @@ export const AUDIT_ACTIONS: Record<string, string> = {
   "context.changed": "Contexto de acesso atualizado",
 };
 export const AUDIT_FIELDS: Record<string, string> = {
+  contact_name: "Contato",
+  delivery_days: "Prazo de entrega (dias)",
+  payment_terms: "Condições de pagamento",
+  notes: "Observações",
+  number: "Pedido",
+  supplier_snapshot: "Fornecedor na compra",
+  items: "Itens e quantidades",
+  status: "Situação",
+  freight: "Frete",
+  extra_cost: "Despesas adicionais",
+  discount: "Desconto",
+  total: "Total em custo",
+  expected_date: "Previsão",
+  cancel_reason: "Motivo do cancelamento",
+  approved_by: "Aprovado por",
+  approved_at: "Aprovado em",
+  document: "Referência do recebimento",
+  reversal_reason: "Motivo do estorno",
+  reversed_by: "Estornado por",
+  reversed_at: "Estornado em",
   description: "Descrição",
   category: "Categoria",
   brand: "Marca",

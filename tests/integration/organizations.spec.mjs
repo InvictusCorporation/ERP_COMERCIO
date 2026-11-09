@@ -632,6 +632,11 @@ test(
               "products.read",
               "stock.read",
               "stock.manage",
+              "suppliers.read",
+              "purchases.read",
+              "purchases.manage",
+              "purchases.approve",
+              "purchases.receive",
             ],
           );
         },
