@@ -1,5 +1,7 @@
 # Banco de dados e isolamento — Entrega 01.2
 
+Atualização 01.3: autenticação acrescenta o papel `invictus_auth`, tabelas privadas de credenciais/sessões/recuperação, eventos iniciais e outbox cifrada. O guia [Autenticação](AUTENTICACAO.md) descreve essa extensão; o isolamento comercial abaixo continua válido.
+
 ## Execução local
 
 No Windows x64, o projeto inclui binários opcionais de PostgreSQL 18.6 pelo pacote `@embedded-postgres/windows-x64@18.6.0-beta.19`. São ferramentas de desenvolvimento, sem instalação de serviço no Windows. O banco é executado apenas em `127.0.0.1`, no diretório ignorado `.local/postgres`, com autenticação SCRAM.
@@ -38,6 +40,7 @@ Em ambientes com Docker, a alternativa é `npm.cmd run db:up`, seguida de `npm.c
 | `invictus_bootstrap` | Preparação local de banco e papéis, fixtures de testes | Privilegiado; não utilizado pela API |
 | `invictus_migrator` | DDL e migrações versionadas | Dono dos schemas; sem login de operador ou rota HTTP |
 | `invictus_app` | Execução da API | Sem superusuário, BYPASSRLS, herança, associação a outros papéis, propriedade do banco/tabelas ou permissões DDL |
+| `invictus_auth` | Identidade, sessões, MFA e recuperação (01.3) | Sem escrita comercial, privilégios administrativos, herança ou propriedade de tabelas/banco |
 
 O bootstrap não troca senha de papel existente nem muda proprietário de banco existente. Se as credenciais privadas forem removidas ou divergirem, corrigir explicitamente a configuração; o script não redefine credenciais nem apaga o cluster.
 
@@ -61,7 +64,7 @@ Antes de operar, a API também exige as três tabelas com RLS forçado e as fun�
 
 A função de acesso à identidade global é somente booleana, sem parâmetros arbitrários, com nomes de objetos qualificados e `search_path` fixo. As demais consultas são parametrizadas.
 
-O contexto é uma fronteira interna de confiança: deverá vir da sessão autenticada, nunca de IDs HTTP aceitos livremente. RLS não substitui prevenção de SQL injection, autenticação ou permissões por ação. O repositório de tenancy permanece sem controller HTTP até implementar esses controles. Matrizes, filiais e depósitos pertencem ao incremento 01.5; não foram implementados aqui.
+O contexto é uma fronteira interna de confiança: em 01.3 a seleção de empresa passou a derivar da sessão verificada, nunca de identidade HTTP aceita livremente. RLS não substitui prevenção de SQL injection ou permissões por ação. O repositório de tenancy permanece sem controller de negócio até implementar autorização em 01.4. Matrizes, filiais e depósitos pertencem ao incremento 01.5.
 
 ## Migrações e testes
 

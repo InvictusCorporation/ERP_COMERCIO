@@ -1,6 +1,6 @@
 # Arquitetura proposta
 
-Status: bootstrap (01.1) e persistência/isolamento da fundação (01.2) implementados e testados localmente. Autenticação, gestão de usuários, unidades e auditoria continuam planejadas. Data: 09/11/2026.
+Status: bootstrap (01.1), persistência/isolamento (01.2) e autenticação/sessões/recuperação (01.3) implementados e testados localmente. Gestão de usuários/permissões, unidades e auditoria comercial continuam planejadas. SMTP real ainda depende de configuração e homologação. Data: 09/11/2026.
 
 ## Ambiente observado
 
@@ -33,11 +33,13 @@ Monólito modular com web e API separadas no mesmo workspace npm. Uma API centra
 
 Versões do bootstrap: Next.js 16.4.5, React/React DOM 19.3.1, NestJS 12.4.2, pg 8.23.1, TypeScript 5.9.3, Playwright 1.65.0 e Lucide React 1.70.0. Dependências exatas e árvore resolvida estão no `package-lock.json`. A instalação inicial reportou zero vulnerabilidades conhecidas naquele momento; isso não substitui revisão de segurança.
 
-O runtime local é Node 26.13.0; produção deve selecionar uma linha suportada e repetir validação. Bibliotecas de sessão, senha, validação de domínio e MFA serão escolhidas nos incrementos correspondentes. Contratos iniciais são apenas tipos de health checks, não validação de entrada comercial.
+O runtime local é Node 26.13.0; produção deve selecionar uma linha suportada e repetir validação. Autenticação usa Argon2 0.45.2, OTPAuth 9.6.0, QRCode 1.5.4 e Nodemailer 10.4.0, com versões fixadas no lockfile. Contratos incluem health e sessão; os corpos HTTP de identidade têm validação explícita e limite de tamanho. Validação de domínio comercial permanece nos próximos módulos.
 
 O Next.js usa webpack explicitamente no ambiente Windows. O `.env` da raiz é lido pelo orquestrador, que sanitiza o ambiente entregue aos processos. A configuração do Next seleciona apenas a origem da API, sem carregar os segredos em `process.env` e sem propagar `--env-file` via argumentos do processo web. O teste inicial com essa flag no processo Next falhou porque ela era repassada para `NODE_OPTIONS`; a inicialização foi corrigida.
 
-API HTTP implementada apenas com health checks, configuração validada, loopback por padrão, timeout de banco, shutdown e cabeçalhos básicos. No incremento 01.2 foram adicionados PostgreSQL 18.6 portátil, migrações SQL, identidades mínimas, tenants, vínculos e configurações isoladas. `TenantDatabase` controla o contexto transacional e `TenancyRepository` permanece interno, sem controller público antes da autenticação.
+API HTTP com health checks e módulo de identidade. O incremento 01.3 adiciona credenciais, sessões opacas, MFA, recuperação, limites persistentes e outbox cifrada por migração incremental. `AuthStore` usa `invictus_auth`, distinto de `invictus_app`; o papel comercial continua sem acesso às credenciais. Páginas privadas validam a sessão no servidor. `TenantDatabase` controla contexto transacional e `TenancyRepository` permanece interno até autorização por ação em 01.4.
+
+Senhas usam Argon2id; tokens de sessão/recuperação só têm hash no banco. Segredos MFA e payload de e-mail usam AES-256-GCM com chave privada fora do Git. O SMTP tem worker de reentrega e TLS, mas sua homologação real depende do provedor. Regras, comandos, duração de sessões e limites em [Autenticação](docs/AUTENTICACAO.md).
 
 O papel restrito da API é distinto do bootstrap e do migrador. Readiness e execução recusam privilégios administrativos, herança/associação de papéis, propriedade do banco/tabelas e esquema com RLS incompleto. O orquestrador lê a URL restrita de `.env.database`; não altera `.env`. Infraestrutura local, limites e procedimentos em [Banco de dados](docs/BANCO_DADOS.md). Compose é alternativa ainda não executada nesta máquina.
 

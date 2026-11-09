@@ -1,6 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { authRequest } from "../lib/auth-client";
 import {
   ArrowRight,
   ArrowDownToLine,
@@ -35,7 +38,11 @@ import {
   Zap,
   type LucideIcon,
 } from "lucide-react";
-import type { LivenessResponse, ReadinessResponse } from "@invictus/contracts";
+import type {
+  LivenessResponse,
+  ReadinessResponse,
+  AuthSession,
+} from "@invictus/contracts";
 
 type View = "dashboard" | "foundation" | "settings";
 type Health = { api: boolean; database: boolean; checked: boolean };
@@ -69,13 +76,13 @@ const steps = [
     title: "Autenticação e acesso",
     description: "Login, sessões e recuperação de acesso.",
     icon: ShieldCheck,
-    status: "Próximo incremento",
+    status: "Disponível nesta versão",
   },
   {
     title: "Usuários e permissões",
     description: "Perfis de acesso e escopo por unidade.",
     icon: Users,
-    status: "Planejado",
+    status: "Próximo incremento",
   },
   {
     title: "Matriz, filiais e depósitos",
@@ -103,7 +110,62 @@ function Brand() {
   );
 }
 
-export function Workspace() {
+export function Workspace({ initialSession }: { initialSession: AuthSession }) {
+  const router = useRouter();
+  const [session, setSession] = useState(initialSession);
+  const [sessionError, setSessionError] = useState("");
+  useEffect(() => {
+    setSession(initialSession);
+  }, [initialSession]);
+  useEffect(() => {
+    let cancelled = false;
+    async function check() {
+      if (document.visibilityState === "hidden") return;
+      try {
+        const response = await fetch("/api/v1/auth/session", {
+          cache: "no-store",
+          signal: AbortSignal.timeout(5000),
+        });
+        if (cancelled) return;
+        if (response.status === 401) {
+          router.replace("/login");
+          router.refresh();
+          return;
+        }
+        if (response.ok) {
+          const current = (await response.json()) as AuthSession;
+          if (current.stage !== "authenticated") {
+            router.replace("/verificar-acesso");
+            return;
+          }
+          setSession(current);
+          setSessionError("");
+        }
+      } catch {
+        /* Falha temporária de conexão não encerra a sessão localmente. */
+      }
+    }
+    const timer = setInterval(() => void check(), 60000);
+    window.addEventListener("focus", check);
+    return () => {
+      cancelled = true;
+      clearInterval(timer);
+      window.removeEventListener("focus", check);
+    };
+  }, [router]);
+  async function selectTenant(id: string) {
+    setSessionError("");
+    try {
+      setSession(await authRequest("context", { tenantId: id }, session.csrf));
+      router.refresh();
+    } catch (error) {
+      setSessionError(
+        error instanceof Error
+          ? error.message
+          : "Não foi possível selecionar a empresa.",
+      );
+    }
+  }
   const [view, setView] = useState<View>("dashboard");
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -181,8 +243,8 @@ export function Workspace() {
     if (!menuOpen) return;
     const focusable = () =>
       Array.from(
-        sidebar.current?.querySelectorAll<HTMLButtonElement>(
-          "button:not(:disabled)",
+        sidebar.current?.querySelectorAll<HTMLElement>(
+          "button:not(:disabled),a[href]",
         ) || [],
       ).filter((button) => button.getClientRects().length > 0);
     focusable()[0]?.focus();
@@ -277,6 +339,14 @@ export function Workspace() {
           </button>
         </nav>
         <div className="sidebar-bottom">
+          <Link
+            className="nav-item"
+            href="/seguranca"
+            style={{ textDecoration: "none" }}
+          >
+            <ShieldCheck size={19} />
+            Acesso e segurança
+          </Link>
           <button
             className={`nav-item ${view === "settings" ? "active" : ""}`}
             aria-current={view === "settings" ? "page" : undefined}
@@ -314,8 +384,22 @@ export function Workspace() {
           <div className="context-controls">
             <label className="context-select">
               <Store size={17} />
-              <select aria-label="Empresa" disabled>
-                <option>Nenhuma empresa cadastrada</option>
+              <select
+                aria-label="Empresa"
+                value={session.activeTenantId || ""}
+                disabled={!session.tenants.length}
+                onChange={(event) => void selectTenant(event.target.value)}
+              >
+                <option value="" disabled>
+                  {session.tenants.length
+                    ? "Selecionar empresa"
+                    : "Nenhuma empresa disponível"}
+                </option>
+                {session.tenants.map((tenant) => (
+                  <option key={tenant.id} value={tenant.id}>
+                    {tenant.name}
+                  </option>
+                ))}
               </select>
               <ChevronDown size={14} />
             </label>
@@ -335,12 +419,14 @@ export function Workspace() {
           >
             <CircleHelp size={21} />
           </button>
-          <span
+          <Link
+            href="/seguranca"
+            aria-label="Acesso e segurança"
             className="avatar"
-            title="Ambiente local, sem usuário autenticado"
+            title={session.user.name}
           >
             <ShieldCheck size={20} />
-          </span>
+          </Link>
         </header>
 
         <main id="main" tabIndex={-1}>
@@ -391,6 +477,11 @@ export function Workspace() {
             </button>
           </div>
 
+          {sessionError && (
+            <p className="auth-error" role="alert">
+              {sessionError}
+            </p>
+          )}
           {view === "dashboard" && (
             <>
               <section className="metrics" aria-label="Indicadores comerciais">
@@ -628,7 +719,7 @@ export function Workspace() {
                 {steps.map((step, i) => (
                   <article
                     key={step.title}
-                    className={i < 2 ? "current-step" : ""}
+                    className={i < 3 ? "current-step" : ""}
                   >
                     <span className="foundation-icon">
                       <step.icon size={24} />
@@ -638,7 +729,7 @@ export function Workspace() {
                       <h3>{step.title}</h3>
                       <p>{step.description}</p>
                     </div>
-                    <span className={`step-status ${i < 2 ? "available" : ""}`}>
+                    <span className={`step-status ${i < 3 ? "available" : ""}`}>
                       {step.status}
                     </span>
                   </article>

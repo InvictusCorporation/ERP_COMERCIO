@@ -1,5 +1,20 @@
 # Testes e evidências
 
+## Entrega 01.3 — 09/11/2026
+
+- `npm.cmd test`: 11 testes aprovados de configuração, health, Argon2id, cifra autenticada, CSRF e cookie Secure de produção.
+- `npm.cmd run test:integration`: 34 testes aprovados em PostgreSQL real 18.6, incluindo isolamento multiempresa, identidade e senha Unicode.
+- Autenticação validada: credenciais incorretas/ausentes/inativas indistinguíveis, cookies HttpOnly, hash sem senha/token em claro, rotação, CSRF/Origin, corpos adulterados, JSON inválido/excessivo sem reflexão de conteúdo, contexto de empresa autorizado e revogação de sessões.
+- Expiração absoluta, inatividade, desativação, MFA obrigatório/optativo, QR, cifragem do segredo e rejeição de código repetido aprovados.
+- Recuperação validada com entrega controlada de mensagens fictícias: resposta genérica, token não retornado por HTTP, fila cifrada, validade, uso único, duas confirmações concorrentes, encerramento de sessões e preservação de MFA.
+- Papéis de banco não permitem leitura de credenciais pela conta comercial nem atualização/remoção de eventos pela conta de identidade.
+- `npm.cmd run test:e2e`: 18 cenários aprovados integralmente, incluindo login real, redirecionamento, HttpOnly, logout individual/global, recuperação, MFA, falha de conexão, sessões no celular com e-mail longo e larguras 360/390/768/1440 px.
+- Capturas de login desktop/mobile revisadas em `.local/qa/login-desktop.png` e `.local/qa/login-mobile.png`. Erros de captura durante hidratação foram isolados do aplicativo; a captura final confirmou interatividade e ausência de erro de página.
+- Captura adicional de segurança no celular em `.local/qa/seguranca-mobile.png`.
+- `npm.cmd run typecheck`: aprovado nos três workspaces. `npm.cmd run build`: aprovado em contratos, API e web, incluindo TypeScript e geração das páginas.
+
+Limites: SMTP real não configurado/homologado; nenhum e-mail externo enviado. Bootstrap e leitor local exigem interação humana no terminal, sem contas reais criadas pelo agente. Recuperação de fator MFA perdido e permissões por ação continuam pendentes antes de produção. Sem implantação ou publicação no GitHub.
+
 ## Entrega 01.2 — 09/11/2026
 
 PostgreSQL real 18.6 em Windows x64, loopback 55432, persistência em `.local/postgres`. Sem Docker, mocks de SQL ou serviço instalado no Windows. Bancos de integração separados do banco vazio de desenvolvimento.

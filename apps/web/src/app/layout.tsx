@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./auth.css";
 export const metadata: Metadata = {
   title: "Invictus ERP Comercial | Visão geral",
   description:

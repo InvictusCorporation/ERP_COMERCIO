@@ -10,11 +10,12 @@ export async function provision({
   database,
   appPassword,
   migrationPassword,
+  authPassword,
   createDatabase = false,
 }) {
   if (!/^invictus_(dev|test_[a-f0-9]{16})$/.test(database))
     throw new Error("Nome de banco local não permitido.");
-  for (const value of [appPassword, migrationPassword])
+  for (const value of [appPassword, migrationPassword, authPassword])
     if (!/^[a-f0-9]{64}$/.test(value))
       throw new Error("Credencial local inválida.");
   const admin = new pg.Client({ connectionString: adminUrl });
@@ -24,6 +25,7 @@ export async function provision({
     for (const [name, password] of [
       ["invictus_migrator", migrationPassword],
       ["invictus_app", appPassword],
+      ["invictus_auth", authPassword],
     ]) {
       const existing = (
         await admin.query(
@@ -56,6 +58,9 @@ export async function provision({
     );
     await admin.query(
       `GRANT CONNECT ON DATABASE ${quote(database)} TO invictus_app`,
+    );
+    await admin.query(
+      `GRANT CONNECT ON DATABASE ${quote(database)} TO invictus_auth`,
     );
   } finally {
     await admin.query("SELECT pg_advisory_unlock(819072, 13)").catch(() => {});

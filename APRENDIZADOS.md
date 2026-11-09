@@ -1,5 +1,18 @@
 # Aprendizados e decisões reutilizáveis
 
+## Autenticação 01.3 — 09/11/2026
+
+- Identidade global exige um papel próprio; conceder leitura de credenciais ao papel comercial reduziria a separação entre autenticação e negócio.
+- Uma sessão parcial não pode ser tratada como login completo. MFA precisa rotacionar o token e condicionar o acesso ao painel/contexto.
+- Token de recuperação pode ficar em fragmento de URL, removido depois da leitura, para evitar sua inclusão no pedido HTTP e no histórico visível.
+- Enfileirar o e-mail cifrado junto ao token permite recuperação local e posterior SMTP sem armazenar link em claro nem criar endpoint de debug.
+- Senha redefinida deve invalidar sessões e preservar MFA. Travas consistentes nas credenciais e uso único do token evitam duas confirmações concorrentes.
+- O contador de tentativas deve confirmar sua transação mesmo quando o login seguinte falha; caso contrário, o rollback desfaz o limite.
+- Cookies de sessão precisam ser validados no servidor; renderizar um dashboard com seleção de usuário no cliente não cria autenticação.
+- Playwright em testes CommonJS não deve importar um helper de constantes que arraste scripts ESM com `import.meta`. Separar a credencial fictícia do runner de migrações evita esse acoplamento.
+- Caches Next reutilizados sofreram bloqueio de arquivo no Windows/OneDrive. Testes agora usam diretório exclusivo e tsconfig privado por execução, sem apagar caches ou alterar outros projetos.
+- Capturar screenshot com caret oculto antes de a página hidratar pode inserir estilo no input e provocar falso alerta de hidratação. Confirmar interatividade e usar captura sem alteração de caret.
+
 ## Persistência e isolamento 01.2 — 09/11/2026
 
 - PostgreSQL portátil permite testar RLS e transações reais no Windows sem instalar serviço ou depender de Docker. Manter binários opcionais, versão fixa, diretório identificado e escuta em loopback.
@@ -34,3 +47,5 @@
 - Imagens são orientação visual; não comprovam regras, persistência ou integrações. Não copiar seus indicadores como resultados reais.
 - Primeiro apresentar e registrar a arquitetura, conforme a ordem de execução do escopo; desenvolver incrementos verificáveis depois.
 - Disponibilidade de executável não confirma compatibilidade ou instalação completa. Registrar saídas observadas e pendências separadamente.
+
+- No runner Node, cenários independentes devem ser registrados fora do callback de outro cenário; aguardar um teste irmão dentro do teste em execução bloqueia a sequência. A regressão Unicode foi corrigida e os 34 testes de integração passaram.

@@ -1,5 +1,19 @@
 # Histórico de alterações
 
+## 09/11/2026 — Entrega 01.3: autenticação e recuperação
+
+- Criada branch `codex/fundacao-autenticacao`.
+- Adicionada migração incremental de credenciais, sessões, recuperação, MFA, limites, outbox cifrada e eventos iniciais, mantendo as migrações anteriores.
+- Separado o papel `invictus_auth` e gerada configuração privada `.env.auth`, sem senha padrão ou administrador automático.
+- Implementados Argon2id, cookies HttpOnly/SameSite, proteção CSRF/Origin, expiração, rotação e revogação individual/global.
+- Contexto de empresa e páginas privadas passaram a depender da sessão verificada; vínculos e contas inativos perdem acesso.
+- Criados login, recuperação, redefinição, MFA e acesso/segurança com visual Invictus responsivo.
+- Recuperação usa token de uso único, hash, validade e fila cifrada; redefinição revoga sessões e preserva MFA.
+- Criados bootstrap e consulta de recuperação local interativos; nenhum usuário real foi criado e nenhum e-mail externo foi enviado.
+- Preparado transporte SMTP com TLS e reentrega. Provedor real ainda depende de configuração e homologação.
+- Ampliados testes de segurança, banco real e navegador, com banco/cache separados por execução e sem contas fictícias no banco de desenvolvimento.
+- Documentação de execução e limites em `docs/AUTENTICACAO.md`; evidências em `TESTES.md`. Sem envio ao GitHub ou implantação.
+
 ## 09/11/2026 — Entrega 01.2: banco e isolamento por empresa
 
 - Criada branch `codex/fundacao-isolamento` a partir do bootstrap visual.

@@ -1,4 +1,13 @@
 import { test, expect } from "@playwright/test";
+import { createE2EUser } from "../support/e2e-context.mjs";
+test.beforeEach(async ({ page }) => {
+  const user = await createE2EUser();
+  const response = await page.request.post("/api/v1/auth/login", {
+    data: { email: user.email, password: user.password },
+    headers: { Origin: "http://127.0.0.1:3001" },
+  });
+  expect(response.status()).toBe(200);
+});
 test("menu mobile mantém foco e fecha por Escape", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");

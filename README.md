@@ -4,9 +4,9 @@ Plataforma modular da Invictus Systems para comércio, estivas, mercados e redes
 
 ## Estado atual — 09/11/2026
 
-Entrega 01.2: workspace executável com interface responsiva, API NestJS e PostgreSQL real local. Implementados schema inicial, migrações versionadas, papéis separados e isolamento por empresa com RLS testado. Há navegação entre painel, acompanhamento da implantação e configurações; os indicadores comerciais permanecem vazios.
+Entrega 01.3: login, sessões persistentes, encerramento de acessos, recuperação de senha e autenticação em duas etapas, sobre a base PostgreSQL com isolamento por empresa. Telas responsivas seguem as referências Invictus. O painel exige sessão válida; indicadores comerciais permanecem vazios.
 
-Autenticação, administração de usuários, cadastros de unidades e módulos comerciais ainda não foram implementados. Existem tabelas de identidade e vínculos para suportar essas próximas etapas, sem contas reais criadas automaticamente. A fundação completa continua em desenvolvimento.
+Administração de usuários, permissões por ação, unidades e módulos comerciais ainda não foram implementados. Não foram criadas contas reais automaticamente; o primeiro administrador é cadastrado por comando interativo local e deve configurar MFA. O envio externo de recuperação depende de configurar e homologar SMTP. A fundação completa continua em desenvolvimento.
 
 O repositório recebido continha somente `.git`, sem commits, código, dependências, banco ou remoto configurado. Nenhum módulo operacional foi encontrado. A inspeção ficou restrita ao projeto e à busca de instruções aplicáveis.
 
@@ -18,6 +18,7 @@ Repositório remoto informado posteriormente pelo usuário: [InvictusCorporation
 - [Arquitetura proposta e ambiente observado](ARQUITETURA.md)
 - [Etapa 01: tarefas, arquivos e critérios de aceitação](docs/ETAPA_01.md)
 - [Banco de dados, execução e isolamento](docs/BANCO_DADOS.md)
+- [Login, sessões, primeiro administrador e recuperação](docs/AUTENTICACAO.md)
 - [Módulos e dependências](MODULOS.md)
 - [Regras de negócio](REGRAS_NEGOCIO.md)
 - [Testes planejados e verificações executadas](TESTES.md)
@@ -39,13 +40,15 @@ npm.cmd run db:portable
 
 Manter o banco nesse terminal. Em outro terminal, na mesma pasta, executar `npm.cmd run dev`.
 
+No primeiro uso, antes de entrar no sistema, executar `npm.cmd run auth:bootstrap` em terminal interativo. Informar seus dados e uma senha própria (entrada oculta). Depois abrir [login](http://127.0.0.1:3000/login) e configurar o aplicativo autenticador. Não existe senha padrão.
+
 Abrir [interface local](http://127.0.0.1:3000). `setup:local` verifica as portas 3000, 3333 e 55432 e gera `.env` com senha aleatória. Se `.env` já existir, não o sobrescreve. Para portas diferentes, configurar manualmente a partir de `.env.example`, mantendo `API_PORT` e `API_INTERNAL_URL` coerentes.
 
 O comando `dev` compila contratos/API e inicia a API e o Next.js. Alterações da interface têm atualização automática; alterações TypeScript da API exigem encerrar com Ctrl+C e iniciar novamente. Não executar vários `dev` ao mesmo tempo. Para encerrar, usar Ctrl+C no terminal original.
 
 ### Banco local
 
-PostgreSQL 18.6 portátil foi inicializado e validado em banco real. `db:portable` prepara o schema e gera `.env.database`, ignorado pelo Git, com URLs separadas de migração e execução. O comando `dev` seleciona a conta restrita desse arquivo; a API recusa conta privilegiada e schema com RLS incompleto.
+PostgreSQL 18.6 portátil foi inicializado e validado em banco real. `db:portable` prepara o schema e gera `.env.database`/`.env.auth`, ignorados pelo Git, com credenciais separadas. `dev` seleciona os papéis restritos de execução e identidade; a API recusa contas privilegiadas e schema incompleto.
 
 `npm.cmd run db:portable:stop` encerra somente o cluster identificado deste projeto, sem apagar dados. A retomada preserva os dados. [Detalhes de execução e segurança](docs/BANCO_DADOS.md).
 
@@ -58,7 +61,11 @@ npm.cmd run db:migrate
 
 O serviço usa volume próprio, PostgreSQL 18 e porta vinculada somente ao loopback. `npm.cmd run db:stop` para o serviço sem apagar o volume. Não usar comandos de remoção de volumes para reinicializar um banco com dados.
 
-A conta `invictus_bootstrap` é exclusivamente de infraestrutura local e testes. `invictus_migrator` aplica migrações; `invictus_app` executa a API sem privilégios administrativos. O Compose permanece como alternativa não executada nesta máquina; não o iniciar junto do portátil na mesma porta.
+A conta `invictus_bootstrap` é exclusivamente de infraestrutura local, bootstrap e testes. `invictus_migrator` aplica migrações; `invictus_app` isola dados comerciais; `invictus_auth` atende identidade/sessões sem escrita comercial. O Compose permanece como alternativa não executada nesta máquina; não o iniciar junto do portátil na mesma porta.
+
+### Recuperação local e SMTP
+
+Por padrão, a recuperação mantém mensagens cifradas no banco e não envia e-mails externos. Após solicitar o link na tela, `npm.cmd run auth:mail` permite consultá-lo no terminal interativo. Para envio real, configurar privadamente o provedor SMTP; [instruções e limites](docs/AUTENTICACAO.md).
 
 ### Verificações e build
 
@@ -69,7 +76,7 @@ npm.cmd run typecheck
 npm.cmd run build
 ```
 
-Para testes de navegador, instalar o Chromium do Playwright uma vez e manter `npm.cmd run dev` ativo em outro terminal:
+Para testes de navegador, instalar o Chromium do Playwright uma vez e manter o banco ativo. O teste inicia servidores próprios (3001/3334) e banco fictício; não exige `dev` ativo:
 
 ```powershell
 npx.cmd playwright install chromium
@@ -81,9 +88,11 @@ Manter o banco ativo para integração; testes unitários/HTTP não dependem del
 ### API inicial
 
 - `GET /api/v1/health/live`: 200 enquanto o processo responde, independente do banco.
-- `GET /api/v1/health/ready`: 200 se o banco responde com papel restrito e estrutura RLS exigida; 503 em caso de banco ausente, papel privilegiado ou estrutura incompleta. Não certifica prontidão comercial.
+- `GET /api/v1/health/ready`: 200 se o banco responde com papéis restritos, estrutura RLS e identidade exigidas; 503 em caso de indisponibilidade ou configuração inválida. Não certifica prontidão comercial.
 
 As respostas não contêm host, credenciais ou detalhes do driver. O Next.js encaminha `/api/v1/*` para a API sem expor `DATABASE_URL` ao navegador. Não existem endpoints de dados comerciais nesta entrega.
+
+Os endpoints `/api/v1/auth/*` atendem login, sessão atual, contexto autorizado, sessões ativas/revogação, MFA e recuperação. Mutações autenticadas exigem Origin, JSON e CSRF; os detalhes estão no guia de autenticação.
 
 Versões fixadas no lockfile: Next.js 16.4.5, React 19.3.1, NestJS 12.4.2, `pg` 8.23.1 e TypeScript 5.9.3. Desenvolvimento local; implantação em produção depende de autorização expressa. O envio ao GitHub público permanece sem autorização após bloqueio da revisão automática.
 

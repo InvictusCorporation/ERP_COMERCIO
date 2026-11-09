@@ -1,6 +1,6 @@
 # Etapa 01 — Fundação
 
-Este plano atende à primeira ordem do escopo: apresentar arquitetura, tarefas, arquivos, aceitação e testes antes de programar. Planejamento 01.0, bootstrap 01.1 e isolamento/persistência 01.2 entregues com testes locais em PostgreSQL real. A Etapa 01 completa permanece em desenvolvimento. Cada incremento deve passar por seus testes e atualizar a documentação antes do seguinte.
+Este plano atende à primeira ordem do escopo: apresentar arquitetura, tarefas, arquivos, aceitação e testes antes de programar. Incrementos 01.0 a 01.3 entregues localmente, incluindo isolamento, autenticação, sessões e recuperação. A Etapa 01 completa permanece em desenvolvimento. Cada incremento deve passar por seus testes e atualizar a documentação antes do seguinte.
 
 ## 01.0 — Análise e planejamento (entregue)
 
@@ -33,6 +33,8 @@ Aceitação: duas empresas isoladas; tenant não pode alterar vínculos de outra
 Testes: SELECT/INSERT/UPDATE/DELETE com papel real da API; IDs e tenant adulterados; chaves estrangeiras cruzadas; troca sequencial e concorrente de tenants; rollback de falhas. Migração validada em banco vazio e reaplicação controlada, sem apagar banco existente.
 
 ## 01.3 — Login e ciclo de sessões
+
+Situação: implementação local entregue com Argon2id, sessões opacas, cookies seguros, CSRF/Origin, revogação, recuperação de uso único, MFA e bootstrap explícito. Fluxos testados em PostgreSQL real e navegador. Transporte SMTP implementado, porém provedor/remetente/credenciais reais e homologação permanecem pendentes; não considerar envio externo validado. Guia em `docs/AUTENTICACAO.md`.
 
 Arquivos previstos: `apps/api/src/modules/identity/*`, migrações incrementais para sessões, MFA e recuperação, `apps/web/src/app/login/page.tsx`, `apps/web/src/app/recuperar-acesso/page.tsx`, `tests/integration/authentication.spec.ts` e `tests/e2e/login.spec.ts`.
 

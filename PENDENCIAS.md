@@ -1,12 +1,16 @@
 # Pendências
 
-## Próximo incremento — 01.3
+## Próximo incremento — 01.4
 
-- Implementar login, hash de senha, sessões opacas, expiração, revogação, recuperação e MFA para perfis sensíveis.
-- Criar procedimento explícito de bootstrap administrativo; não há usuário ou cliente real criado automaticamente.
-- Derivar o contexto de tenant da sessão validada e de seu vínculo; não aceitar identidade livre no HTTP.
-- Definir acesso mínimo da autenticação à identidade global; `invictus_app` atualmente não pode consultar `identity.users` diretamente.
-- Implementar 01.4–01.6 sequencialmente: permissões por ação, matriz/filiais/depósitos e auditoria. A fundação completa continua pendente.
+- Administração de usuários, convites, papéis e permissões por ação, sem escalada ou remoção do último proprietário.
+- Escopo de unidades e efeito imediato de mudanças de permissão nas sessões existentes.
+- Em seguida, implementar matriz/filiais/depósitos (01.5) e auditoria comercial integrada (01.6). A fundação completa continua pendente.
+
+## Entregue em 01.3
+
+Login com Argon2id, cookie HttpOnly, sessões persistentes com validade/revogação, proteção CSRF/Origin, contexto empresarial derivado da sessão, recuperação de uso único e MFA. Telas responsivas de login, recuperação, redefinição, verificação e segurança; bootstrap administrativo local sem senha padrão. Nenhuma conta real criada automaticamente.
+
+Envio SMTP real depende de provedor, remetente e credenciais privados e ainda não foi homologado. Desenvolvimento usa outbox cifrada e consulta explícita no terminal. Códigos de reserva e procedimento de suporte para perda do fator MFA permanecem pendentes antes de produção. Ver `docs/AUTENTICACAO.md`.
 
 ## Entregue em 01.2
 
@@ -21,7 +25,8 @@ Workspace npm com versões fixadas, configuração local sem sobrescrita, health
 ## Decisões antes de produção
 
 - Infraestrutura, domínio, HTTPS, hospedagem e custos.
-- Provedor de e-mail transacional e procedimento seguro para o primeiro administrador.
+- Provedor de e-mail transacional, remetente e homologação SMTP. O bootstrap seguro do primeiro administrador já existe como comando local interativo.
+- Procedimento de recuperação de fator MFA perdido, proteção das chaves de cifra e ajuste de limites/proxy à infraestrutura real.
 - Backup, retenção, objetivos RPO/RTO e ensaio de restauração.
 - Retenção de auditoria e dados pessoais, termos e política de acesso de suporte.
 - Integração de CI e política de revisão. O remoto `origin` foi vinculado a `https://github.com/InvictusCorporation/ERP_COMERCIO.git`, informado pelo usuário; a consulta inicial confirmou ausência de refs remotas.

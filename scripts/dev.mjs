@@ -6,7 +6,14 @@ import { runtimeEnvironment } from "./runtime-environment.mjs";
 
 try {
   loadEnvFile(".env");
-  process.env.DATABASE_URL = readLocalConfig().appUrl;
+  const local = readLocalConfig();
+  process.env.DATABASE_URL = local.appUrl;
+  process.env.AUTH_DATABASE_URL = local.authUrl;
+  process.env.AUTH_ENCRYPTION_KEY = local.authKey;
+  process.env.APP_ORIGIN = local.appOrigin;
+  process.env.MAIL_TRANSPORT = local.mailTransport;
+  if (local.smtpUrl) process.env.SMTP_URL = local.smtpUrl;
+  if (local.mailFrom) process.env.MAIL_FROM = local.mailFrom;
 } catch {
   console.error(
     "Configuração local ausente ou inválida. Execute npm run setup:local e confira o banco local.",

@@ -22,7 +22,13 @@ if (
   );
 }
 /** @type {import('next').NextConfig} */
+const e2e = process.env.INVICTUS_E2E === "1";
+const run = process.env.INVICTUS_E2E_RUN;
+if (e2e && !/^[a-f0-9]{16}$/.test(run || ""))
+  throw new Error("Identificação de teste inválida.");
 const config = {
+  distDir: e2e ? `.next-e2e/${run}` : ".next",
+  typescript: { tsconfigPath: e2e ? ".e2e-tsconfig.json" : "tsconfig.json" },
   poweredByHeader: false,
   devIndicators: false,
   async rewrites() {

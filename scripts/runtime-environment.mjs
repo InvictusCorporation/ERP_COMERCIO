@@ -8,6 +8,15 @@ export function runtimeEnvironment(source, target) {
     )
       delete env[key];
   }
-  if (target === "web") delete env.DATABASE_URL;
+  if (target === "web") {
+    for (const name of [
+      "DATABASE_URL",
+      "AUTH_DATABASE_URL",
+      "AUTH_ENCRYPTION_KEY",
+      "SMTP_URL",
+      "MAIL_FROM",
+    ])
+      delete env[name];
+  }
   return env;
 }

@@ -5,9 +5,15 @@ export default defineConfig({
   workers: 1,
   reporter: "list",
   use: {
-    baseURL: "http://127.0.0.1:3000",
+    baseURL: "http://127.0.0.1:3001",
+    locale: "pt-BR",
     headless: true,
     trace: "retain-on-failure",
   },
-  // Inicie npm run dev antes: não iniciar processos duplicados silenciosamente.
+  webServer: {
+    command: "node scripts/e2e-server.mjs",
+    url: "http://127.0.0.1:3001/login",
+    reuseExistingServer: false,
+    timeout: 120000,
+  },
 });

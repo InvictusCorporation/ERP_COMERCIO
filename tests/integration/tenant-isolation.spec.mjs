@@ -1,7 +1,13 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { randomBytes } from "node:crypto";
-import { readFile, writeFile, mkdtemp, copyFile } from "node:fs/promises";
+import {
+  readFile,
+  writeFile,
+  mkdtemp,
+  copyFile,
+  readdir,
+} from "node:fs/promises";
 import { join } from "node:path";
 import pg from "pg";
 import { readLocalConfig } from "../../scripts/database/local-config.mjs";
@@ -101,10 +107,16 @@ test(
           database.withTenant(ctxA, async () => {}),
           /papel de execução restrito/,
         );
-        assert.equal((await migrate(migrationUrl)).length, 1);
+        const migrationNames = (await readdir(migrationDirectory)).filter(
+          (file) => file.endsWith(".sql"),
+        );
+        assert.equal(
+          (await migrate(migrationUrl)).length,
+          migrationNames.length - 1,
+        );
         assert.deepEqual(await migrate(migrationUrl), []);
         const directory = await mkdtemp(".local/migration-test-");
-        for (const file of ["001_identity_tenancy.sql", "002_rls.sql"])
+        for (const file of migrationNames)
           await copyFile(join(migrationDirectory, file), join(directory, file));
         await writeFile(
           join(directory, "001_identity_tenancy.sql"),
@@ -122,7 +134,7 @@ test(
           join(directory, "001_identity_tenancy.sql"),
         );
         await writeFile(
-          join(directory, "003_failure.sql"),
+          join(directory, "999_failure.sql"),
           "CREATE TABLE tenancy.rollback_probe(id integer); SELECT 1/0;",
         );
         await assert.rejects(
@@ -143,7 +155,7 @@ test(
               "SELECT count(*)::int AS count FROM infra.schema_migrations",
             )
           ).rows[0].count,
-          2,
+          migrationNames.length,
         );
       });
       await admin.query(

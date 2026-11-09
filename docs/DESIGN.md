@@ -29,6 +29,8 @@ As imagens contêm variações de símbolos de marca. O escudo vetorial e a marc
 
 ## Limites funcionais
 
+No incremento de autenticação, login/recuperação/MFA compartilham a marca, o preto e ouro e os mesmos controles. Desktop usa painel de marca e formulário claro; celular recolhe a apresentação em cabeçalho compacto. A tela de sessões mantém a linguagem das configurações e trata e-mails longos sem overflow. Não transportar a composição do PDV para o login: cada experiência preserva sua função dentro da mesma identidade.
+
 Semelhança visual não significa implementar vários módulos ao mesmo tempo. Indicadores e ranking ficam vazios até existirem dados reais. Atalhos futuros permanecem desabilitados e identificados como “Em breve”. Não copiar os valores, empresas, produtos ou alertas ilustrativos das imagens como dados reais.
 
 O dashboard foi ajustado nesta revisão. Produtos/estoque, multiloja e PDV ainda seguem a sequência oficial do escopo; suas referências devem ser retomadas na implementação de cada módulo.

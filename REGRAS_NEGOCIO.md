@@ -1,6 +1,8 @@
 # Regras de negócio
 
-Requisitos a implementar progressivamente. O incremento 01.2 implementa o isolamento da fundação por tenant e vínculo ativo, com transação, RLS e conta restrita de banco. Autenticação e permissões por ação ainda não foram implementadas; por isso nenhum endpoint de negócio foi exposto. Os indicadores da interface ficam vazios e não representam resultados reais.
+Requisitos a implementar progressivamente. O incremento 01.3 acrescenta autenticação, sessões e recuperação ao isolamento por tenant/vínculo ativo. O contexto empresarial da interface deriva da sessão verificada; empresa alheia não pode ser selecionada. Permissões por ação permanecem pendentes, e nenhum endpoint comercial foi exposto. Os indicadores ficam vazios e não representam resultados reais.
+
+Sessões parciais não acessam o painel antes de concluir MFA. Senha redefinida revoga sessões e não desativa o segundo fator. O primeiro administrador só pode ser criado pelo bootstrap local explícito, sem credencial padrão.
 
 ## Fundação
 
