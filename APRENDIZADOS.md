@@ -1,5 +1,10 @@
 # Aprendizados e decisões reutilizáveis
 
+## Revisão das referências visuais — 09/11/2026
+
+- O usuário prioriza semelhança com as imagens, especialmente a composição administrativa preta e ouro. Uma tela clara com banner de boas-vindas não representa essa direção, mesmo usando a mesma paleta.
+- Retomar a referência específica de cada módulo antes de desenhar a tela. Dashboard, produtos, rede e PDV têm composições distintas e documentadas em `docs/DESIGN.md`.
+
 ## Bootstrap 01.1 — 09/11/2026
 
 - Next.js pode repassar argumentos do processo para `NODE_OPTIONS`; executar seu CLI com `node --env-file` falhou neste ambiente. Carregar o arquivo via `loadEnvFile` na configuração evita esse problema.

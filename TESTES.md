@@ -1,5 +1,15 @@
 # Testes e evidências
 
+## Revisão visual das referências — 09/11/2026
+
+- Fotos originais de dashboard e produtos reabertas e comparadas com a implementação.
+- Capturas revisadas: `.local/qa/referencia-desktop.png` (1440 px) e `.local/qa/referencia-mobile.png` (390 px).
+- `npm.cmd run typecheck`: aprovado nos três workspaces.
+- Playwright: 8 testes aprovados, incluindo as larguras 360, 390, 768 e 1440 px, navegação, ajuda, foco e falha da API.
+- Cartões escuros, acentos ouro, seis indicadores, ranking vazio e atalhos conferidos visualmente. Indicadores mantêm ausência explícita de dados, sem faturamento fictício.
+- API e regras de negócio não foram alteradas; não houve necessidade de repetir os testes da API nesta revisão visual.
+- Build final da web (`next build --webpack`): aprovado, incluindo TypeScript e geração estática.
+
 ## Entrega 01.1 — 09/11/2026
 
 Ambiente: Windows/PowerShell, Node 26.13.0, npm 11.20.0, Chromium Playwright 1254. Testes realizados localmente, sem implantação e sem acesso a dados comerciais.

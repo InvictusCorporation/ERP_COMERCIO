@@ -1,5 +1,14 @@
 # Histórico de alterações
 
+## 09/11/2026 — Revisão visual pelas referências do usuário
+
+- Retomadas as fotos originais, adotando o dashboard responsivo como referência principal.
+- Substituído o banner grande de boas-vindas por uma composição administrativa com seis indicadores escuros.
+- Ajustados menu, marca, cabeçalho, bordas e ícones para preto, branco e amarelo-ouro.
+- Incluídos estrutura vazia de ranking e seis atalhos comerciais desabilitados, respeitando o estágio dos módulos.
+- Registrada direção visual das próximas telas em `docs/DESIGN.md`.
+- Revisão exclusivamente visual; regras e endpoints da API preservados. Sem publicação remota.
+
 ## 09/11/2026 — Entrega 01.1: bootstrap local
 
 - Criada branch `codex/fundacao-bootstrap` a partir do planejamento.

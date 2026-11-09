@@ -3,16 +3,17 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
+  ArrowDownToLine,
   BarChart3,
   Bell,
   Boxes,
   Building2,
-  Check,
   CheckCheck,
   ChevronDown,
   ChevronRight,
   CircleHelp,
   ClipboardList,
+  CircleDollarSign,
   FileText,
   LayoutDashboard,
   LockKeyhole,
@@ -26,9 +27,12 @@ import {
   Sparkles,
   Store,
   Truck,
+  TriangleAlert,
+  Trophy,
   Users,
   Wallet,
   X,
+  Zap,
   type LucideIcon,
 } from "lucide-react";
 import type { LivenessResponse, ReadinessResponse } from "@invictus/contracts";
@@ -211,7 +215,7 @@ export function Workspace() {
         ? "Fundação do sistema"
         : "Ambiente e configurações";
   return (
-    <div className="app-shell">
+    <div className={`app-shell view-${view}`}>
       <a className="skip-link" href="#main">
         Pular para o conteúdo
       </a>
@@ -353,10 +357,15 @@ export function Workspace() {
           <div className="page-heading">
             <div>
               <span className="eyebrow">SEU COMÉRCIO, CONECTADO</span>
-              <h1>{title}</h1>
+              <h1>
+                {view === "dashboard" && (
+                  <BarChart3 className="heading-icon" size={42} />
+                )}
+                <span>{title}</span>
+              </h1>
               <p>
                 {view === "dashboard"
-                  ? "Tudo o que importa para o seu negócio, em um só lugar."
+                  ? "Visão geral do seu negócio em tempo real"
                   : "Acompanhe a construção de uma gestão segura e integrada."}
               </p>
             </div>
@@ -378,109 +387,61 @@ export function Workspace() {
               desenvolvimento
             </span>
             <button onClick={() => navigate("foundation")}>
-              Ver implantação <ArrowRight size={14} />
+              Acompanhar implantação <ArrowRight size={14} />
             </button>
           </div>
 
           {view === "dashboard" && (
             <>
-              <section className="welcome-card" aria-labelledby="welcome-title">
-                <div className="welcome-copy">
-                  <div className="pill">
-                    <Sparkles size={13} /> BEM-VINDO AO INVICTUS
-                  </div>
-                  <h2 id="welcome-title">
-                    Uma base forte.
-                    <br />
-                    Um negócio sem limites.
-                  </h2>
-                  <p>
-                    O primeiro passo para conectar sua operação.
-                    <br className="desktop-break" /> Estamos preparando seu
-                    ambiente de gestão.
-                  </p>
-                  <button
-                    className="button primary"
-                    onClick={() => navigate("foundation")}
-                  >
-                    Acompanhar implantação <ArrowRight size={17} />
-                  </button>
-                  <small>
-                    <ShieldCheck size={13} /> Segurança e organização desde o
-                    início
-                  </small>
-                </div>
-                <div className="welcome-visual" aria-hidden="true">
-                  <div className="visual-grid" />
-                  <div className="visual-card visual-card-back">
-                    <Boxes size={24} />
-                    <div>
-                      <i />
-                      <i />
-                    </div>
-                    <Check size={17} />
-                  </div>
-                  <div className="store-symbol">
-                    <Store size={80} strokeWidth={1.25} />
-                  </div>
-                  <div className="visual-card visual-card-front">
-                    <span>
-                      <ShieldCheck size={23} />
-                    </span>
-                    <div>
-                      <strong>Seu negócio conectado</strong>
-                      <small>Uma plataforma. Toda a operação.</small>
-                    </div>
-                    <CheckCheck size={18} />
-                  </div>
-                  <span className="visual-label">INVICTUS SYSTEMS</span>
-                </div>
-              </section>
-
-              <div className="section-heading">
-                <h2>Visão geral do negócio</h2>
-                <span className="subtle-label">
-                  <span className="status-dot" /> Aguardando operações
-                </span>
-              </div>
               <section className="metrics" aria-label="Indicadores comerciais">
-                {(
-                  [
-                    {
-                      title: "Vendas do dia",
-                      icon: ShoppingCart,
-                      caption: "Nenhuma venda registrada",
-                      color: "gold",
-                    },
-                    {
-                      title: "Faturamento do mês",
-                      icon: BarChart3,
-                      caption: "Aguardando primeiras operações",
-                      color: "blue",
-                    },
-                    {
-                      title: "Lucro bruto",
-                      icon: Wallet,
-                      caption: "Disponível após as primeiras vendas",
-                      color: "green",
-                    },
-                    {
-                      title: "Valor do estoque",
-                      icon: Package,
-                      caption: "Nenhum produto cadastrado",
-                      color: "purple",
-                    },
-                  ] as const
-                ).map(({ title, icon: Icon, caption, color }) => (
-                  <article className="metric" key={title}>
-                    <div className="metric-top">
-                      <span>{title}</span>
-                      <span className={`metric-icon ${color}`}>
-                        <Icon size={19} />
-                      </span>
+                {[
+                  {
+                    title: "Vendas do dia",
+                    icon: ShoppingCart,
+                    caption: "Nenhuma venda registrada",
+                  },
+                  {
+                    title: "Faturamento do mês",
+                    icon: BarChart3,
+                    caption: "Aguardando primeiras operações",
+                  },
+                  {
+                    title: "Lucro bruto",
+                    icon: CircleDollarSign,
+                    caption: "Disponível após as primeiras vendas",
+                  },
+                  {
+                    title: "Estoque total",
+                    icon: Package,
+                    caption: "Valor em custo · Nenhum produto cadastrado",
+                  },
+                  {
+                    title: "Produtos em falta",
+                    icon: TriangleAlert,
+                    caption: "Aguardando controle de estoque",
+                  },
+                  {
+                    title: "Contas a receber",
+                    icon: Wallet,
+                    caption: "A vencer · Aguardando lançamentos",
+                  },
+                ].map(({ title, icon: Icon, caption }, i) => (
+                  <article
+                    className={
+                      "metric" +
+                      (i === 0 ? " highlighted" : "") +
+                      (i === 4 ? " shortage" : "")
+                    }
+                    key={title}
+                  >
+                    <span className="metric-icon">
+                      <Icon size={36} strokeWidth={1.8} />
+                    </span>
+                    <div className="metric-content">
+                      <h2>{title}</h2>
+                      <strong className="metric-value">—</strong>
+                      <p>{caption}</p>
                     </div>
-                    <strong className="metric-value">—</strong>
-                    <p>{caption}</p>
                   </article>
                 ))}
               </section>
@@ -490,7 +451,7 @@ export function Workspace() {
                   <div className="panel-heading">
                     <div>
                       <h2>
-                        <BarChart3 size={18} /> Desempenho de vendas
+                        <BarChart3 size={23} /> Vendas dos últimos 7 dias
                       </h2>
                       <p>A evolução do seu faturamento</p>
                     </div>
@@ -524,50 +485,58 @@ export function Workspace() {
                     </div>
                   </div>
                 </section>
-                <section className="panel checklist">
+                <section className="panel ranking-panel">
                   <div className="panel-heading">
                     <div>
                       <h2>
-                        <ClipboardList size={18} /> Implantação do ambiente
+                        <Trophy size={23} /> Ranking de lojas
                       </h2>
-                      <p>Um passo de cada vez, com segurança.</p>
+                      <p>Faturamento do mês por unidade</p>
                     </div>
-                    <span className="step-count">01 / 06</span>
                   </div>
-                  <div className="progress-track">
-                    <span />
+                  <div className="ranking-empty">
+                    <Store size={42} strokeWidth={1.3} />
+                    <h3>Nenhuma unidade cadastrada</h3>
+                    <p>
+                      O desempenho das lojas será exibido
+                      <br /> após o início da operação.
+                    </p>
                   </div>
-                  <ol>
-                    {steps.slice(0, 4).map((step, i) => (
-                      <li key={step.title}>
-                        <span
-                          className={`step-number ${i === 0 ? "done" : ""}`}
-                        >
-                          {i === 0 ? <Check size={14} /> : `0${i + 1}`}
-                        </span>
-                        <div>
-                          <strong>{step.title}</strong>
-                          <small>
-                            {i === 0
-                              ? "Estrutura inicial disponível"
-                              : i === 1
-                                ? "Próximo incremento"
-                                : "Planejado"}
-                          </small>
-                        </div>
-                        {i === 1 && <span className="next-dot" />}
-                      </li>
-                    ))}
-                  </ol>
-                  <button
-                    className="text-button"
-                    onClick={() => navigate("foundation")}
-                  >
-                    Ver todas as etapas <ArrowRight size={15} />
-                  </button>
+                  <div className="ranking-footer">
+                    <Building2 size={17} />
+                    <span>Matriz · Filiais · Centro de distribuição</span>
+                  </div>
                 </section>
               </div>
 
+              <section className="quick-access" aria-labelledby="quick-title">
+                <h2 id="quick-title">
+                  <Zap size={25} /> Acesso rápido
+                </h2>
+                <div className="quick-access-grid">
+                  {[
+                    ["Nova venda (PDV)", ShoppingCart],
+                    ["Cadastrar produto", Package],
+                    ["Entrada de estoque", ArrowDownToLine],
+                    ["Pedido de compra", ShoppingBag],
+                    ["Contas a pagar", FileText],
+                    ["Relatórios gerenciais", BarChart3],
+                  ].map(([label, Icon]) => {
+                    const QuickIcon = Icon as LucideIcon;
+                    return (
+                      <button
+                        key={String(label)}
+                        disabled
+                        title="Disponível na etapa correspondente do projeto"
+                      >
+                        <QuickIcon size={30} />
+                        <span>{String(label)}</span>
+                        <small>Em breve</small>
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
               <div className="bottom-grid">
                 <section className="panel activity">
                   <div className="panel-heading">

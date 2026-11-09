@@ -82,6 +82,8 @@ Versões fixadas no lockfile: Next.js 16.4.5, React 19.3.1, NestJS 12.4.2, `pg` 
 
 ## Referências visuais
 
+Direção visual detalhada e associação de cada foto aos próximos módulos: [Design Invictus](docs/DESIGN.md). O dashboard foi revisado para seguir a primeira referência: seis cartões pretos, ícones ouro, ranking e acesso rápido, preservando estados vazios reais.
+
 As cinco imagens fornecidas pelo usuário orientam o design: preto, branco e amarelo-ouro, menu lateral no desktop, seleção de empresa/unidade e navegação simplificada no celular. As imagens são referências, não comprovação de funcionalidades existentes. Não foram copiadas para o repositório; continuam na pasta de capturas do usuário.
 
 Os números, produtos e empresas mostrados nas imagens não serão tratados como dados reais. A fundação exibirá estados vazios; indicadores comerciais surgirão quando seus módulos estiverem implementados.
