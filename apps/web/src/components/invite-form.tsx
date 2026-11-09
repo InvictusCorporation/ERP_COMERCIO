@@ -1,14 +1,12 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Mail, CheckCircle2 } from "lucide-react";
 import type { InvitePreview, AuthSession } from "@invictus/contracts";
 import { accessRequest } from "../lib/access-client";
 import { authRequest } from "../lib/auth-client";
 import "../app/access.css";
 export function InviteForm() {
-  const router = useRouter();
   const [token, setToken] = useState("");
   const [invite, setInvite] = useState<InvitePreview | null>(null);
   const [session, setSession] = useState<AuthSession | null>(null);
@@ -68,8 +66,10 @@ export function InviteForm() {
         { token, ...(!invite?.existingAccount ? { password } : {}) },
         session?.csrf,
       );
+      // O aceite não autentica a pessoa nem altera dados renderizados pelo servidor.
+      // Refresh aqui pode restaurar o fragmento antigo do estado de navegação.
+      window.history.replaceState(null, "", window.location.pathname);
       setDone(true);
-      router.refresh();
     } catch (e) {
       setError(
         e instanceof Error ? e.message : "Não foi possível aceitar o convite.",

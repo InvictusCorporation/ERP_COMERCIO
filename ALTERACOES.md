@@ -1,5 +1,9 @@
 # Histórico de alterações
 
+## 09/11/2026 — Produtos e estoque manual (02.1 / 03.1)
+
+Branch codex/produtos-estoque. Migrações 008/009, catálogo versionado/GTIN, saldos e movimentos por unidade com RLS, reservas, perda, estorno e limites. Custo médio e deltas calculados no banco, idempotência, permissões comerciais com MFA e captura na auditoria unificada. Tela em /produtos e /estoque segue as fotos, com busca, editor, saldos e histórico responsivos. Testes de banco, API e navegador acrescentados. Detalhes e limites em [Produtos e estoque](docs/PRODUTOS_ESTOQUE.md). Sem publicação. Regressão do aceite de convite corrigida: removida atualização de rota desnecessária que podia restaurar o fragmento do token já consumido.
+
 ## 09/11/2026 — Entrega 01.3: autenticação e recuperação
 
 - Criada branch `codex/fundacao-autenticacao`.

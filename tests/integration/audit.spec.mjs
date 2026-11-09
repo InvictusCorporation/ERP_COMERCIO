@@ -108,7 +108,9 @@ test(
             "INSERT INTO identity.auth_events(id,user_id,event_type,created_at) VALUES($1,$2,$3,$4)",
             [legacySecurity, f.users.normal.id, "logout", legacyTime],
           );
-          assert.equal((await migrate(f.migrationUrl)).length, 2);
+          const applied = await migrate(f.migrationUrl);
+          assert.ok(applied.includes("006_unified_audit.sql"));
+          assert.ok(applied.includes("007_legacy_audit_import.sql"));
           assert.deepEqual(await migrate(f.migrationUrl), []);
           const row = (
             await f.admin.query(

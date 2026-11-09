@@ -9,3 +9,4 @@ export type ReadinessResponse = {
 export * from "./organizations";
 
 export * from "./audit";
+export * from "./inventory";

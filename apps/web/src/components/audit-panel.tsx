@@ -23,6 +23,7 @@ import {
   AUDIT_FIELDS,
   PERMISSIONS,
   UNIT_KINDS,
+  MOVEMENT_KINDS,
   type AuditEntry,
   type AuditPage,
   type AuditCategory,
@@ -42,7 +43,11 @@ const valueLabel = (key: string, value: unknown): string => {
   if (value === undefined || value === null || value === "") return "—";
   if (typeof value === "boolean") return value ? "Sim" : "Não";
   if (key === "kind")
-    return UNIT_KINDS[value as keyof typeof UNIT_KINDS] || String(value);
+    return (
+      UNIT_KINDS[value as keyof typeof UNIT_KINDS] ||
+      MOVEMENT_KINDS[value as keyof typeof MOVEMENT_KINDS] ||
+      String(value)
+    );
   if (Array.isArray(value))
     return (
       value

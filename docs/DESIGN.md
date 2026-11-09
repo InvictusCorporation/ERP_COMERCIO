@@ -46,3 +46,7 @@ Referências de gestão multiloja e produtos orientam seis indicadores escuros, 
 ## Histórico e comparação — 01.6
 
 Quatro indicadores escuros, lista clara com destaque dourado e painel lateral de comparação. Abas separam rede e própria segurança. Filtros de categoria, responsável, unidade, período e texto, identificação de histórico anterior e agrupamento por operação. No celular, eventos viram cartões e o detalhe ocupa o conteúdo abaixo da lista. Capturas usam somente redes fictícias.
+
+## Produtos e estoque — 02.1 / 03.1
+
+Quarta imagem como referência principal: cartões pretos/dourados, listagem com busca e destaque do produto, cabeçalho preto no editor lateral e abas Dados/Estoque/Histórico. No celular, editor abaixo da lista, dois indicadores por linha e campos em duas colunas. Ícones vetoriais representam produtos enquanto foto/upload aguarda incremento próprio; não foram inventadas fotos reais. Capturas usam exclusivamente cinco produtos fictícios em rede de teste.

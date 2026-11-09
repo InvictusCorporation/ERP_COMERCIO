@@ -81,3 +81,7 @@ Decisões de autorização seguem [OWASP — Authorization Cheat Sheet](https://
 ## Histórico de acesso — 01.6
 
 Alterações de vínculo, perfil, escopo e convite são capturadas atomicamente no histórico. Administrador padrão recebe `audit.read`; perfil personalizado precisa de concessão explícita e MFA. Auditor de filial não recebe dados de equipe, perfis ou convites fora de seu escopo de consulta. Segurança de outra conta não é visível por ser proprietário da rede. Guia em [Auditoria](AUDITORIA.md).
+
+## Permissões comerciais 02.1 / 03.1
+
+products.read/products.manage e stock.read/stock.manage integram o catálogo. Escrita de produto exige escopo global; movimentação pode ser limitada à filial. Escritas exigem MFA, inclusive no perfil personalizado, sem conceder poderes sobre pessoas/estrutura. Administrador recebe o módulo; demais perfis padrão permanecem sem ampliação automática. Consultas são dependências da escrita. Ver [Produtos e estoque](PRODUTOS_ESTOQUE.md).

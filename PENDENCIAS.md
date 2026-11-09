@@ -1,8 +1,14 @@
 # Pendências
 
+## Incrementos 02.1 / 03.1
+
+Entregues catálogo básico e estoque manual por unidade, com custos, reservas, limites, estornos e auditoria. Ver [Produtos e estoque](docs/PRODUTOS_ESTOQUE.md). Etapas 02 e 03 completas permanecem em evolução.
+
+Próximos complementos: foto, fornecedores e dados fiscais de produto; compras/recebimento e XML; inventário com aprovação; transferências; preços por filial/atacado; múltiplas conversões. Lotes/validade pertencem à etapa 08. Não há coleta de lote, controle de vencimento ou alerta de validade nesta entrega. Dashboard/central de notificações ainda não consomem este módulo.
+
 ## Próximos passos
 
-- Próxima etapa funcional do escopo: produtos e cadastros comerciais, depois da revisão local da fundação. Nenhum módulo comercial foi adiantado nesta entrega.
+- Próximo avanço: complementar o cadastro comercial e integrar fornecedores/compras ao estoque manual já disponível.
 - CI está preparada, mas sua execução no GitHub/Linux depende de publicação/autorização e permanece sem evidência remota.
 - Antes de produção: SMTP real, recuperação de fator perdido, infraestrutura/HTTPS, backup/restauração e política definitiva de retenção/arquivamento do histórico.
 

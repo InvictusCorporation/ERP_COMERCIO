@@ -1,6 +1,10 @@
 # Arquitetura proposta
 
-Status: bootstrap (01.1), persistência/isolamento (01.2) e autenticação/sessões/recuperação (01.3) implementados e testados localmente. Gestão de usuários/permissões, unidades e auditoria comercial continuam planejadas. SMTP real ainda depende de configuração e homologação. Data: 09/11/2026.
+## Incrementos comerciais 02.1 / 03.1
+
+Módulo inventory (API e contratos compartilhados), cinco tabelas com RLS forçada, índices de identidade de barras e saldo derivado por tenant/unidade/produto. Triggers restritos confirmam movimento e capturam auditoria na mesma transação. PostgreSQL numeric e transporte decimal textual; versão otimista do produto e confirmação idempotente. UI cliente usa API privada com sessão/CSRF existentes. Matriz de acesso, limitações e fluxos em [Produtos e estoque](docs/PRODUTOS_ESTOQUE.md).
+
+Status: fundação 01.1–01.6 e incrementos comerciais 02.1/03.1 implementados e testados localmente. Usuários, unidades, auditoria, produtos e estoque manual integrados. Complementos comerciais, SMTP real e homologação de produção seguem pendentes. Data: 09/11/2026.
 
 ## Ambiente observado
 

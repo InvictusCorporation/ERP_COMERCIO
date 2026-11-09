@@ -1,5 +1,28 @@
 export const PERMISSIONS = [
   {
+    key: "products.read",
+    label: "Consultar produtos",
+    description: "Consultar o catálogo central da rede.",
+  },
+  {
+    key: "products.manage",
+    label: "Gerenciar produtos e preços",
+    description:
+      "Cadastrar e alterar produtos e preços; exige escopo de toda a rede e duas etapas.",
+  },
+  {
+    key: "stock.read",
+    label: "Consultar estoque",
+    description:
+      "Consultar saldos e movimentos somente nas unidades autorizadas.",
+  },
+  {
+    key: "stock.manage",
+    label: "Movimentar estoque",
+    description:
+      "Entradas, saídas, perdas, reservas, limites e estorno nas unidades autorizadas; exige duas etapas.",
+  },
+  {
     key: "audit.read",
     label: "Consultar auditoria e histórico",
     description:

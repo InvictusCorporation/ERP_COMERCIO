@@ -1,6 +1,10 @@
 # Regras de negócio
 
-Requisitos a implementar progressivamente. O incremento 01.3 acrescenta autenticação, sessões e recuperação ao isolamento por tenant/vínculo ativo. O contexto empresarial da interface deriva da sessão verificada; empresa alheia não pode ser selecionada. Permissões por ação permanecem pendentes, e nenhum endpoint comercial foi exposto. Os indicadores ficam vazios e não representam resultados reais.
+## Produtos e estoque manual — 02.1 / 03.1
+
+Implementadas as regras de catálogo e versão, embalagem única convertida, custo médio móvel, físico/reservado/disponível, limites por filial, alertas na igualdade, saída sem negativo e estorno do último movimento original. Cada confirmação é idempotente e atômica com a auditoria. Sem alteração automática de preço. Sem lote/validade, trânsito ou baixa de venda nesta entrega. Regras exatas em [Produtos e estoque](docs/PRODUTOS_ESTOQUE.md).
+
+Requisitos a implementar progressivamente. O incremento 01.3 acrescenta autenticação, sessões e recuperação ao isolamento por tenant/vínculo ativo. O contexto empresarial da interface deriva da sessão verificada; empresa alheia não pode ser selecionada. As entregas posteriores adicionaram permissões por ação e produtos/estoque manual. Indicadores do dashboard geral ainda aguardam integração; a tela comercial mostra dados persistidos da unidade autorizada.
 
 Sessões parciais não acessam o painel antes de concluir MFA. Senha redefinida revoga sessões e não desativa o segundo fator. O primeiro administrador só pode ser criado pelo bootstrap local explícito, sem credencial padrão.
 

@@ -1,5 +1,31 @@
 # Testes e evidências
 
+## Produtos e estoque manual — 02.1 / 03.1 — 09/11/2026
+
+- PostgreSQL real 18.6, migrações aditivas 008/009 com checksum; migrações 001–007 preservadas e escopo original idêntico ao anexo. Banco de desenvolvimento atualizado sem criar cadastros reais; dados fictícios somente em bancos de teste separados.
+- npm.cmd test: 18 testes unitários aprovados. GTIN com zeros, dígito/comprimento inválidos, decimais textuais, precisão excessiva, infinito/NaN/coerção e campos de identidade indevidos cobertos.
+- npm.cmd run test:integration: 114 testes aprovados, incluindo os agrupadores; suíte de produtos/estoque com 17 subcenários e agrupador. Repetição focada final da suíte: 18 aprovados, incluindo as verificações explícitas de anonimato, Origin, CSRF e Sec-Fetch-Site.
+- Catálogo, duplicidade de código/GTIN e preenchimento GTIN de 14 dígitos, dados persistentes, versão otimista, identidade permanente, produto inativo e filtros adulterados verificados. Perfis antigos personalizados não recebem escrita nova automaticamente.
+- Exemplo do escopo preservado: 100 a 3 + 100 a 4 = 200, valor 700, custo médio 3,50 e margem gerencial de 30% a preço 5. Saída mantém custo médio e preço; histórico da entrada continua com seu custo original.
+- Fardo de 10 comprado por 40 entra como 10 e valor 40. Conversão com fração não representável é recusada sem saldo/movimento parcial. Numeric conserva precisão; saída do último saldo zera resíduo financeiro.
+- Reserva reduz disponível e bloqueia consumo reservado/negativo; liberação e perda rastreáveis. Repetição da confirmação é idempotente; mesma chave com outro conteúdo falha. Entradas concorrentes não perdem saldo; duas saídas concorrentes disputam o disponível, uma é recusada sem duplicidade.
+- Estorno adiciona linha, restaura deltas/custo anterior e recusa movimento antigo, estorno repetido ou estorno de estorno. Limites por unidade sobrepõem o padrão; igualdade com mínimo mantém alerta e reposição acima dele encerra o alerta na consulta.
+- MFA exigido ao conceder stock.manage; sessão parcial não movimenta. Estoquista limitado à filial opera somente nela, não administra produto/preço global, e perde a escrita imediatamente quando a permissão é retirada. Outra rede, filial alheia e unidade inativa negadas; histórico não apagado.
+- Papel HTTP sem UPDATE em saldos, DELETE em movimentos ou EXECUTE em funções internas. RLS sem contexto nega dados. Falha induzida na auditoria retorna 503 e reverte produto, saldo e movimento sem efeito parcial.
+- Regressão detectou expectativa antiga do Administrador restrito; atualizada para os acessos comerciais agora autorizados, preservando proibição de administração global.
+- Inspeção visual desktop/celular levou a ajuste do espaçamento e labels explícitos dos campos multilinha/selects. Edição multilinha mantém texto e normaliza a lista somente ao salvar.
+- A regressão encontrou restauração do fragmento do convite após router.refresh; remoção da atualização desnecessária e nova limpeza antes da confirmação. Verificação de aceite, token limpo e suspensão preservada nos testes de navegador.
+
+- npm.cmd run test:e2e: 51 cenários aprovados na rodada completa final, com 42 regressões anteriores e 9 cenários de produtos/estoque. Cadastro por teclado com dois GTINs, busca, recarga persistente, reserva/estorno, limites, falha de conexão e ausência de permissão validados.
+- Capturas de produtos e estoque revisadas em 360, 390, 768 e 1440 px, sem overflow da página e somente com cinco produtos fictícios na rede de teste. Evidências em .local/qa/produtos-*.png e estoque-*.png, fora do Git; visual preto/branco/dourado preservado.
+- Dev server do Next emitiu aviso de stream cancelado em navegações de regressão; os cenários funcionais passaram. Não tratar esses avisos como evidência de homologação de produção.
+
+- npm.cmd run build e npm.cmd run typecheck: aprovados em contratos, API e web. Páginas /produtos e /estoque geradas como dinâmicas; tipos normais restaurados após o runner E2E.
+- Conferência final: nenhum segredo real no diff preparado ou JavaScript público; nenhum banco, .env, cache, dependência, captura ou resultado privado versionado. Links locais válidos, escopo mestre idêntico ao anexo e git diff --cached --check aprovado. Serviços de QA encerrados e dados do PostgreSQL preservados.
+
+Guia operacional e limites em [Produtos e estoque](docs/PRODUTOS_ESTOQUE.md). Lotes/validade, inventário aprovado, fornecedores/compras, transferências e produção continuam pendentes conforme o guia.
+
+
 ## Entrega 01.6 — 09/11/2026
 
 - PostgreSQL real 18.6; migrações 006/007 incrementais e testes em bancos fictícios separados. Nenhuma empresa/conta real criada automaticamente.

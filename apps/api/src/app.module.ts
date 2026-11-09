@@ -1,3 +1,5 @@
+import { InventoryService } from "./modules/inventory/inventory.service";
+import { InventoryController } from "./modules/inventory/inventory.controller";
 import { Module, type DynamicModule } from "@nestjs/common";
 import { DatabaseService } from "./database.service";
 import { HealthController } from "./health/health.controller";
@@ -33,6 +35,7 @@ export class AppModule {
               AccessController,
               OrganizationsController,
               AuditController,
+              InventoryController,
             ]
           : []),
       ],
@@ -43,6 +46,11 @@ export class AppModule {
         },
         ...(authConfig
           ? [
+              {
+                provide: InventoryService,
+                useFactory: (auth: AuthService) => new InventoryService(auth),
+                inject: [AuthService],
+              },
               {
                 provide: AuditService,
                 useFactory: (auth: AuthService) => new AuditService(auth),

@@ -192,7 +192,12 @@ export class AuthService implements OnApplicationShutdown {
     return member.is_owner || member.all_units
       ? permissions
       : permissions.filter(
-          (p) => p === "organizations.read" || p === "audit.read",
+          (p) =>
+            p === "organizations.read" ||
+            p === "audit.read" ||
+            p === "products.read" ||
+            p === "stock.read" ||
+            p === "stock.manage",
         );
   }
   async withAccess<T>(

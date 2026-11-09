@@ -116,7 +116,7 @@ export function Workspace({
 }: {
   initialSession: AuthSession;
   children?: React.ReactNode;
-  section?: "access" | "organizations" | "audit";
+  section?: "access" | "organizations" | "audit" | "inventory";
 }) {
   const router = useRouter();
   const [session, setSession] = useState(initialSession);
@@ -297,17 +297,21 @@ export function Workspace({
   }, [menuOpen]);
 
   const sectionTitle =
-    section === "audit"
-      ? "Auditoria e histórico"
-      : section === "organizations"
-        ? "Empresas e unidades"
-        : "Usuários e permissões";
+    section === "inventory"
+      ? "Produtos e estoque"
+      : section === "audit"
+        ? "Auditoria e histórico"
+        : section === "organizations"
+          ? "Empresas e unidades"
+          : "Usuários e permissões";
   const SectionIcon =
-    section === "audit"
-      ? ClipboardList
-      : section === "organizations"
-        ? Building2
-        : Users;
+    section === "inventory"
+      ? Package
+      : section === "audit"
+        ? ClipboardList
+        : section === "organizations"
+          ? Building2
+          : Users;
   const title = children
     ? sectionTitle
     : view === "dashboard"
@@ -373,18 +377,36 @@ export function Workspace({
               Empresas e unidades
             </Link>
           )}
-          {modules.map(([label, Icon]) => (
-            <button
-              key={label}
-              className="nav-item future"
-              disabled
-              title={`${label}: disponível em uma próxima etapa`}
+          {session.permissions.includes("products.read") && (
+            <Link
+              href="/produtos"
+              className={
+                "nav-item " +
+                (children && section === "inventory" ? "active" : "")
+              }
+              aria-current={
+                children && section === "inventory" ? "page" : undefined
+              }
+              onClick={() => setMenuOpen(false)}
             >
-              <Icon size={19} />
-              <span>{label}</span>
-              <LockKeyhole size={12} />
-            </button>
-          ))}
+              <Package size={19} />
+              <span>Produtos e estoque</span>
+            </Link>
+          )}
+          {modules
+            .filter(([label]) => label !== "Produtos" && label !== "Estoque")
+            .map(([label, Icon]) => (
+              <button
+                key={label}
+                className="nav-item future"
+                disabled
+                title={`${label}: disponível em uma próxima etapa`}
+              >
+                <Icon size={19} />
+                <span>{label}</span>
+                <LockKeyhole size={12} />
+              </button>
+            ))}
           <button className="nav-item future assistant" disabled>
             <Sparkles size={19} />
             <span>Assistente inteligente</span>
@@ -545,11 +567,13 @@ export function Workspace({
               </h1>
               <p>
                 {children
-                  ? section === "audit"
-                    ? "Acompanhe quem alterou, quando e o que mudou, com acesso ao histórico autorizado."
-                    : section === "organizations"
-                      ? "Matriz, filiais e depósitos conectados em uma só gestão."
-                      : "Gerencie sua equipe e os acessos à empresa selecionada."
+                  ? section === "inventory"
+                    ? "Cadastro, saldos, custos e movimentações por unidade."
+                    : section === "audit"
+                      ? "Acompanhe quem alterou, quando e o que mudou, com acesso ao histórico autorizado."
+                      : section === "organizations"
+                        ? "Matriz, filiais e depósitos conectados em uma só gestão."
+                        : "Gerencie sua equipe e os acessos à empresa selecionada."
                   : view === "dashboard"
                     ? "Visão geral do seu negócio em tempo real"
                     : "Acompanhe a construção de uma gestão segura e integrada."}
@@ -649,12 +673,13 @@ export function Workspace({
                   {
                     title: "Estoque total",
                     icon: Package,
-                    caption: "Valor em custo · Nenhum produto cadastrado",
+                    caption:
+                      "Valor em custo · Consulte produtos e saldos por unidade",
                   },
                   {
                     title: "Produtos em falta",
                     icon: TriangleAlert,
-                    caption: "Aguardando controle de estoque",
+                    caption: "Consulte os alertas em Produtos e estoque",
                   },
                   {
                     title: "Contas a receber",
@@ -762,12 +787,33 @@ export function Workspace({
                     return (
                       <button
                         key={String(label)}
-                        disabled
-                        title="Disponível na etapa correspondente do projeto"
+                        disabled={
+                          !(
+                            [
+                              "Cadastrar produto",
+                              "Entrada de estoque",
+                            ].includes(String(label)) &&
+                            session.permissions.includes("products.read")
+                          )
+                        }
+                        onClick={() => router.push("/produtos")}
+                        title={
+                          ["Cadastrar produto", "Entrada de estoque"].includes(
+                            String(label),
+                          )
+                            ? "Abrir produtos e estoque"
+                            : "Disponível na etapa correspondente do projeto"
+                        }
                       >
                         <QuickIcon size={30} />
                         <span>{String(label)}</span>
-                        <small>Em breve</small>
+                        <small>
+                          {["Cadastrar produto", "Entrada de estoque"].includes(
+                            String(label),
+                          ) && session.permissions.includes("products.read")
+                            ? "Abrir"
+                            : "Em breve"}
+                        </small>
                       </button>
                     );
                   })}
@@ -1001,8 +1047,9 @@ export function Workspace({
         </div>
         <h2 id="help-title">Primeiros passos no Invictus</h2>
         <p>
-          Esta é a estrutura inicial do ERP. As telas comerciais estão em
-          planejamento e ainda não registram operações.
+          Cadastre produtos, consulte saldos e registre movimentos em Produtos e
+          estoque. Os demais módulos comerciais seguem o planejamento do
+          projeto.
         </p>
         <ol>
           <li>

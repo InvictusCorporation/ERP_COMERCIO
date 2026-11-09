@@ -1,6 +1,10 @@
 # Módulos e dependências
 
-Fundação em desenvolvimento: análise (01.0), bootstrap (01.1), persistência/isolamento (01.2) autenticação/sessões/recuperação (01.3) e administração de usuários/perfis por empresa (01.4) entregues localmente. Empresas/unidades e restrições por filial entregues em 01.5. Auditoria dos fluxos da fundação entregue em 01.6; auditoria comercial será integrada aos módulos futuros. SMTP externo ainda não homologado. Os módulos comerciais continuam planejados.
+## Incrementos 02.1 / 03.1 — disponíveis localmente
+
+A pedido do usuário, catálogo básico e controle manual de estoque avançam juntos sobre a fundação: produtos, conversão de uma embalagem, custos, saldos, movimentos, reservas, perdas, estorno e limites por unidade. Não concluir as etapas completas 02/03: fornecedores, fiscal/fotos de produto, inventário aprovado e demais integrações seguem pendentes. Guia em [Produtos e estoque](docs/PRODUTOS_ESTOQUE.md).
+
+Fundação em desenvolvimento: análise (01.0), bootstrap (01.1), persistência/isolamento (01.2) autenticação/sessões/recuperação (01.3) e administração de usuários/perfis por empresa (01.4) entregues localmente. Empresas/unidades e restrições por filial entregues em 01.5. Auditoria dos fluxos da fundação entregue em 01.6; auditoria comercial já cobre produtos/estoque e será ampliada com os demais módulos. SMTP externo ainda não homologado. O primeiro incremento comercial está descrito acima; módulos restantes seguem planejados.
 
 | Etapa | Módulo | Dependências principais |
 | --- | --- | --- |

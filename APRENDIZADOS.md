@@ -1,5 +1,15 @@
 # Aprendizados e decisões reutilizáveis
 
+## Produtos e estoque
+
+- Saldo deve ser projeção do ledger, atualizado apenas pela confirmação transacional; o HTTP não precisa de UPDATE na tabela de saldos.
+- Numeric e decimais em texto evitam cálculo financeiro de saldo em ponto flutuante; a saída final precisa absorver o resíduo do custo proporcional.
+- A embalagem usada precisa ficar congelada no movimento. Alterar o fator do catálogo não reinterpreta o passado.
+- Idempotência exige comparar o conteúdo da confirmação e manter a chave no formulário após falha de resposta.
+- GTIN curto e seu preenchimento à esquerda identificam a mesma mercadoria; unicidade precisa usar a forma normalizada.
+- Estoque por filial precisa filtrar também saldos, alertas, contagens e detalhes. Administração do catálogo central é uma autorização distinta da movimentação local.
+- Nomes acessíveis explícitos nos selects facilitam automação e evitam nomes de label contaminados pelas opções. Captura fullPage deve retornar ao topo para não reposicionar elementos fixos no meio da imagem.
+
 ## Autenticação 01.3 — 09/11/2026
 
 - Identidade global exige um papel próprio; conceder leitura de credenciais ao papel comercial reduziria a separação entre autenticação e negócio.
@@ -76,3 +86,6 @@
 - Histórico de unidade inativa e autorização de operação são controles diferentes: um auditor pode ler passado autorizado sem reabrir a unidade.
 
 - A substituição completa de atribuições criaria revogações/concessões fictícias mesmo sem mudança. O salvamento agora aplica somente a diferença entre conjuntos; permissões equivalentes preservam a representação anterior.
+
+- Evitar router.refresh sem necessidade após confirmar convite: estado antigo da navegação pode restaurar fragmento sensível. Atualizar o estado local e limpar o fragmento antes de mostrar confirmação.
+- Campo multilinha deve manter o texto em edição; converter imediatamente para lista descartando a linha vazia impede digitar códigos alternativos. Normalizar ao salvar.

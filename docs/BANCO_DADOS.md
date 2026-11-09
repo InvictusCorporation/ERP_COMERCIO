@@ -99,3 +99,7 @@ Migração `005_organizations.sql` acrescenta empresas, unidades, matriz única,
 ## Auditoria unificada — 01.6
 
 Migrações 006/007 criam `audit.events` e importam fontes anteriores. FORCE RLS também vale para o migrador proprietário: a importação legada de acesso precisou de política explícita de leitura, adicionada em nova migração, sem alterar checksum já aplicado. Nove triggers capturam mudanças/autenticação/contexto na transação; a conta HTTP só recebe SELECT limitado. Colunas de credenciais nunca são copiadas. Readiness valida RLS e triggers ativos. Não há expiração/purge automática. Guia em [Auditoria](AUDITORIA.md).
+
+## Produtos e estoque manual
+
+Migrações aditivas 008/009 e módulo inventory; 15 tabelas protegidas no verificador de autenticação e 12 triggers de auditoria exigidos. Nenhum papel HTTP recebe UPDATE em inventory.levels ou DELETE em movements. Regras de instalação, numeric, RLS e atualização em [Produtos e estoque](PRODUTOS_ESTOQUE.md).

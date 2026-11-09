@@ -89,3 +89,7 @@ Evidências locais em [Testes](../TESTES.md). Orientações de implementação: 
 O workflow [Verificações da fundação](../.github/workflows/ci.yml) prepara PostgreSQL descartável no runner e executa instalação, testes unitários, integração, Chromium, interface, build e tipagem. Usa permissões de repositório somente para leitura e uma senha explicitamente temporária de banco de CI, sem reutilizar segredos locais. Não publica o produto nem envia arquivos privados/capturas.
 
 A configuração foi preparada e teve sintaxe conferida; não foi executada no GitHub nem homologada em Linux nesta máquina Windows. O envio do repositório continua sem autorização de publicação. Referências: [checkout](https://github.com/actions/checkout), [setup-node](https://github.com/actions/setup-node) e [PostgreSQL em GitHub Actions](https://docs.github.com/en/actions/tutorials/use-containerized-services/create-postgresql-service-containers).
+
+## Fontes de produtos e estoque
+
+Incrementos 02.1/03.1 acrescentam categorias products e inventory: cadastro/preço/inativação do produto, limites da unidade e movimentos confirmados. Produto central é evento global da rede; estoquista/auditor restrito recebe somente eventos com unidade atribuída conforme audit.read. Movimentos preservam deltas, fator e saldos após confirmação, com responsável e correlação. Captura é atômica e não altera eventos anteriores. Guia em [Produtos e estoque](PRODUTOS_ESTOQUE.md).
