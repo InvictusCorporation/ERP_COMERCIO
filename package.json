@@ -18,12 +18,20 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm run build -w @invictus/contracts && npm run test -w @invictus/api",
     "test:e2e": "playwright test",
+    "test:integration": "npm run build -w @invictus/contracts && npm run build -w @invictus/api && node --test tests/integration/tenant-isolation.spec.mjs",
+    "db:portable": "node scripts/local-postgres.mjs",
+    "db:portable:stop": "node scripts/stop-postgres.mjs",
+    "db:migrate": "node scripts/migrate.mjs",
     "db:up": "docker compose up -d database",
     "db:stop": "docker compose stop database"
   },
   "devDependencies": {
     "@playwright/test": "1.65.0",
     "@types/node": "26.6.6",
+    "pg": "8.23.1",
     "typescript": "5.9.3"
+  },
+  "optionalDependencies": {
+    "@embedded-postgres/windows-x64": "18.6.0-beta.19"
   }
 }

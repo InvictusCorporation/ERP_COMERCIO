@@ -1,5 +1,15 @@
 # Aprendizados e decisões reutilizáveis
 
+## Persistência e isolamento 01.2 — 09/11/2026
+
+- PostgreSQL portátil permite testar RLS e transações reais no Windows sem instalar serviço ou depender de Docker. Manter binários opcionais, versão fixa, diretório identificado e escuta em loopback.
+- Separar credenciais em `.env.database` preserva a configuração inicial. Nunca redefinir senha de papel existente como correção automática de divergência.
+- Readiness deve recusar conta privilegiada e RLS incompleto; só verificar conectividade pode liberar um sistema com migração parcial.
+- `FORCE ROW LEVEL SECURITY` também afeta o dono da tabela. A função booleana de vínculo precisa de política de leitura sem recursão e acesso global restrito; `search_path` fixo e revogação de EXECUTE público são essenciais.
+- Contexto `SET LOCAL` foi confirmado como limpo após commit e rollback na mesma conexão reutilizada. Requisições concorrentes também precisam de integração real.
+- Migrações aplicadas não devem ser editadas. Normalizar finais de linha no checksum evita divergência apenas por Windows/Linux; novas alterações usam novo arquivo SQL.
+- Testes de banco criam seu próprio banco fictício, verificam o nome antes de fixtures e preservam o banco para inspeção. Nenhum cliente fictício precisa aparecer na interface de desenvolvimento.
+
 ## Revisão das referências visuais — 09/11/2026
 
 - O usuário prioriza semelhança com as imagens, especialmente a composição administrativa preta e ouro. Uma tela clara com banner de boas-vindas não representa essa direção, mesmo usando a mesma paleta.

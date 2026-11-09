@@ -2,6 +2,8 @@
 
 Referências fornecidas pelo usuário em 09/11/2026. Aplicar esta direção nas próximas telas; o usuário reforçou expressamente a necessidade de semelhança com as fotos.
 
+As cinco imagens também representam contextos do mesmo produto: celular, comércio simples, supermercado e rede com filiais. Preservar um único sistema modular, com modo simplificado ou avançado conforme o estabelecimento, o dispositivo e os módulos/permissões habilitados. Essas experiências não devem ser reduzidas a um único dashboard; sua liberação acompanha as etapas funcionais do escopo.
+
 ## Referências por experiência
 
 | Imagem | Aplicação |

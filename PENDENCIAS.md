@@ -1,12 +1,18 @@
 # Pendências
 
-## Próximo incremento — 01.2
+## Próximo incremento — 01.3
 
-- Disponibilizar PostgreSQL real para validar o Compose e a conectividade bem-sucedida. Docker e psql não foram localizados no PATH. Não interromper serviços de outros projetos.
-- Criar schema de identidade/tenants, executor de migrações, papéis separados e RLS conforme `docs/ETAPA_01.md`.
-- Não utilizar `invictus_bootstrap` em operações comerciais. Hoje a API só consulta disponibilidade com `SELECT 1`.
-- Validar contexto transacional, constraints e isolamento com o papel real da API antes de avançar para autenticação.
-- Implementar 01.3–01.6 sequencialmente. A fundação completa continua pendente.
+- Implementar login, hash de senha, sessões opacas, expiração, revogação, recuperação e MFA para perfis sensíveis.
+- Criar procedimento explícito de bootstrap administrativo; não há usuário ou cliente real criado automaticamente.
+- Derivar o contexto de tenant da sessão validada e de seu vínculo; não aceitar identidade livre no HTTP.
+- Definir acesso mínimo da autenticação à identidade global; `invictus_app` atualmente não pode consultar `identity.users` diretamente.
+- Implementar 01.4–01.6 sequencialmente: permissões por ação, matriz/filiais/depósitos e auditoria. A fundação completa continua pendente.
+
+## Entregue em 01.2
+
+PostgreSQL 18.6 portátil, migrações com checksum/lock/transação, papéis separados, RLS forçado, contexto transacional, vínculo ativo, constraints compostas e testes em banco real. Parada e retomada sem apagar dados; readiness real via proxy web aprovado. Direção visual das cinco referências preservada.
+
+Docker/Compose permanece alternativa ainda não executada nesta máquina. Não é necessário para o fluxo Windows portátil validado. Não utilizar a conta bootstrap na API: a execução recusa papéis privilegiados.
 
 ## Entregue em 01.1
 

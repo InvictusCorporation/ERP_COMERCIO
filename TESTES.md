@@ -1,5 +1,23 @@
 # Testes e evidências
 
+## Entrega 01.2 — 09/11/2026
+
+PostgreSQL real 18.6 em Windows x64, loopback 55432, persistência em `.local/postgres`. Sem Docker, mocks de SQL ou serviço instalado no Windows. Bancos de integração separados do banco vazio de desenvolvimento.
+
+- `npm.cmd run test:integration`: 15 testes aprovados no relatório Node (14 subcenários e o agrupador).
+- `npm.cmd test`: 6 testes de configuração/HTTP/regressão aprovados.
+- Sanitização do ambiente remove credenciais de bootstrap/migração dos serviços e a URL de banco do serviço web; teste de regressão aprovado.
+- Integração abrange migração incremental, reexecução idempotente, checksum adulterado, rollback de DDL com erro, negação em schema parcialmente migrado, papel real sem privilégios, leitura/escrita sem contexto, IDs/tenant adulterados, WITH CHECK, FK composta, CRUD autorizado e unicidade por tenant.
+- Também aprovados rollback de dados, limpeza de contexto na conexão efetivamente reutilizada, 24 chamadas concorrentes com quatro conexões, usuário/vínculo/tenant inativos e pessoa com dois vínculos sem mistura de escopo.
+- Readiness HTTP real retornou 200 com papel restrito; uso da conta privilegiada foi recusado. `/api/v1/tenants` continua 404.
+- `db:portable:stop` confirmou diretório e encerrou de forma graciosa. Retomada aplicou zero migrações; as duas empresas fictícias do banco de teste permaneceram salvas.
+- `npm.cmd run dev` conectou a API com conta restrita; `/api/v1/health/ready` pelo proxy da interface retornou 200 e `database: up`.
+- Playwright: 8 testes aprovados com banco real conectado, cobrindo navegação, falha da API, teclado e as quatro larguras de tela.
+- `npm.cmd run typecheck`: aprovado nos três workspaces. Capturas do acompanhamento atualizado revisadas em `.local/qa/fundacao-01-2-desktop.png` e `.local/qa/fundacao-01-2-mobile.png`.
+- `npm.cmd run build`: aprovado em contratos, API e web, incluindo TypeScript e geração estática. Serviços de QA encerrados após os testes; dados do PostgreSQL preservados.
+
+Limites: login, sessões, permissões por ação, administração de usuários, matriz/filiais, auditoria e módulos comerciais ainda não implementados. Contexto de tenant é interno e não está exposto por HTTP. Compose não executado; não foi realizada homologação de produção.
+
 ## Revisão visual das referências — 09/11/2026
 
 - Fotos originais de dashboard e produtos reabertas e comparadas com a implementação.

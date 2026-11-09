@@ -63,13 +63,13 @@ const steps = [
     title: "Isolamento de empresas",
     description: "Banco de dados e separação dos clientes.",
     icon: Building2,
-    status: "Próximo incremento",
+    status: "Disponível nesta versão",
   },
   {
     title: "Autenticação e acesso",
     description: "Login, sessões e recuperação de acesso.",
     icon: ShieldCheck,
-    status: "Planejado",
+    status: "Próximo incremento",
   },
   {
     title: "Usuários e permissões",
@@ -383,7 +383,7 @@ export function Workspace() {
             <span>
               <span className="status-dot gold" />
               <strong>Primeiros passos</strong>
-              <span className="banner-divider">/</span>Estrutura inicial em
+              <span className="banner-divider">/</span>Fundação em
               desenvolvimento
             </span>
             <button onClick={() => navigate("foundation")}>
@@ -628,7 +628,7 @@ export function Workspace() {
                 {steps.map((step, i) => (
                   <article
                     key={step.title}
-                    className={i === 0 ? "current-step" : ""}
+                    className={i < 2 ? "current-step" : ""}
                   >
                     <span className="foundation-icon">
                       <step.icon size={24} />
@@ -638,9 +638,7 @@ export function Workspace() {
                       <h3>{step.title}</h3>
                       <p>{step.description}</p>
                     </div>
-                    <span
-                      className={`step-status ${i === 0 ? "available" : ""}`}
-                    >
+                    <span className={`step-status ${i < 2 ? "available" : ""}`}>
                       {step.status}
                     </span>
                   </article>

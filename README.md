@@ -4,9 +4,9 @@ Plataforma modular da Invictus Systems para comércio, estivas, mercados e redes
 
 ## Estado atual — 09/11/2026
 
-Entrega 01.1: workspace executável com interface responsiva, API NestJS, contratos compartilhados, validação de configuração e verificações HTTP de disponibilidade. Há navegação entre painel, acompanhamento da implantação e configurações; os indicadores comerciais permanecem vazios.
+Entrega 01.2: workspace executável com interface responsiva, API NestJS e PostgreSQL real local. Implementados schema inicial, migrações versionadas, papéis separados e isolamento por empresa com RLS testado. Há navegação entre painel, acompanhamento da implantação e configurações; os indicadores comerciais permanecem vazios.
 
-Autenticação, isolamento de empresas no banco, usuários, cadastros de unidades e módulos comerciais ainda não foram implementados. A fundação completa continua em desenvolvimento. Nenhuma tela inicial equivale a autorização para uso comercial.
+Autenticação, administração de usuários, cadastros de unidades e módulos comerciais ainda não foram implementados. Existem tabelas de identidade e vínculos para suportar essas próximas etapas, sem contas reais criadas automaticamente. A fundação completa continua em desenvolvimento.
 
 O repositório recebido continha somente `.git`, sem commits, código, dependências, banco ou remoto configurado. Nenhum módulo operacional foi encontrado. A inspeção ficou restrita ao projeto e à busca de instruções aplicáveis.
 
@@ -17,6 +17,7 @@ Repositório remoto informado posteriormente pelo usuário: [InvictusCorporation
 - [Escopo mestre original](ESCOPO.md)
 - [Arquitetura proposta e ambiente observado](ARQUITETURA.md)
 - [Etapa 01: tarefas, arquivos e critérios de aceitação](docs/ETAPA_01.md)
+- [Banco de dados, execução e isolamento](docs/BANCO_DADOS.md)
 - [Módulos e dependências](MODULOS.md)
 - [Regras de negócio](REGRAS_NEGOCIO.md)
 - [Testes planejados e verificações executadas](TESTES.md)
@@ -26,15 +27,17 @@ Repositório remoto informado posteriormente pelo usuário: [InvictusCorporation
 
 ## Executar localmente no Windows
 
-Requisitos: Node.js compatível com `engines` do `package.json` (validado com 26.13.0), npm (validado com 11.20.0) e, para banco real, Docker com Compose ou PostgreSQL configurado manualmente. Os comandos abaixo usam `npm.cmd` para não depender da política de execução de scripts PowerShell.
+Requisitos: Node.js compatível com `engines` do `package.json` (validado com 26.13.0) e npm (validado com 11.20.0). Windows x64 pode usar os binários portáteis opcionais incluídos no projeto; em outros sistemas, configurar PostgreSQL/Compose. Os comandos abaixo usam `npm.cmd` para não depender da política de execução de scripts PowerShell.
 
 Na raiz deste projeto:
 
 ```powershell
 npm.cmd ci
 npm.cmd run setup:local
-npm.cmd run dev
+npm.cmd run db:portable
 ```
+
+Manter o banco nesse terminal. Em outro terminal, na mesma pasta, executar `npm.cmd run dev`.
 
 Abrir [interface local](http://127.0.0.1:3000). `setup:local` verifica as portas 3000, 3333 e 55432 e gera `.env` com senha aleatória. Se `.env` já existir, não o sobrescreve. Para portas diferentes, configurar manualmente a partir de `.env.example`, mantendo `API_PORT` e `API_INTERNAL_URL` coerentes.
 
@@ -42,22 +45,26 @@ O comando `dev` compila contratos/API e inicia a API e o Next.js. Alterações d
 
 ### Banco local
 
-Docker/psql não foram encontrados no PATH da máquina inspecionada. O Compose foi preparado, mas ainda não executado ou validado contra um PostgreSQL real. A interface e a API podem ser utilizadas para revisar a estrutura sem banco; nesse caso o painel informa **Banco não conectado**.
+PostgreSQL 18.6 portátil foi inicializado e validado em banco real. `db:portable` prepara o schema e gera `.env.database`, ignorado pelo Git, com URLs separadas de migração e execução. O comando `dev` seleciona a conta restrita desse arquivo; a API recusa conta privilegiada e schema com RLS incompleto.
+
+`npm.cmd run db:portable:stop` encerra somente o cluster identificado deste projeto, sem apagar dados. A retomada preserva os dados. [Detalhes de execução e segurança](docs/BANCO_DADOS.md).
 
 Se Docker estiver disponível, após gerar `.env`:
 
 ```powershell
 npm.cmd run db:up
+npm.cmd run db:migrate
 ```
 
 O serviço usa volume próprio, PostgreSQL 18 e porta vinculada somente ao loopback. `npm.cmd run db:stop` para o serviço sem apagar o volume. Não usar comandos de remoção de volumes para reinicializar um banco com dados.
 
-A conta `invictus_bootstrap` é exclusivamente de infraestrutura local desta entrega, que só executa `SELECT 1`. Ela não é uma conta segura para operações de negócio. A entrega 01.2 deve separar migração e execução restrita, aplicar RLS e validar tudo com PostgreSQL antes de criar APIs comerciais. Não há schema de negócio nesta versão.
+A conta `invictus_bootstrap` é exclusivamente de infraestrutura local e testes. `invictus_migrator` aplica migrações; `invictus_app` executa a API sem privilégios administrativos. O Compose permanece como alternativa não executada nesta máquina; não o iniciar junto do portátil na mesma porta.
 
 ### Verificações e build
 
 ```powershell
 npm.cmd test
+npm.cmd run test:integration
 npm.cmd run typecheck
 npm.cmd run build
 ```
@@ -69,12 +76,12 @@ npx.cmd playwright install chromium
 npm.cmd run test:e2e
 ```
 
-Testes unitários/HTTP usam servidor temporário em loopback. A integração de banco bem-sucedido ainda não foi validada com infraestrutura real; os estados 200/503 de readiness são testados com adaptador controlado e a falha de conexão também é testada no driver real.
+Manter o banco ativo para integração; testes unitários/HTTP não dependem dele. A integração usa bancos fictícios separados, preservados para inspeção, e a conta real da API para testar o isolamento. Nenhum dado de teste é inserido no banco de desenvolvimento.
 
 ### API inicial
 
 - `GET /api/v1/health/live`: 200 enquanto o processo responde, independente do banco.
-- `GET /api/v1/health/ready`: 200 se `SELECT 1` funciona; 503 se o banco não responde. Não certifica schema, isolamento ou prontidão comercial.
+- `GET /api/v1/health/ready`: 200 se o banco responde com papel restrito e estrutura RLS exigida; 503 em caso de banco ausente, papel privilegiado ou estrutura incompleta. Não certifica prontidão comercial.
 
 As respostas não contêm host, credenciais ou detalhes do driver. O Next.js encaminha `/api/v1/*` para a API sem expor `DATABASE_URL` ao navegador. Não existem endpoints de dados comerciais nesta entrega.
 

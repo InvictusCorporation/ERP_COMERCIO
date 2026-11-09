@@ -1,6 +1,6 @@
 # Etapa 01 — Fundação
 
-Este plano atende à primeira ordem do escopo: apresentar arquitetura, tarefas, arquivos, aceitação e testes antes de programar. Planejamento 01.0 entregue; bootstrap 01.1 implementado com testes locais e ressalva de banco real ainda não disponível. A Etapa 01 completa permanece em desenvolvimento. Cada incremento deve passar por seus testes e atualizar a documentação antes do seguinte.
+Este plano atende à primeira ordem do escopo: apresentar arquitetura, tarefas, arquivos, aceitação e testes antes de programar. Planejamento 01.0, bootstrap 01.1 e isolamento/persistência 01.2 entregues com testes locais em PostgreSQL real. A Etapa 01 completa permanece em desenvolvimento. Cada incremento deve passar por seus testes e atualizar a documentação antes do seguinte.
 
 ## 01.0 — Análise e planejamento (entregue)
 
@@ -10,7 +10,7 @@ Aceitação: preservar escopo original; registrar ambiente real; distinguir prop
 
 ## 01.1 — Workspace e execução local
 
-Situação: código, instalação, configuração local, interface, testes HTTP e responsivos implementados. Compose preparado; banco real e seu healthcheck ainda não executados, pois Docker/PostgreSQL não foram localizados. Não marcar a persistência ou a fundação completa como concluídas. Evidências em `TESTES.md`.
+Situação: bootstrap entregue; a pendência de PostgreSQL real foi resolvida em 01.2 com binários portáteis, sem serviço global. Compose preparado, mas ainda não executado. Evidências em `TESTES.md`.
 
 Arquivos previstos: `package.json`, `package-lock.json`, `.gitignore`, `.env.example`, `tsconfig.base.json`, `apps/web/package.json`, `apps/web/src/app/layout.tsx`, `apps/web/src/app/page.tsx`, `apps/web/src/app/globals.css`, `apps/api/package.json`, `apps/api/src/main.ts`, `apps/api/src/app.module.ts`, `apps/api/src/health/health.controller.ts`, `packages/contracts/package.json`, `compose.yaml` e configurações de build/teste exigidas pelas ferramentas.
 
@@ -21,6 +21,8 @@ Aceitação: instalação reproduzível pelo lockfile; web e API iniciam conform
 Testes: build/typecheck, contrato de health/readiness e configuração inválida. Credenciais de exemplo serão fictícias e não utilizadas como padrão em produção.
 
 ## 01.2 — Banco e fronteira de empresas
+
+Situação: entregue com PostgreSQL 18.6 real, papéis de bootstrap/migração/execução separados, migrações imutáveis por checksum, RLS forçado, contexto transacional, constraints compostas e testes reais de isolamento. SQL fictício de testes é recusado fora de banco identificado. Parada/retomada preservaram dados. Não há controller de negócio antes de autenticação/permissões. Detalhes em `docs/BANCO_DADOS.md`.
 
 Arquivos previstos: `database/migrations/001_identity_tenancy.sql`, `database/migrations/002_rls.sql`, `database/seeds/test-tenants.sql`, `apps/api/src/database/*`, `apps/api/src/modules/tenancy/*` e `tests/integration/tenant-isolation.spec.ts`.
 

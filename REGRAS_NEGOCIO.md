@@ -1,6 +1,6 @@
 # Regras de negócio
 
-Requisitos a implementar progressivamente. O bootstrap 01.1 implementa somente validação de configuração e checks de disponibilidade; nenhuma regra comercial ou de acesso a dados foi implementada. Os indicadores da interface ficam vazios e não representam resultados reais.
+Requisitos a implementar progressivamente. O incremento 01.2 implementa o isolamento da fundação por tenant e vínculo ativo, com transação, RLS e conta restrita de banco. Autenticação e permissões por ação ainda não foram implementadas; por isso nenhum endpoint de negócio foi exposto. Os indicadores da interface ficam vazios e não representam resultados reais.
 
 ## Fundação
 

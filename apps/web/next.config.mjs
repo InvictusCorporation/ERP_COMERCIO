@@ -1,8 +1,13 @@
-import { existsSync } from "node:fs";
-import { loadEnvFile } from "node:process";
+import { existsSync, readFileSync } from "node:fs";
+import { parseEnv } from "node:util";
 const localEnv = new URL("../../.env", import.meta.url);
-if (existsSync(localEnv)) loadEnvFile(localEnv);
-const origin = process.env.API_INTERNAL_URL || "http://127.0.0.1:3333";
+const localConfig = existsSync(localEnv)
+  ? parseEnv(readFileSync(localEnv, "utf8"))
+  : {};
+const origin =
+  process.env.API_INTERNAL_URL ||
+  localConfig.API_INTERNAL_URL ||
+  "http://127.0.0.1:3333";
 const url = new URL(origin);
 if (
   !["http:", "https:"].includes(url.protocol) ||

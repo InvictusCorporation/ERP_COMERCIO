@@ -1,5 +1,18 @@
 # Histórico de alterações
 
+## 09/11/2026 — Entrega 01.2: banco e isolamento por empresa
+
+- Criada branch `codex/fundacao-isolamento` a partir do bootstrap visual.
+- Disponibilizado PostgreSQL 18.6 portátil e opcional para Windows x64 em `.local`, sem serviço global e sem alterar outros projetos.
+- Criadas migrações de identidade mínima, tenants, vínculos e configurações com FK composta por tenant.
+- Separadas contas de bootstrap, migração e execução; credenciais aleatórias adicionais permanecem em `.env.database`, ignorado pelo Git.
+- Implementados RLS forçado, negação sem contexto, contexto transacional com vínculo ativo e recusa de papéis privilegiados ou schema parcialmente protegido.
+- Criados runner de migrações com lock/checksum/rollback e testes com empresas fictícias em banco separado.
+- Validados acessos cruzados, CRUD, FK composta, rollback, pool sequencial/concorrente, inativação e readiness HTTP com PostgreSQL real.
+- Testadas parada e retomada com dados preservados e zero migrações reaplicadas.
+- Atualizado acompanhamento da implantação para indicar isolamento entregue e autenticação como próximo incremento.
+- Fluxos comerciais e endpoints de dados permanecem fechados até implementar autenticação e autorização. Sem publicação no GitHub ou implantação.
+
 ## 09/11/2026 — Revisão visual pelas referências do usuário
 
 - Retomadas as fotos originais, adotando o dashboard responsivo como referência principal.

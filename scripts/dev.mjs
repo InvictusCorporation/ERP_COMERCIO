@@ -1,12 +1,15 @@
 import { loadEnvFile } from "node:process";
 import { spawn, spawnSync } from "node:child_process";
 import { createRequire } from "node:module";
+import { readLocalConfig } from "./database/local-config.mjs";
+import { runtimeEnvironment } from "./runtime-environment.mjs";
 
 try {
   loadEnvFile(".env");
+  process.env.DATABASE_URL = readLocalConfig().appUrl;
 } catch {
   console.error(
-    "Arquivo .env ausente. Execute npm run setup:local antes de iniciar.",
+    "Configuração local ausente ou inválida. Execute npm run setup:local e confira o banco local.",
   );
   process.exit(1);
 }
@@ -16,7 +19,7 @@ for (const project of ["packages/contracts", "apps/api"]) {
   const build = spawnSync(
     process.execPath,
     [compiler, "-p", `${project}/tsconfig.json`],
-    { stdio: "inherit" },
+    { stdio: "inherit", env: runtimeEnvironment(process.env, "web") },
   );
   if (build.status !== 0) process.exit(build.status || 1);
 }
@@ -44,7 +47,10 @@ for (const args of [
 ]) {
   const child = spawn(process.execPath, args, {
     stdio: "inherit",
-    env: { ...process.env, NEXT_TELEMETRY_DISABLED: "1" },
+    env: runtimeEnvironment(
+      process.env,
+      args[0] === "apps/api/dist/main.js" ? "api" : "web",
+    ),
   });
   children.push(child);
   child.on("error", () => stop(1));

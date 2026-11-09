@@ -1,29 +1,15 @@
 import { Injectable, type OnApplicationShutdown } from "@nestjs/common";
-import { Pool } from "pg";
+import { TenantDatabase } from "./database/tenant-database";
 
 @Injectable()
-export class DatabaseService implements OnApplicationShutdown {
-  private readonly pool: Pool;
+export class DatabaseService
+  extends TenantDatabase
+  implements OnApplicationShutdown
+{
   constructor(databaseUrl: string) {
-    this.pool = new Pool({
-      connectionString: databaseUrl,
-      max: 2,
-      connectionTimeoutMillis: 1500,
-      query_timeout: 1500,
-      statement_timeout: 1500,
-    });
-    // Readiness consulta disponibilidade sem registrar host, credenciais ou erro do driver.
-    this.pool.on("error", () => {});
-  }
-  async isAvailable(): Promise<boolean> {
-    try {
-      await this.pool.query("SELECT 1");
-      return true;
-    } catch {
-      return false;
-    }
+    super(databaseUrl);
   }
   async onApplicationShutdown(): Promise<void> {
-    await this.pool.end();
+    await this.close();
   }
 }

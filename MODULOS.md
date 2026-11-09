@@ -1,6 +1,6 @@
 # Módulos e dependências
 
-Fundação em desenvolvimento: análise/planejamento (01.0) e bootstrap executável (01.1) entregues, com validação de banco real ainda pendente. Os módulos comerciais permanecem planejados.
+Fundação em desenvolvimento: análise/planejamento (01.0), bootstrap executável (01.1) e persistência/isolamento em PostgreSQL real (01.2) entregues. Autenticação e demais incrementos da fundação permanecem pendentes. Os módulos comerciais continuam planejados.
 
 | Etapa | Módulo | Dependências principais |
 | --- | --- | --- |

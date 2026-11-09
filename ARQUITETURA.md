@@ -1,6 +1,6 @@
 # Arquitetura proposta
 
-Status: arquitetura inicial com bootstrap implementado (01.1); persistência de negócio, autenticação e isolamento ainda planejados. Data: 09/11/2026.
+Status: bootstrap (01.1) e persistência/isolamento da fundação (01.2) implementados e testados localmente. Autenticação, gestão de usuários, unidades e auditoria continuam planejadas. Data: 09/11/2026.
 
 ## Ambiente observado
 
@@ -35,9 +35,11 @@ Versões do bootstrap: Next.js 16.4.5, React/React DOM 19.3.1, NestJS 12.4.2, pg
 
 O runtime local é Node 26.13.0; produção deve selecionar uma linha suportada e repetir validação. Bibliotecas de sessão, senha, validação de domínio e MFA serão escolhidas nos incrementos correspondentes. Contratos iniciais são apenas tipos de health checks, não validação de entrada comercial.
 
-O Next.js usa webpack explicitamente no ambiente Windows. O `.env` da raiz é carregado pelo orquestrador e pela configuração do Next, sem propagar `--env-file` via argumentos do processo web. O teste inicial com essa flag no processo Next falhou porque ela era repassada para `NODE_OPTIONS`; a inicialização foi corrigida.
+O Next.js usa webpack explicitamente no ambiente Windows. O `.env` da raiz é lido pelo orquestrador, que sanitiza o ambiente entregue aos processos. A configuração do Next seleciona apenas a origem da API, sem carregar os segredos em `process.env` e sem propagar `--env-file` via argumentos do processo web. O teste inicial com essa flag no processo Next falhou porque ela era repassada para `NODE_OPTIONS`; a inicialização foi corrigida.
 
-API implementada apenas com health checks, configuração validada, loopback por padrão, timeout curto de banco, shutdown e cabeçalhos básicos. O Compose usa conta de bootstrap local; nenhum endpoint comercial pode utilizá-la. Separação de papéis e RLS são condição do incremento 01.2. Até lá, readiness verifica somente conectividade com `SELECT 1`.
+API HTTP implementada apenas com health checks, configuração validada, loopback por padrão, timeout de banco, shutdown e cabeçalhos básicos. No incremento 01.2 foram adicionados PostgreSQL 18.6 portátil, migrações SQL, identidades mínimas, tenants, vínculos e configurações isoladas. `TenantDatabase` controla o contexto transacional e `TenancyRepository` permanece interno, sem controller público antes da autenticação.
+
+O papel restrito da API é distinto do bootstrap e do migrador. Readiness e execução recusam privilégios administrativos, herança/associação de papéis, propriedade do banco/tabelas e esquema com RLS incompleto. O orquestrador lê a URL restrita de `.env.database`; não altera `.env`. Infraestrutura local, limites e procedimentos em [Banco de dados](docs/BANCO_DADOS.md). Compose é alternativa ainda não executada nesta máquina.
 
 ```mermaid
 flowchart LR
