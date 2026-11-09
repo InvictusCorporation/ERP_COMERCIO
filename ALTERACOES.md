@@ -1,5 +1,19 @@
 # Histórico de alterações
 
+## 09/11/2026 — Entrega 01.1: bootstrap local
+
+- Criada branch `codex/fundacao-bootstrap` a partir do planejamento.
+- Criados workspace npm, lockfile, web Next.js/React, API NestJS e pacote de contratos TypeScript.
+- Implementadas configuração validada, liveness e readiness com timeout de PostgreSQL e respostas sem detalhes sensíveis.
+- Criados gerador de `.env` com senha aleatória, verificação prévia de portas e orquestrador local sem shell intermediário.
+- Preparado Compose PostgreSQL 18 com porta em loopback e volume exclusivo; execução real pendente da infraestrutura.
+- Criada interface Invictus responsiva em preto, branco e ouro, sem indicadores comerciais fictícios.
+- Implementados navegação inicial, painel de implantação, status real da API, ajuda e menu móvel com controle de foco.
+- Adicionados testes de configuração, inicialização, contrato HTTP, falha de banco e interface responsiva.
+- Geradas e revisadas capturas locais em `.local/qa`, ignoradas pelo Git.
+- Dependências instaladas; build e testes registrados em `TESTES.md`. Nenhuma migração de negócio ou autenticação implementada neste incremento.
+- Trabalho exclusivamente local. Nenhum envio ao GitHub após o bloqueio de publicação e nenhuma implantação.
+
 ## 09/11/2026 — Entrega 01.0: análise e planejamento
 
 - Analisado repositório inicialmente vazio, sem código, commits ou remoto.

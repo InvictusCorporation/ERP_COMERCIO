@@ -1,11 +1,16 @@
 # Pendências
 
-## Próxima entrega — 01.1
+## Próximo incremento — 01.2
 
-- Verificar acesso ao registro npm; fixar versões compatíveis do runtime e dependências. npm local identificado como `11.20.0`.
-- Verificar disponibilidade de PostgreSQL/Docker e portas livres. Não instalar nem interromper serviços alheios sem necessidade e autorização apropriada.
-- Criar workspace, configuração, health checks e shell responsivo conforme o plano.
-- Implementar 01.2–01.6 sequencialmente. A fundação está pendente.
+- Disponibilizar PostgreSQL real para validar o Compose e a conectividade bem-sucedida. Docker e psql não foram localizados no PATH. Não interromper serviços de outros projetos.
+- Criar schema de identidade/tenants, executor de migrações, papéis separados e RLS conforme `docs/ETAPA_01.md`.
+- Não utilizar `invictus_bootstrap` em operações comerciais. Hoje a API só consulta disponibilidade com `SELECT 1`.
+- Validar contexto transacional, constraints e isolamento com o papel real da API antes de avançar para autenticação.
+- Implementar 01.3–01.6 sequencialmente. A fundação completa continua pendente.
+
+## Entregue em 01.1
+
+Workspace npm com versões fixadas, configuração local sem sobrescrita, health checks, interface responsiva com estados vazios, navegação de implantação/configurações, testes locais e build. Nenhuma credencial real foi versionada.
 
 ## Decisões antes de produção
 
@@ -15,6 +20,7 @@
 - Retenção de auditoria e dados pessoais, termos e política de acesso de suporte.
 - Integração de CI e política de revisão. O remoto `origin` foi vinculado a `https://github.com/InvictusCorporation/ERP_COMERCIO.git`, informado pelo usuário; a consulta inicial confirmou ausência de refs remotas.
 - A identidade de autoria foi obtida da conta GitHub conectada para configuração local deste repositório, sem alterar a configuração global.
+- Envio ao GitHub público: bloqueado pela revisão automática porque faltou autorização explícita para divulgar o escopo completo. O usuário pediu iniciar a criação; isso não foi tratado como autorização de publicação. Não reenviar por outra ferramenta.
 - Critérios comerciais de matriz/pessoa jurídica e validações cadastrais finais.
 
 Essas decisões não impedem a implementação local da fundação com adaptadores de teste explicitamente identificados. Sem implantação em produção nesta entrega.

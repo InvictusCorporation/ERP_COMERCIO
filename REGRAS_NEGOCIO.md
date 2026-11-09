@@ -1,6 +1,6 @@
 # Regras de negócio
 
-Requisitos a implementar progressivamente. Nenhuma regra foi implementada nesta entrega documental.
+Requisitos a implementar progressivamente. O bootstrap 01.1 implementa somente validação de configuração e checks de disponibilidade; nenhuma regra comercial ou de acesso a dados foi implementada. Os indicadores da interface ficam vazios e não representam resultados reais.
 
 ## Fundação
 

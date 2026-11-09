@@ -1,6 +1,6 @@
 # Arquitetura proposta
 
-Status: proposta inicial, anterior à programação. Data: 09/11/2026.
+Status: arquitetura inicial com bootstrap implementado (01.1); persistência de negócio, autenticação e isolamento ainda planejados. Data: 09/11/2026.
 
 ## Ambiente observado
 
@@ -31,7 +31,13 @@ Monólito modular com web e API separadas no mesmo workspace npm. Uma API centra
 | Verificação | Testes unitários, integração com PostgreSQL e Playwright | Verifica regras, isolamento real e uso responsivo |
 | Processamento futuro | Outbox transacional e worker | Entrega recuperável de eventos e notificações |
 
-Versões exatas e bibliotecas de sessão, senha, validação e MFA serão fixadas no bootstrap após verificar compatibilidade e manutenção. O Node encontrado não define automaticamente a versão de produção. Nenhuma dependência foi instalada nesta entrega.
+Versões do bootstrap: Next.js 16.4.5, React/React DOM 19.3.1, NestJS 12.4.2, pg 8.23.1, TypeScript 5.9.3, Playwright 1.65.0 e Lucide React 1.70.0. Dependências exatas e árvore resolvida estão no `package-lock.json`. A instalação inicial reportou zero vulnerabilidades conhecidas naquele momento; isso não substitui revisão de segurança.
+
+O runtime local é Node 26.13.0; produção deve selecionar uma linha suportada e repetir validação. Bibliotecas de sessão, senha, validação de domínio e MFA serão escolhidas nos incrementos correspondentes. Contratos iniciais são apenas tipos de health checks, não validação de entrada comercial.
+
+O Next.js usa webpack explicitamente no ambiente Windows. O `.env` da raiz é carregado pelo orquestrador e pela configuração do Next, sem propagar `--env-file` via argumentos do processo web. O teste inicial com essa flag no processo Next falhou porque ela era repassada para `NODE_OPTIONS`; a inicialização foi corrigida.
+
+API implementada apenas com health checks, configuração validada, loopback por padrão, timeout curto de banco, shutdown e cabeçalhos básicos. O Compose usa conta de bootstrap local; nenhum endpoint comercial pode utilizá-la. Separação de papéis e RLS são condição do incremento 01.2. Até lá, readiness verifica somente conectividade com `SELECT 1`.
 
 ```mermaid
 flowchart LR

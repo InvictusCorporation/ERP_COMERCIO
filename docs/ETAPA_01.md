@@ -1,14 +1,16 @@
 # Etapa 01 — Fundação
 
-Este plano atende à primeira ordem do escopo: apresentar arquitetura, tarefas, arquivos, aceitação e testes antes de programar. Esta entrega é 01.0; não conclui a fundação. Cada incremento abaixo deve passar por seus testes e atualizar a documentação antes do seguinte.
+Este plano atende à primeira ordem do escopo: apresentar arquitetura, tarefas, arquivos, aceitação e testes antes de programar. Planejamento 01.0 entregue; bootstrap 01.1 implementado com testes locais e ressalva de banco real ainda não disponível. A Etapa 01 completa permanece em desenvolvimento. Cada incremento deve passar por seus testes e atualizar a documentação antes do seguinte.
 
-## 01.0 — Análise e planejamento (entrega atual)
+## 01.0 — Análise e planejamento (entregue)
 
 Arquivos criados: `README.md`, `ESCOPO.md`, `ARQUITETURA.md`, `MODULOS.md`, `REGRAS_NEGOCIO.md`, `ALTERACOES.md`, `APRENDIZADOS.md`, `TESTES.md`, `PENDENCIAS.md` e este plano. Nenhum arquivo operacional existente precisou ser alterado.
 
 Aceitação: preservar escopo original; registrar ambiente real; distinguir proposta de implementação; definir fronteira de tenant e tarefas verificáveis. Verificação: integridade da cópia do escopo, links locais, diff e estado Git.
 
 ## 01.1 — Workspace e execução local
+
+Situação: código, instalação, configuração local, interface, testes HTTP e responsivos implementados. Compose preparado; banco real e seu healthcheck ainda não executados, pois Docker/PostgreSQL não foram localizados. Não marcar a persistência ou a fundação completa como concluídas. Evidências em `TESTES.md`.
 
 Arquivos previstos: `package.json`, `package-lock.json`, `.gitignore`, `.env.example`, `tsconfig.base.json`, `apps/web/package.json`, `apps/web/src/app/layout.tsx`, `apps/web/src/app/page.tsx`, `apps/web/src/app/globals.css`, `apps/api/package.json`, `apps/api/src/main.ts`, `apps/api/src/app.module.ts`, `apps/api/src/health/health.controller.ts`, `packages/contracts/package.json`, `compose.yaml` e configurações de build/teste exigidas pelas ferramentas.
 

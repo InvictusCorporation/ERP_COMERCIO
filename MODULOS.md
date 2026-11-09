@@ -1,6 +1,6 @@
 # Módulos e dependências
 
-Todos os módulos estão planejados; apenas análise e documentação inicial foram entregues.
+Fundação em desenvolvimento: análise/planejamento (01.0) e bootstrap executável (01.1) entregues, com validação de banco real ainda pendente. Os módulos comerciais permanecem planejados.
 
 | Etapa | Módulo | Dependências principais |
 | --- | --- | --- |
