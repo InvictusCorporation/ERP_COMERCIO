@@ -34,13 +34,15 @@ Cada vínculo possui um perfil na empresa selecionada. Não existe soma de permi
 
 Esses perfis comerciais identificam a função. Vendas, estoque, financeiro, compras e entregas ainda não possuem endpoints liberados; as permissões desses módulos serão adicionadas e testadas em suas etapas. O perfil Master Invictus não pode ser criado, convidado ou concedido por este módulo. A administração da plataforma SaaS permanece futura.
 
-Perfis padrão são protegidos contra edição. Perfis personalizados podem combinar as três permissões implementadas, sujeitos ao limite de quem concede. A permissão de proprietário é reservada e não entra em perfil personalizado.
+Perfis padrão são protegidos contra edição. Perfis personalizados podem combinar as permissões implementadas do catálogo, sujeitos ao limite de quem concede. A permissão de proprietário é reservada e não entra em perfil personalizado.
 
 | Permissão | Ação |
 | --- | --- |
 | `users.read` | Consultar equipe e perfis; convites aparecem apenas para quem gerencia usuários |
 | `users.manage` | Convidar/revogar e alterar perfil/situação de vínculos autorizados |
 | `roles.manage` | Criar e editar perfis personalizados autorizados |
+| `organizations.read` | Consultar estrutura autorizada |
+| `organizations.manage` | Gerenciar empresas e unidades com MFA e escopo global |
 | `ownership.manage` | Convidar/alterar proprietários; exclusiva do proprietário |
 
 `users.manage` e `roles.manage` exigem também `users.read`. Ninguém pode conceder ou editar um perfil mais privilegiado que o próprio. A exigência de MFA é persistida quando um vínculo ou perfil ganha administração; sua retirada não remove MFA já exigido/configurado. A política é conservadora para contas com vários vínculos.
@@ -51,7 +53,7 @@ O último proprietário ativo não pode ser suspenso ou rebaixado. Operações d
 
 ## Escopo atual e próximo incremento
 
-O escopo disponível é a **empresa**. A seleção de unidades permanece desabilitada até o cadastro persistente de matriz, filiais e depósitos em 01.5. Restrições por filial precisam ser integradas e testadas nessa entrega; não há promessa de isolamento entre filiais nesta versão. Isolamento entre empresas continua obrigatório e testado.
+O incremento 01.5 acrescenta escopo de toda a rede ou somente filiais/CDs/depósitos selecionados, em convites e vínculos existentes. Seletores e API revalidam os acessos atuais; administração global fica indisponível a vínculos restritos. Proprietários mantêm toda a rede. Guia e regras em [Empresas e unidades](EMPRESAS_UNIDADES.md).
 
 ## API e banco
 

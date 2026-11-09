@@ -36,3 +36,7 @@ Sessões parciais não acessam o painel antes de concluir MFA. Senha redefinida 
 ## Acessos — 01.4
 
 Vínculo é por empresa e não agrega permissões de outros vínculos. Convites duram sete dias, têm uso único e exigem sessão da pessoa convidada quando a conta já existe. Ninguém concede permissões acima das suas; Master não é concedível por empresa. Proprietário/administradores exigem MFA. Alterações de permissões e suspensão valem nas requisições seguintes; preservar ao menos um proprietário ativo, inclusive sob concorrência. Auditoria da alteração é atômica. Restrição por unidade será integrada em 01.5. Matriz e detalhes em [Usuários e permissões](docs/USUARIOS_PERMISSOES.md).
+
+## Organização e filial — 01.5
+
+Rede/tenant é a fronteira do cliente; pessoas jurídicas e estabelecimentos ficam dentro dela. Empresa e matriz são criadas atomicamente. Filiais/CDs vinculam-se à matriz; depósitos à matriz/filial/CD da mesma empresa. Identidade, tipo, código e vínculos da unidade são permanentes. CNPJ tem formato/DV verificados, com suporte alfanumérico e raiz coerente; sem consulta fiscal. Inativação preserva histórico e bloqueia dependentes. Escopo restrito não inclui pais/filhos automaticamente, não concede administração global nem soma outras redes; proprietário mantém escopo global. Seleção de unidade só aceita atribuição ativa e é limpa quando invalidada. Guia em [Empresas e unidades](docs/EMPRESAS_UNIDADES.md).

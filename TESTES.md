@@ -1,5 +1,25 @@
 # Testes e evidências
 
+## Entrega 01.5 — 09/11/2026
+
+- Migração 005 aplicada incrementalmente em PostgreSQL real 18.6, sem editar migrações anteriores ou criar empresas reais.
+- `npm.cmd test`: 13 testes unitários/HTTP aprovados, incluindo CNPJ numérico, exemplo alfanumérico oficial e dígitos/caracteres inválidos.
+- `npm.cmd run test:integration`: 78 testes aprovados no relatório Node, incluindo agrupadores. Novos 23 cenários de organização e regressão completa de autenticação, usuários/permissões e isolamento.
+- Empresa/matriz atômicas, filial, CD, depósito sob filial, CNPJ/raiz/código/UF/CEP, duplicidade, hierarquia inválida e imutabilidade de identidade testados. FKs compostas impedem vínculos e atribuições entre redes/empresas distintas.
+- Usuário restrito não consulta matriz, irmãos ou depósitos não atribuídos; adulterar o ID não amplia escopo. Perfil administrativo restrito perde administração global; perfil personalizado pode gerenciar somente estrutura, com MFA, sem administrar equipe.
+- Troca de escopo afeta sessão aberta; unidade selecionada é limpa quando perde acesso. Inativar filial/empresa bloqueia dependentes, seleção e leitura comercial; reativação preserva cadastros/atribuições.
+- `withUnit` e RLS com o papel comercial real aprovados: unidade ausente/alheia/inativa negada, sem leitura fora do contexto, 16 operações concorrentes entre unidades e redes em pool de duas conexões, sem resíduo no reuso.
+- Convite preserva o escopo exato; unidade inativada e remetente que perde escopo global impedem aceite. Falha no evento provoca rollback de empresa e matriz, sem registro parcial.
+- API encerrada e iniciada novamente no teste: empresas, unidades, sessão e unidade selecionada preservadas.
+- `npm.cmd run test:e2e`: 33 cenários aprovados integralmente. Oito novos cenários cobrem cadastro visual de empresa/matriz/filial, persistência, CNPJ inválido mantendo formulário, configuração de acesso por filial na interface, contexto do operador e inativação/reativação, mais as quatro larguras 360/390/768/1440 px. Regressões de login/dashboard/equipe mantidas.
+- Quatro testes de captura responsiva repetidos após ajustar somente o enquadramento ao topo, todos aprovados. Capturas em `.local/qa/empresas-360.png`, `empresas-390.png`, `empresas-768.png` e `empresas-1440.png`, usando redes e pessoas fictícias isoladas.
+- `npm.cmd run typecheck`: aprovado nos três workspaces. A aplicação não registrou erro de página no fluxo de cadastro monitorado pelo teste.
+- `npm.cmd run build`: aprovado em contratos, API e web, com geração das páginas e TypeScript. Tipos normais restaurados sem caminhos aleatórios de cache de teste.
+- Busca por credenciais reais no diff preparado e JavaScript público: nenhuma encontrada. Arquivos privados, bancos, capturas e caches fora do Git; escopo original SHA-256 preservado, links locais válidos e `git diff --cached --check` aprovado.
+- A primeira verificação da mensagem de CNPJ encontrou dois role alerts (mensagem e anunciador de navegação do Next); o seletor passou a ser limitado à região do módulo. A repetição completa aprovou os 33 testes.
+
+Limites: validação de CNPJ é somente de formato/DV, sem consulta de situação fiscal. Estoque por depósito, movimentações, transferências, fiscal e consolidação comercial ainda não existem. Auditoria unificada permanece em 01.6; SMTP real e recuperação de fator perdido ainda pendentes antes de produção. Sem implantação, publicação no GitHub ou e-mails externos.
+
 ## Entrega 01.4 — 09/11/2026
 
 - PostgreSQL real 18.6, bancos fictícios próprios, sem criar equipe no banco de desenvolvimento. Migração 004 aplicada incrementalmente; migrações anteriores preservadas.

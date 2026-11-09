@@ -17,7 +17,9 @@ Status: bootstrap (01.1), persistência/isolamento (01.2) e autenticação/sess�
 
 Não foi inspecionado o estado de serviços de outros projetos. Ausência de configuração no repositório não significa ausência de serviços no computador.
 
-O incremento 01.4 adiciona `access.roles`, convites de uso único, vínculo/perfil com FK composta e eventos transacionais. RLS delimita empresa; autorização por ação é reavaliada no serviço. Escopo por filial será integrado em 01.5. Guia em [Usuários e permissões](docs/USUARIOS_PERMISSOES.md).
+O incremento 01.4 adiciona `access.roles`, convites de uso único, vínculo/perfil com FK composta e eventos transacionais. RLS delimita empresa; autorização por ação é reavaliada no serviço. Escopo por filial integrado em 01.5. Guia em [Usuários e permissões](docs/USUARIOS_PERMISSOES.md).
+
+O incremento 01.5 adiciona `organizations.companies`, `units`, `membership_units` e `invitation_units`, com RLS forçada e FKs compostas. Empresa legal pertence ao tenant/rede existente. `withUnit` e disponibilidade por hierarquia limitam leitura comercial; a API reavalia permissões/escopos em cada requisição. CNPJ numérico e alfanumérico aceitos, sem consulta fiscal externa. Guia em [Empresas e unidades](docs/EMPRESAS_UNIDADES.md).
 
 ## Decisão inicial
 

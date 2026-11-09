@@ -52,6 +52,8 @@ export function AccessPanel({
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [active, setActive] = useState(true);
+  const [allUnits, setAllUnits] = useState(true);
+  const [unitIds, setUnitIds] = useState<string[]>([]);
   const [permissions, setPermissions] = useState<Permission[]>([]);
   const editor = useRef<HTMLElement>(null);
   const load = useCallback(async () => {
@@ -97,6 +99,8 @@ export function AccessPanel({
     setName(item?.name || "");
     setEmail(kind === "member" ? (item as AccessMember).email : "");
     setActive(kind === "member" ? (item as AccessMember).active : true);
+    setAllUnits(kind === "member" ? (item as AccessMember).allUnits : true);
+    setUnitIds(kind === "member" ? (item as AccessMember).unitIds : []);
     setRoleId(
       kind === "member"
         ? (item as AccessMember).roleId
@@ -132,7 +136,11 @@ export function AccessPanel({
     if (mode === "invite")
       await perform(
         () =>
-          accessRequest("invitations", { name, email, roleId }, session.csrf),
+          accessRequest(
+            "invitations",
+            { name, email, roleId, allUnits, unitIds: allUnits ? [] : unitIds },
+            session.csrf,
+          ),
         "Convite preparado para envio ao e-mail informado.",
       );
     if (mode === "member" && member)
@@ -140,7 +148,13 @@ export function AccessPanel({
         () =>
           accessRequest(
             "members/change",
-            { id: member.id, roleId, active },
+            {
+              id: member.id,
+              roleId,
+              active,
+              allUnits,
+              unitIds: allUnits ? [] : unitIds,
+            },
             session.csrf,
           ),
         "Acesso atualizado. A alteração já vale para esta empresa.",
@@ -364,7 +378,11 @@ export function AccessPanel({
                               )}
                             </td>
                             <td>
-                              <span className="access-muted">Empresa</span>
+                              <span className="access-muted">
+                                {m.allUnits
+                                  ? "Toda a rede"
+                                  : `${m.unitIds.length} unidade(s)`}
+                              </span>
                             </td>
                             <td>
                               <span
@@ -595,7 +613,17 @@ export function AccessPanel({
                     Perfil de acesso
                     <select
                       value={roleId}
-                      onChange={(e) => setRoleId(e.target.value)}
+                      onChange={(e) => {
+                        setRoleId(e.target.value);
+                        if (
+                          data?.roles
+                            .find((r) => r.id === e.target.value)
+                            ?.permissions.includes("ownership.manage")
+                        ) {
+                          setAllUnits(true);
+                          setUnitIds([]);
+                        }
+                      }}
                       required
                     >
                       {data?.roles
@@ -610,9 +638,91 @@ export function AccessPanel({
                   <div className="access-scope">
                     <Building2 size={18} />
                     <span>
-                      Escopo: <strong>{data?.tenant.name}</strong>
+                      Rede: <strong>{data?.tenant.name}</strong>
                     </span>
                   </div>
+                  <fieldset className="unit-scope-editor">
+                    <legend>Acesso por filial / unidade</legend>
+                    <label>
+                      Escopo de acesso
+                      <select
+                        aria-label="Escopo de acesso"
+                        value={allUnits ? "all" : "selected"}
+                        onChange={(e) => {
+                          setAllUnits(e.target.value === "all");
+                          setUnitIds([]);
+                        }}
+                        disabled={data?.roles
+                          .find((r) => r.id === roleId)
+                          ?.permissions.includes("ownership.manage")}
+                      >
+                        <option value="all">
+                          Toda a rede (inclui novas unidades)
+                        </option>
+                        <option value="selected">
+                          Somente unidades selecionadas
+                        </option>
+                      </select>
+                    </label>
+                    {!allUnits && (
+                      <>
+                        <p>
+                          Marque cada filial ou depósito autorizado. O vínculo
+                          superior não é incluído automaticamente.
+                        </p>
+                        <div className="scope-unit-options">
+                          {data?.units.map((u) => (
+                            <label key={u.id}>
+                              <input
+                                type="checkbox"
+                                checked={unitIds.includes(u.id)}
+                                onChange={(e) =>
+                                  setUnitIds(
+                                    e.target.checked
+                                      ? [...unitIds, u.id]
+                                      : unitIds.filter((id) => id !== u.id),
+                                  )
+                                }
+                              />
+                              <span>
+                                {u.name}
+                                <small>
+                                  {u.companyName} · {u.code}
+                                </small>
+                              </span>
+                            </label>
+                          ))}
+                        </div>
+                        {!data?.units.length && (
+                          <p>
+                            Cadastre e ative as unidades antes de restringir o
+                            acesso.
+                          </p>
+                        )}
+                        {unitIds.some(
+                          (id) => !data?.units.some((u) => u.id === id),
+                        ) && (
+                          <button
+                            type="button"
+                            className="button secondary"
+                            onClick={() =>
+                              setUnitIds(
+                                unitIds.filter((id) =>
+                                  data?.units.some((u) => u.id === id),
+                                ),
+                              )
+                            }
+                          >
+                            Remover unidades indisponíveis do escopo
+                          </button>
+                        )}
+                        <p>
+                          Administração da rede e da equipe exige escopo “Toda a
+                          rede”.
+                        </p>
+                      </>
+                    )}
+                  </fieldset>
                 </>
               )}
               {mode === "member" && (

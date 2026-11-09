@@ -19,14 +19,14 @@ export async function assertRuntimeRole(
     r.rolcreaterole, r.rolreplication, r.rolinherit,
     EXISTS (SELECT 1 FROM pg_auth_members WHERE member=r.oid) AS role_membership,
     EXISTS (SELECT 1 FROM pg_database WHERE datname=current_database() AND datdba=r.oid) AS owns_database,
-    NOT (SELECT count(*)=3 AND coalesce(bool_and(c.relrowsecurity AND c.relforcerowsecurity),false)
+    NOT (SELECT count(*)=7 AND coalesce(bool_and(c.relrowsecurity AND c.relforcerowsecurity),false)
       FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
-      WHERE (n.nspname,c.relname) IN (('identity','memberships'),('tenancy','tenants'),('tenancy','settings')))
+      WHERE (n.nspname,c.relname) IN (('identity','memberships'),('tenancy','tenants'),('tenancy','settings'),('organizations','companies'),('organizations','units'),('organizations','membership_units'),('organizations','invitation_units')))
       AS unsafe_rls,
     to_regprocedure('identity.has_active_tenant()') IS NULL AS missing_policy_function,
     pg_has_role(current_user, 'invictus_migrator', 'MEMBER') AS migration_member,
     EXISTS (SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
-      WHERE c.relowner=r.oid AND n.nspname IN ('identity','tenancy','infra')) AS owns_tables
+      WHERE c.relowner=r.oid AND n.nspname IN ('identity','tenancy','infra','organizations')) AS owns_tables
     FROM pg_roles r WHERE r.rolname=current_user`);
   const role = result.rows[0];
   if (
@@ -114,6 +114,25 @@ export class TenantDatabase {
     } finally {
       client.release(discard);
     }
+  }
+  async withUnit<T>(
+    context: TenantContext & { unitId: string },
+    action: (client: PoolClient, membershipId: string) => Promise<T>,
+  ): Promise<T> {
+    if (!uuid.test(context?.unitId || "")) throw new TenantAccessDenied();
+    return this.withTenant(context, async (client, membershipId) => {
+      await client.query("SELECT set_config('app.unit_id',$1,true)", [
+        context.unitId,
+      ]);
+      const unit = (
+        await client.query(
+          "SELECT id FROM organizations.units WHERE id=$1 AND tenant_id=$2",
+          [context.unitId, context.tenantId],
+        )
+      ).rows[0];
+      if (!unit) throw new TenantAccessDenied();
+      return action(client, membershipId);
+    });
   }
   async close(): Promise<void> {
     await this.pool.end();

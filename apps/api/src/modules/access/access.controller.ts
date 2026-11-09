@@ -23,6 +23,7 @@ import {
   passwordText,
 } from "../identity/auth.controller";
 import { equalSecret, csrfToken } from "../identity/crypto";
+import { parseScope } from "../organizations/unit-scope";
 import { AccessService } from "./access.service";
 @Controller("access")
 @UseFilters(AuthExceptionFilter)
@@ -74,11 +75,12 @@ export class AccessController {
     r: Request,
   ) {
     const raw = (await this.mutation(r))!;
-    const i = body(v, ["email", "name", "roleId"]);
+    const i = body(v, ["email", "name", "roleId", "allUnits", "unitIds"]);
     return this.access.invite(raw, {
       email: email(i.email),
       name: text(i.name, 120).trim() || "Usuário",
       roleId: uuid(i.roleId),
+      scope: parseScope(i.allUnits, i.unitIds),
     });
   }
   @Post("invitations/revoke")
@@ -102,10 +104,16 @@ export class AccessController {
     r: Request,
   ) {
     const raw = (await this.mutation(r))!;
-    const i = body(v, ["id", "roleId", "active"]);
+    const i = body(v, ["id", "roleId", "active", "allUnits", "unitIds"]);
     if (typeof i.active !== "boolean")
       throw new BadRequestException("Situação inválida.");
-    return this.access.changeMember(raw, uuid(i.id), uuid(i.roleId), i.active);
+    return this.access.changeMember(
+      raw,
+      uuid(i.id),
+      uuid(i.roleId),
+      i.active,
+      parseScope(i.allUnits, i.unitIds),
+    );
   }
   @Post("roles/save")
   @HttpCode(200)
@@ -119,7 +127,7 @@ export class AccessController {
     const i = body(v, ["id", "name", "permissions"]);
     if (
       !Array.isArray(i.permissions) ||
-      i.permissions.length > 4 ||
+      i.permissions.length > PERMISSIONS.length ||
       i.permissions.some((p) => !PERMISSIONS.some((valid) => valid.key === p))
     )
       throw new BadRequestException("Permissões inválidas.");

@@ -20,6 +20,8 @@ import {
   hashPassword,
   validPassword,
 } from "../identity/crypto";
+import { availableUnits, validateScope } from "../organizations/unit-scope";
+import type { UnitScope } from "@invictus/contracts";
 type Context = {
   userId: string;
   tenantId: string;
@@ -27,20 +29,31 @@ type Context = {
 };
 const systemRoles: [string, Permission[]][] = [
   ["Proprietário", []],
-  ["Administrador", ["users.read", "users.manage", "roles.manage"]],
-  ["Gerente", ["users.read"]],
-  ["Financeiro", []],
-  ["Comprador", []],
-  ["Estoquista", []],
-  ["Operador de caixa", []],
-  ["Vendedor", []],
-  ["Conferente", []],
-  ["Entregador", []],
+  [
+    "Administrador",
+    [
+      "users.read",
+      "users.manage",
+      "roles.manage",
+      "organizations.read",
+      "organizations.manage",
+    ],
+  ],
+  ["Gerente", ["users.read", "organizations.read"]],
+  ["Financeiro", ["organizations.read"]],
+  ["Comprador", ["organizations.read"]],
+  ["Estoquista", ["organizations.read"]],
+  ["Operador de caixa", ["organizations.read"]],
+  ["Vendedor", ["organizations.read"]],
+  ["Conferente", ["organizations.read"]],
+  ["Entregador", ["organizations.read"]],
 ];
 const missing = () =>
   new NotFoundException("Registro não encontrado nesta empresa.");
 const sensitive = (p: Permission[]) =>
-  p.includes("users.manage") || p.includes("roles.manage");
+  p.includes("users.manage") ||
+  p.includes("roles.manage") ||
+  p.includes("organizations.manage");
 export class AccessService {
   constructor(private readonly auth: AuthService) {}
   private require(ctx: Context, p: Permission) {
@@ -91,7 +104,7 @@ export class AccessService {
       ).rows[0];
       const members = (
         await c.query(
-          `SELECT m.id,u.display_name AS name,u.email,(m.active AND u.active) AS active,m.is_owner AS "isOwner",m.role_id AS "roleId",r.name AS "roleName",(cr.mfa_secret_enc IS NOT NULL) AS "mfaEnabled" FROM identity.memberships m JOIN identity.users u ON u.id=m.user_id LEFT JOIN access.roles r ON r.tenant_id=m.tenant_id AND r.id=m.role_id JOIN identity.credentials cr ON cr.user_id=u.id WHERE m.tenant_id=$1 ORDER BY m.is_owner DESC,u.display_name`,
+          `SELECT m.id,u.display_name AS name,u.email,(m.active AND u.active) AS active,m.is_owner AS "isOwner",m.all_units AS "allUnits",ARRAY(SELECT a.unit_id FROM organizations.membership_units a WHERE a.tenant_id=m.tenant_id AND a.membership_id=m.id ORDER BY a.unit_id) AS "unitIds",m.role_id AS "roleId",r.name AS "roleName",(cr.mfa_secret_enc IS NOT NULL) AS "mfaEnabled" FROM identity.memberships m JOIN identity.users u ON u.id=m.user_id LEFT JOIN access.roles r ON r.tenant_id=m.tenant_id AND r.id=m.role_id JOIN identity.credentials cr ON cr.user_id=u.id WHERE m.tenant_id=$1 ORDER BY m.is_owner DESC,u.display_name`,
           [ctx.tenantId],
         )
       ).rows.map((m) => ({
@@ -107,7 +120,7 @@ export class AccessService {
       const invitations = ctx.permissions.includes("users.manage")
         ? (
             await c.query(
-              `SELECT i.id,i.display_name AS name,i.email,CASE WHEN i.is_owner THEN 'Proprietário' ELSE r.name END AS "roleName",i.expires_at AS "expiresAt",CASE WHEN i.accepted_at IS NOT NULL THEN 'accepted' WHEN i.revoked_at IS NOT NULL THEN 'revoked' WHEN i.expires_at<=now() THEN 'expired' ELSE 'pending' END AS status FROM access.invitations i JOIN access.roles r ON r.tenant_id=i.tenant_id AND r.id=i.role_id WHERE i.tenant_id=$1 ORDER BY i.created_at DESC LIMIT 100`,
+              `SELECT i.id,i.all_units AS "allUnits",ARRAY(SELECT a.unit_id FROM organizations.invitation_units a WHERE a.tenant_id=i.tenant_id AND a.invitation_id=i.id ORDER BY a.unit_id) AS "unitIds",i.display_name AS name,i.email,CASE WHEN i.is_owner THEN 'Proprietário' ELSE r.name END AS "roleName",i.expires_at AS "expiresAt",CASE WHEN i.accepted_at IS NOT NULL THEN 'accepted' WHEN i.revoked_at IS NOT NULL THEN 'revoked' WHEN i.expires_at<=now() THEN 'expired' ELSE 'pending' END AS status FROM access.invitations i JOIN access.roles r ON r.tenant_id=i.tenant_id AND r.id=i.role_id WHERE i.tenant_id=$1 ORDER BY i.created_at DESC LIMIT 100`,
               [ctx.tenantId],
             )
           ).rows
@@ -119,6 +132,7 @@ export class AccessService {
         roles,
         members,
         invitations,
+        units: await availableUnits(c, ctx.userId, ctx.tenantId),
       };
     });
   }
@@ -128,6 +142,7 @@ export class AccessService {
       email: string;
       name: string;
       roleId: string;
+      scope?: UnitScope;
     },
   ) {
     await this.auth.withAccess(raw, async (c, ctx) => {
@@ -136,6 +151,12 @@ export class AccessService {
       const role = roles.find((r) => r.id === input.roleId);
       if (!role) throw missing();
       this.grant(ctx, role);
+      const scope = await validateScope(
+        c,
+        ctx.tenantId,
+        input.scope || { allUnits: true, unitIds: [] },
+        role.system && role.name === "Proprietário",
+      );
       if (
         (
           await c.query(
@@ -166,6 +187,15 @@ export class AccessService {
           ],
         )
       ).rows[0];
+      await c.query(
+        "UPDATE access.invitations SET all_units=$1 WHERE tenant_id=$2 AND id=$3",
+        [scope.allUnits, ctx.tenantId, row.id],
+      );
+      for (const unitId of scope.unitIds)
+        await c.query(
+          "INSERT INTO organizations.invitation_units(tenant_id,invitation_id,unit_id) VALUES($1,$2,$3)",
+          [ctx.tenantId, row.id, unitId],
+        );
       const payload = {
         to: input.email,
         kind: "invitation",
@@ -206,7 +236,13 @@ export class AccessService {
       return { ok: true };
     });
   }
-  async changeMember(raw: string, id: string, roleId: string, active: boolean) {
+  async changeMember(
+    raw: string,
+    id: string,
+    roleId: string,
+    active: boolean,
+    scopeInput?: UnitScope,
+  ) {
     return this.auth.withAccess(raw, async (c, ctx) => {
       this.require(ctx, "users.manage");
       const roles = await this.roles(c, ctx.tenantId);
@@ -226,6 +262,19 @@ export class AccessService {
         if (old) this.grant(ctx, old);
       }
       const owner = role.system && role.name === "Proprietário";
+      const previousUnits = (
+        await c.query(
+          "SELECT unit_id FROM organizations.membership_units WHERE tenant_id=$1 AND membership_id=$2",
+          [ctx.tenantId, id],
+        )
+      ).rows.map((r) => r.unit_id);
+      const scope = scopeInput
+        ? await validateScope(c, ctx.tenantId, scopeInput, owner)
+        : { allUnits: member.all_units, unitIds: previousUnits };
+      if (owner && !scope.allUnits)
+        throw new BadRequestException(
+          "Proprietário deve ter acesso a todas as unidades.",
+        );
       if (member.is_owner && member.active && (!active || !owner)) {
         const owners = (
           await c.query(
@@ -243,9 +292,20 @@ export class AccessService {
           "Esta conta está inativa. O vínculo não pode ser reativado.",
         );
       await c.query(
-        "UPDATE identity.memberships SET role_id=$1,is_owner=$2,active=$3 WHERE tenant_id=$4 AND id=$5",
-        [role.id, owner, active, ctx.tenantId, id],
+        "UPDATE identity.memberships SET role_id=$1,is_owner=$2,active=$3,all_units=$6 WHERE tenant_id=$4 AND id=$5",
+        [role.id, owner, active, ctx.tenantId, id, scope.allUnits],
       );
+      if (scopeInput) {
+        await c.query(
+          "DELETE FROM organizations.membership_units WHERE tenant_id=$1 AND membership_id=$2",
+          [ctx.tenantId, id],
+        );
+        for (const unitId of scope.unitIds)
+          await c.query(
+            "INSERT INTO organizations.membership_units(tenant_id,membership_id,unit_id) VALUES($1,$2,$3)",
+            [ctx.tenantId, id, unitId],
+          );
+      }
       if (owner || sensitive(role.permissions))
         await c.query(
           "UPDATE identity.credentials SET mfa_required=true WHERE user_id=$1",
@@ -271,7 +331,18 @@ export class AccessService {
           "Permissões não autorizadas para este perfil.",
         );
       await this.roles(c, ctx.tenantId);
-      if (sensitive(permissions) && !permissions.includes("users.read"))
+      if (
+        permissions.includes("organizations.manage") &&
+        !permissions.includes("organizations.read")
+      )
+        throw new BadRequestException(
+          "Inclua a consulta de empresas para conceder sua administração.",
+        );
+      if (
+        (permissions.includes("users.manage") ||
+          permissions.includes("roles.manage")) &&
+        !permissions.includes("users.read")
+      )
         throw new BadRequestException(
           "Inclua a consulta de usuários para conceder administração.",
         );
@@ -356,7 +427,7 @@ export class AccessService {
       );
     const inviter = (
       await c.query(
-        "SELECT m.is_owner,m.active,u.active AS user_active,r.permissions FROM identity.memberships m JOIN identity.users u ON u.id=m.user_id LEFT JOIN access.roles r ON r.tenant_id=m.tenant_id AND r.id=m.role_id WHERE m.tenant_id=$1 AND m.user_id=$2",
+        "SELECT m.is_owner,m.all_units,m.active,u.active AS user_active,r.permissions FROM identity.memberships m JOIN identity.users u ON u.id=m.user_id LEFT JOIN access.roles r ON r.tenant_id=m.tenant_id AND r.id=m.role_id WHERE m.tenant_id=$1 AND m.user_id=$2",
         [invitation.tenant_id, invitation.invited_by],
       )
     ).rows[0];
@@ -368,6 +439,7 @@ export class AccessService {
       : invitation.permissions;
     if (
       !inviter?.active ||
+      (!inviter.is_owner && !inviter.all_units) ||
       !inviter.user_active ||
       !allowed.includes("users.manage") ||
       requested.some((p) => !allowed.includes(p))
@@ -375,7 +447,19 @@ export class AccessService {
       throw new BadRequestException(
         "Convite inválido, expirado ou indisponível.",
       );
-    return invitation;
+    const unitIds = (
+      await c.query(
+        "SELECT unit_id FROM organizations.invitation_units WHERE tenant_id=$1 AND invitation_id=$2",
+        [invitation.tenant_id, invitation.id],
+      )
+    ).rows.map((r) => r.unit_id);
+    await validateScope(
+      c,
+      invitation.tenant_id,
+      { allUnits: invitation.all_units, unitIds },
+      invitation.is_owner,
+    );
+    return { ...invitation, unit_ids: unitIds };
   }
   async preview(token: string, ip: string): Promise<InvitePreview> {
     await this.auth.limitInvitation(ip);
@@ -463,9 +547,20 @@ export class AccessService {
           "O vínculo já existe. Peça ao administrador para revisá-lo.",
         );
       await c.query(
-        "INSERT INTO identity.memberships(tenant_id,user_id,role_id,is_owner) VALUES($1,$2,$3,$4)",
-        [i.tenant_id, user.id, i.role_id, i.is_owner],
+        "INSERT INTO identity.memberships(tenant_id,user_id,role_id,is_owner,all_units) VALUES($1,$2,$3,$4,$5)",
+        [i.tenant_id, user.id, i.role_id, i.is_owner, i.all_units],
       );
+      const membership = (
+        await c.query(
+          "SELECT id FROM identity.memberships WHERE tenant_id=$1 AND user_id=$2",
+          [i.tenant_id, user.id],
+        )
+      ).rows[0];
+      for (const unitId of i.unit_ids)
+        await c.query(
+          "INSERT INTO organizations.membership_units(tenant_id,membership_id,unit_id) VALUES($1,$2,$3)",
+          [i.tenant_id, membership.id, unitId],
+        );
       if (i.is_owner || sensitive(i.permissions))
         await c.query(
           "UPDATE identity.credentials SET mfa_required=true WHERE user_id=$1",

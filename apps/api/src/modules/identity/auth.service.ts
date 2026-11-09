@@ -13,6 +13,7 @@ import type {
 } from "@invictus/contracts";
 import QRCode from "qrcode";
 import nodemailer from "nodemailer";
+import { availableUnits, memberScope } from "../organizations/unit-scope";
 import { OWNER_PERMISSIONS, type Permission } from "@invictus/contracts";
 import type { AuthConfig } from "./auth-config";
 import { AuthStore } from "./auth-store";
@@ -40,6 +41,7 @@ type Row = {
   mfa_required: boolean;
   mfa_secret_enc: string | null;
   active_tenant_id: string | null;
+  active_unit_id: string | null;
   expires_at: Date;
 };
 type RecoveryMessage = { to: string; url: string; kind?: "invitation" };
@@ -146,7 +148,7 @@ export class AuthService implements OnApplicationShutdown {
       throw new UnauthorizedException("Sua sessão expirou. Entre novamente.");
     const row = (
       await client.query(
-        `SELECT s.id,s.user_id,s.active_tenant_id,s.expires_at,u.email,u.display_name,c.mfa_required,c.mfa_secret_enc,
+        `SELECT s.id,s.user_id,s.active_tenant_id,s.active_unit_id,s.expires_at,u.email,u.display_name,c.mfa_required,c.mfa_secret_enc,
       CASE WHEN s.stage='authenticated' AND c.mfa_required AND c.mfa_secret_enc IS NULL THEN 'mfa_setup'
         WHEN s.stage='authenticated' AND c.mfa_secret_enc IS NOT NULL AND (s.mfa_verified_at IS NULL OR s.mfa_verified_at<c.mfa_enabled_at) THEN 'mfa_challenge'
         ELSE s.stage END AS stage
@@ -179,19 +181,30 @@ export class AuthService implements OnApplicationShutdown {
     );
     const member = (
       await client.query(
-        `SELECT m.is_owner,r.permissions FROM identity.memberships m JOIN tenancy.tenants t ON t.id=m.tenant_id LEFT JOIN access.roles r ON r.tenant_id=m.tenant_id AND r.id=m.role_id WHERE m.user_id=$1 AND m.tenant_id=$2 AND m.active AND t.active`,
+        `SELECT m.is_owner,m.all_units,m.role_id,r.permissions FROM identity.memberships m JOIN tenancy.tenants t ON t.id=m.tenant_id LEFT JOIN access.roles r ON r.tenant_id=m.tenant_id AND r.id=m.role_id WHERE m.user_id=$1 AND m.tenant_id=$2 AND m.active AND t.active`,
         [userId, tenantId],
       )
     ).rows[0];
-    return member?.is_owner
+    if (!member) return [];
+    const permissions: Permission[] = member.is_owner
       ? [...OWNER_PERMISSIONS]
-      : member?.permissions || [];
+      : member.permissions || (member.role_id ? [] : ["organizations.read"]);
+    return member.is_owner || member.all_units
+      ? permissions
+      : permissions.filter((p) => p === "organizations.read");
   }
   async withAccess<T>(
     raw: string,
     action: (
       client: PoolClient,
-      context: { userId: string; tenantId: string; permissions: Permission[] },
+      context: {
+        userId: string;
+        tenantId: string;
+        permissions: Permission[];
+        allUnits: boolean;
+        unitIds: string[];
+        activeUnitId: string | null;
+      },
     ) => Promise<T>,
   ): Promise<T> {
     return this.store.transaction(async (client) => {
@@ -228,6 +241,8 @@ export class AuthService implements OnApplicationShutdown {
         userId: row.user_id,
         tenantId: tenant.id,
         permissions,
+        ...(await memberScope(client, row.user_id, tenant.id)),
+        activeUnitId: row.active_unit_id,
       });
       await client.query(
         "UPDATE identity.sessions SET last_seen_at=now() WHERE id=$1",
@@ -267,8 +282,27 @@ export class AuthService implements OnApplicationShutdown {
           : null;
       if (selected !== row.active_tenant_id)
         await client.query(
-          "UPDATE identity.sessions SET active_tenant_id=$1 WHERE id=$2",
+          "UPDATE identity.sessions SET active_tenant_id=$1,active_unit_id=NULL WHERE id=$2",
           [selected, row.id],
+        );
+      const permissions = selected
+        ? await this.accessPermissions(client, row.user_id, selected)
+        : [];
+      const scope = selected
+        ? await memberScope(client, row.user_id, selected)
+        : { allUnits: false, unitIds: [] };
+      const units = selected
+        ? await availableUnits(client, row.user_id, selected)
+        : [];
+      const selectedUnit =
+        selected === row.active_tenant_id &&
+        units.some((u) => u.id === row.active_unit_id)
+          ? row.active_unit_id
+          : null;
+      if (selectedUnit !== row.active_unit_id)
+        await client.query(
+          "UPDATE identity.sessions SET active_unit_id=$1 WHERE id=$2",
+          [selectedUnit, row.id],
         );
       return {
         id: row.id,
@@ -284,9 +318,10 @@ export class AuthService implements OnApplicationShutdown {
         },
         tenants,
         activeTenantId: selected,
-        permissions: selected
-          ? await this.accessPermissions(client, row.user_id, selected)
-          : [],
+        permissions,
+        units,
+        allUnits: scope.allUnits,
+        activeUnitId: selectedUnit,
       };
     });
   }
@@ -397,6 +432,23 @@ export class AuthService implements OnApplicationShutdown {
       await client.query(
         "UPDATE identity.sessions SET active_tenant_id=$1 WHERE id=$2",
         [tenantId, row.id],
+      );
+    });
+  }
+  async selectUnit(raw: string, unitId: string | null) {
+    return this.withAccess(raw, async (c, ctx) => {
+      if (unitId === null) {
+        if (!ctx.allUnits)
+          throw new ForbiddenException("Selecione uma unidade autorizada.");
+      } else if (
+        !(await availableUnits(c, ctx.userId, ctx.tenantId)).some(
+          (u) => u.id === unitId,
+        )
+      )
+        throw new ForbiddenException("Unidade indisponível ou não autorizada.");
+      await c.query(
+        "UPDATE identity.sessions SET active_unit_id=$1 WHERE token_hash=$2",
+        [unitId, hashToken(raw)],
       );
     });
   }

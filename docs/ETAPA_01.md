@@ -1,6 +1,6 @@
 # Etapa 01 — Fundação
 
-Este plano atende à primeira ordem do escopo: apresentar arquitetura, tarefas, arquivos, aceitação e testes antes de programar. Incrementos 01.0 a 01.4 entregues localmente, incluindo isolamento, autenticação, sessões e recuperação. A Etapa 01 completa permanece em desenvolvimento. Cada incremento deve passar por seus testes e atualizar a documentação antes do seguinte.
+Este plano atende à primeira ordem do escopo: apresentar arquitetura, tarefas, arquivos, aceitação e testes antes de programar. Incrementos 01.0 a 01.5 entregues localmente, incluindo isolamento, autenticação, sessões e recuperação. A Etapa 01 completa permanece em desenvolvimento. Cada incremento deve passar por seus testes e atualizar a documentação antes do seguinte.
 
 ## 01.0 — Análise e planejamento (entregue)
 
@@ -46,7 +46,7 @@ Testes: credenciais corretas e incorretas, conta inativa, brute force, cookies, 
 
 ## 01.4 — Usuários, vínculos e permissões
 
-Situação: núcleo por empresa entregue localmente: usuários por convite, perfis, permissões, suspensão, MFA sensível e proteção do último proprietário. Guia em [Usuários e permissões](USUARIOS_PERMISSOES.md). A restrição por unidade será integrada ao cadastro de unidades em 01.5 e permanece necessária para concluir a fundação. SMTP real ainda sem homologação.
+Situação: núcleo por empresa entregue localmente: usuários por convite, perfis, permissões, suspensão, MFA sensível e proteção do último proprietário. Guia em [Usuários e permissões](USUARIOS_PERMISSOES.md). A restrição por unidade foi integrada em 01.5. SMTP real ainda sem homologação.
 
 Arquivos previstos: `apps/api/src/modules/access/*`, extensão de `tenancy/*`, `apps/web/src/app/(erp)/usuarios/*`, `apps/web/src/app/(erp)/permissoes/*`, `tests/integration/permissions.spec.ts` e migrações necessárias.
 
@@ -57,6 +57,8 @@ Aceitação: cliente não cria Master; operador não administra usuários; pesso
 Testes: matriz de permissões por endpoint, vínculo removido durante sessão, convite adulterado/reutilizado, acesso por URL direta e tentativa de remover último proprietário. Verificar respostas sem revelar existência de recursos de outro tenant.
 
 ## 01.5 — Empresas legais, matriz, filiais e depósitos
+
+Situação: entregue localmente. Empresas/matriz atômicas, unidades hierárquicas, CNPJ numérico/alfanumérico, campos permanentes, escopos de usuário/convite, seleção persistida e disponibilidade por hierarquia. Integração e navegador usam bancos fictícios; cadastro persiste após reiniciar a API. Guia em [Empresas e unidades](EMPRESAS_UNIDADES.md). Não há consulta fiscal ou operações comerciais.
 
 Arquivos previstos: `database/migrations/*_organizations.sql`, `apps/api/src/modules/organizations/*`, `apps/web/src/app/(erp)/unidades/*`, `apps/web/src/components/context-selector.tsx` e `tests/integration/organizations.spec.ts`.
 

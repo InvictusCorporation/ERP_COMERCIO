@@ -184,6 +184,17 @@ export class AuthController {
     await this.auth.selectTenant(raw, uuid(input.tenantId));
     return this.auth.session(raw);
   }
+  @Post("unit")
+  @HttpCode(200)
+  async selectUnit(@Body() value: unknown, @Req() request: Request) {
+    const input = body(value, ["unitId"]);
+    const raw = await this.mutation(request);
+    await this.auth.selectUnit(
+      raw,
+      input.unitId === null ? null : uuid(input.unitId),
+    );
+    return this.auth.session(raw);
+  }
   @Post("mfa/enroll")
   @HttpCode(200)
   async enroll(@Body() value: unknown, @Req() request: Request) {

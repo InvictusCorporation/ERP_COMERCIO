@@ -91,3 +91,7 @@ Os testes locais são evidência desta implementação, não homologação de se
 ## Administração de acessos — 01.4
 
 Migração imutável `004_access_control.sql` adiciona schema `access` com RLS forçado em perfis, convites e eventos, FK composta de vínculo/perfil e destinatário da outbox para pessoas sem conta. `invictus_auth` passa a inserir usuários e inserir/alterar vínculos no contexto confiável do serviço; não atualiza identidade global nem escreve recursos comerciais. Autoridade vem da sessão, não do corpo HTTP. Readiness recusa a ausência de RLS de acessos. Alterações e aceite usam lock transacional por empresa. Ver [Usuários e permissões](USUARIOS_PERMISSOES.md).
+
+## Estrutura organizacional — 01.5
+
+Migração `005_organizations.sql` acrescenta empresas, unidades, matriz única, FKs compostas de empresa/vínculo/atribuição, escopos e contexto de unidade em sessão. Quatro tabelas novas com RLS forçada. O papel comercial tem somente SELECT limitado à unidade do contexto e ao vínculo autorizado; `withUnit` falha sem autorização/disponibilidade e limpa contexto ao terminar. A disponibilidade considera empresa e ancestrais por função booleana definer de escopo limitado, sem leitura arbitrária. Empresas e unidades não podem ser removidas pelo papel de execução. Guia em [Empresas e unidades](EMPRESAS_UNIDADES.md).

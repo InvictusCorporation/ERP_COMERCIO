@@ -56,7 +56,6 @@ const modules: [string, LucideIcon][] = [
   ["Financeiro", Wallet],
   ["Fiscal", FileText],
   ["Entregas", Truck],
-  ["Filiais e rede", Building2],
   ["Relatórios", BarChart3],
 ];
 const steps = [
@@ -86,15 +85,15 @@ const steps = [
   },
   {
     title: "Matriz, filiais e depósitos",
-    description: "Estrutura organizacional da sua empresa.",
+    description: "Empresas, unidades e acesso por filial.",
     icon: Store,
-    status: "Próximo incremento",
+    status: "Disponível nesta versão",
   },
   {
     title: "Auditoria e validação",
     description: "Histórico, testes e revisão dos fluxos.",
     icon: ClipboardList,
-    status: "Planejado",
+    status: "Próximo incremento",
   },
 ];
 
@@ -113,9 +112,11 @@ function Brand() {
 export function Workspace({
   initialSession,
   children,
+  section = "access",
 }: {
   initialSession: AuthSession;
   children?: React.ReactNode;
+  section?: "access" | "organizations";
 }) {
   const router = useRouter();
   const [session, setSession] = useState(initialSession);
@@ -169,6 +170,21 @@ export function Workspace({
         error instanceof Error
           ? error.message
           : "Não foi possível selecionar a empresa.",
+      );
+    }
+  }
+  async function selectUnit(id: string) {
+    setSessionError("");
+    try {
+      setSession(
+        await authRequest("unit", { unitId: id || null }, session.csrf),
+      );
+      router.refresh();
+    } catch (error) {
+      setSessionError(
+        error instanceof Error
+          ? error.message
+          : "Não foi possível selecionar a unidade.",
       );
     }
   }
@@ -281,7 +297,9 @@ export function Workspace({
   }, [menuOpen]);
 
   const title = children
-    ? "Usuários e permissões"
+    ? section === "organizations"
+      ? "Empresas e unidades"
+      : "Usuários e permissões"
     : view === "dashboard"
       ? "Dashboard administrativo"
       : view === "foundation"
@@ -333,6 +351,18 @@ export function Workspace({
             <LayoutDashboard size={19} />
             Dashboard
           </button>
+          {session.permissions.includes("organizations.read") && (
+            <Link
+              href="/empresas"
+              className={`nav-item ${children && section === "organizations" ? "active" : ""}`}
+              aria-current={
+                children && section === "organizations" ? "page" : undefined
+              }
+            >
+              <Building2 size={19} />
+              Empresas e unidades
+            </Link>
+          )}
           {modules.map(([label, Icon]) => (
             <button
               key={label}
@@ -354,9 +384,11 @@ export function Workspace({
         <div className="sidebar-bottom">
           {session.permissions.includes("users.read") && (
             <Link
-              className={`nav-item ${children ? "active" : ""}`}
+              className={`nav-item ${children && section === "access" ? "active" : ""}`}
               href="/usuarios"
-              aria-current={children ? "page" : undefined}
+              aria-current={
+                children && section === "access" ? "page" : undefined
+              }
             >
               <Users size={19} />
               Usuários e permissões
@@ -428,8 +460,22 @@ export function Workspace({
             </label>
             <label className="context-select unit">
               <Building2 size={17} />
-              <select aria-label="Unidade" disabled>
-                <option>Selecionar unidade</option>
+              <select
+                aria-label="Unidade"
+                value={session.activeUnitId || ""}
+                disabled={!session.units.length}
+                onChange={(e) => void selectUnit(e.target.value)}
+              >
+                <option value="" disabled={!session.allUnits}>
+                  {session.allUnits
+                    ? "Consolidado da rede"
+                    : "Selecionar unidade"}
+                </option>
+                {session.units.map((u) => (
+                  <option key={u.id} value={u.id}>
+                    {u.companyName} · {u.name}
+                  </option>
+                ))}
               </select>
               <ChevronDown size={14} />
             </label>
@@ -457,7 +503,9 @@ export function Workspace({
             Workspace <ChevronRight size={12} />{" "}
             <span>
               {children
-                ? "Usuários e permissões"
+                ? section === "organizations"
+                  ? "Empresas e unidades"
+                  : "Usuários e permissões"
                 : view === "dashboard"
                   ? "Visão geral"
                   : view === "foundation"
@@ -470,7 +518,11 @@ export function Workspace({
               <span className="eyebrow">SEU COMÉRCIO, CONECTADO</span>
               <h1>
                 {children ? (
-                  <Users className="heading-icon" size={42} />
+                  section === "organizations" ? (
+                    <Building2 className="heading-icon" size={42} />
+                  ) : (
+                    <Users className="heading-icon" size={42} />
+                  )
                 ) : (
                   view === "dashboard" && (
                     <BarChart3 className="heading-icon" size={42} />
@@ -480,7 +532,9 @@ export function Workspace({
               </h1>
               <p>
                 {children
-                  ? "Gerencie sua equipe e os acessos à empresa selecionada."
+                  ? section === "organizations"
+                    ? "Matriz, filiais e depósitos conectados em uma só gestão."
+                    : "Gerencie sua equipe e os acessos à empresa selecionada."
                   : view === "dashboard"
                     ? "Visão geral do seu negócio em tempo real"
                     : "Acompanhe a construção de uma gestão segura e integrada."}
@@ -512,6 +566,46 @@ export function Workspace({
             </div>
           )}
 
+          <div className="operation-context">
+            <label className="operation-network">
+              Rede de acesso
+              <select
+                aria-label="Rede para operação"
+                value={session.activeTenantId || ""}
+                onChange={(e) => void selectTenant(e.target.value)}
+                disabled={!session.tenants.length}
+              >
+                <option value="" disabled>
+                  Selecione a rede
+                </option>
+                {session.tenants.map((t) => (
+                  <option key={t.id} value={t.id}>
+                    {t.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Unidade para operação
+              <select
+                aria-label="Unidade para operação"
+                value={session.activeUnitId || ""}
+                onChange={(e) => void selectUnit(e.target.value)}
+                disabled={!session.units.length}
+              >
+                <option value="" disabled={!session.allUnits}>
+                  {session.allUnits
+                    ? "Consolidado da rede"
+                    : "Selecionar unidade"}
+                </option>
+                {session.units.map((u) => (
+                  <option key={u.id} value={u.id}>
+                    {u.companyName} · {u.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
           {sessionError && (
             <p className="auth-error" role="alert">
               {sessionError}

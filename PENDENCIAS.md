@@ -1,10 +1,15 @@
 # Pendências
 
-## Próximo incremento — 01.5
+## Próximo incremento — 01.6
 
-- Cadastro persistente de empresas legais, matriz, filiais, centro de distribuição e depósitos.
-- Integrar restrições por unidade aos vínculos/permissões e validar IDs de filiais adulterados. Escopo atual de acesso é a empresa.
-- Depois, auditoria unificada e validação final (01.6). A fundação completa continua pendente.
+- Auditoria unificada: antes/depois, correlação, consulta autorizada e retenção. Eventos atômicos de autenticação/acesso/organização já existem, mas não concluem o módulo.
+- Fluxo integrado de fundação e CI, revisão de logs e validação final antes de iniciar cadastros comerciais.
+
+## Entregue em 01.5
+
+Empresas legais com CNPJ numérico/alfanumérico, matriz criada atomicamente, filiais, CDs e depósitos com vínculos compostos e identidades permanentes. Escopo global ou por unidades em usuários e convites; seletores limitados, invalidação de contexto e disponibilidade pela hierarquia. RLS e `withUnit` testados no papel comercial real. Guia em [Empresas e unidades](docs/EMPRESAS_UNIDADES.md). Sem dados reais criados, implantação ou e-mails externos.
+
+A validação de CNPJ é de formato/DV, sem consulta fiscal. Estoques/transferências/consolidação operacional permanecem futuros. SMTP real e suporte de recuperação de fator ainda pendentes antes de produção.
 
 ## Entregue em 01.4
 

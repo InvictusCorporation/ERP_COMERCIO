@@ -121,3 +121,7 @@ Os testes e decisões locais não substituem validação da infraestrutura, do p
 ## Continuação em 01.4
 
 Sessão agora inclui as permissões atuais da empresa selecionada. Administração e convite usam o mesmo serviço confiável de identidade e outbox cifrada, sem conceder acesso comercial à conta de autenticação. O leitor local `auth:mail` consulta pelo destinatário e atende convites antes da criação da conta. MFA passa a ser obrigatório também ao conceder administração por perfil. Guia em [Usuários e permissões](USUARIOS_PERMISSOES.md).
+
+## Contexto de unidades — 01.5
+
+Sessão inclui unidades disponíveis/autorizadas, escopo global e unidade selecionada. `POST auth/unit` valida Origin/CSRF e recusa unidade alheia ou consolidado para vínculo restrito. Troca de rede ou perda de acesso/disponibilidade limpa seleção. Permissões administrativas exigem escopo global; organização não habilita operação comercial. Guia em [Empresas e unidades](EMPRESAS_UNIDADES.md).

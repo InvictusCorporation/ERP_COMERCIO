@@ -16,7 +16,11 @@ export function e2eContext() {
     throw new Error("Fixture inválida.");
   return fixture;
 }
-export async function createE2EUser({ mfaRequired = false } = {}) {
+export async function createE2EUser({
+  mfaRequired = false,
+  isolatedTenant = false,
+  tenantId = null,
+} = {}) {
   const fixture = e2eContext();
   const client = new pg.Client({ connectionString: fixture.adminUrl });
   await client.connect();
@@ -29,6 +33,14 @@ export async function createE2EUser({ mfaRequired = false } = {}) {
     )
       throw new Error("Banco incorreto.");
     await client.query("BEGIN");
+    const targetTenant = isolatedTenant
+      ? randomUUID()
+      : tenantId || fixture.tenantA;
+    if (isolatedTenant)
+      await client.query("INSERT INTO tenancy.tenants(id,name) VALUES($1,$2)", [
+        targetTenant,
+        "Rede Invictus · Teste de interface",
+      ]);
     await client.query(
       "INSERT INTO identity.users(id,email,display_name) VALUES($1,$2,$3)",
       [id, email, "Operador de teste"],
@@ -39,10 +51,10 @@ export async function createE2EUser({ mfaRequired = false } = {}) {
     );
     await client.query(
       "INSERT INTO identity.memberships(tenant_id,user_id,is_owner) VALUES($1,$2,$3)",
-      [fixture.tenantA, id, mfaRequired],
+      [targetTenant, id, mfaRequired],
     );
     await client.query("COMMIT");
-    return { id, email, password: TEST_PASSWORD };
+    return { id, email, password: TEST_PASSWORD, tenantId: targetTenant };
   } catch (error) {
     await client.query("ROLLBACK");
     throw error;

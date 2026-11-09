@@ -76,3 +76,11 @@ Não houve programação, instalação de dependências, criação de banco, alt
 - Outbox SMTP/local atende contas convidadas ainda inexistentes. Sem e-mails externos enviados.
 - Escopo atual é a empresa; unidades e restrições por filial continuam em 01.5.
 - Testes reais de autorização/concorrência e navegador; resultados finais em `TESTES.md`. Sem publicação.
+
+## Incremento 01.5 — Empresas e acesso por filial — 09/11/2026
+
+- Migração 005 e módulo organizacional: empresas legais, matriz automática, filiais, CDs, depósitos, FKs compostas, identidades permanentes e disponibilidade por hierarquia.
+- CNPJ numérico/alfanumérico com cálculo oficial de DV e validação de UF/CEP/código; sem consulta fiscal.
+- Escopo global/selecionado em vínculos e convites; autorização atual, contexto persistido e RLS/withUnit no papel comercial.
+- Tela `/empresas` (alias `/unidades`), árvore de vínculos reais, filtros, paginação e editor; seletores acessíveis no celular.
+- Testes reais de isolamento/inativação/reinício e navegador. Nenhuma operação de estoque/vendas ou empresa real criada. Resultados em `TESTES.md`.

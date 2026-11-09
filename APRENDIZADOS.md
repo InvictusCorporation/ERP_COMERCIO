@@ -57,3 +57,11 @@
 - Em Strict Mode, o efeito é executado novamente: guardar o fragmento em referência antes de remover da URL evita perder o token no aceite. O teste real de navegador identificou essa falha e motivou a correção.
 - Sessão é atualizada após a ação administrativa para preservar a ordem de locks credencial → sessão dos fluxos de autenticação.
 - Perfis comerciais podem existir antes dos módulos; não devem conceder permissões operacionais que ainda não foram implementadas.
+
+## Incremento 01.5
+
+- CNPJ deve permanecer string e preservar letras; normalização com remoção de todos os não dígitos corrompe o formato alfanumérico. Manual oficial conferido antes de implementar.
+- Conceder filial não deve incluir matriz ou depósitos automaticamente. Administração global exige escopo global mesmo com perfil administrativo.
+- Disponibilidade precisa considerar empresa e ancestrais; preservar estados dos descendentes permite reativação sem perder histórico.
+- Redes fictícias isoladas por teste evitam misturar a árvore organizacional de cenários diferentes nas capturas.
+- Mensagens de erro em testes de navegador devem ser buscadas na região do módulo, pois o anunciador de navegação do Next também usa role alert.

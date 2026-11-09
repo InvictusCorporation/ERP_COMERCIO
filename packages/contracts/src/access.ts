@@ -1,5 +1,16 @@
 export const PERMISSIONS = [
   {
+    key: "organizations.read",
+    label: "Consultar empresas e unidades",
+    description: "Ver empresas e unidades autorizadas na rede.",
+  },
+  {
+    key: "organizations.manage",
+    label: "Gerenciar empresas e unidades",
+    description:
+      "Cadastrar e inativar empresas, matriz, filiais e depósitos; exige acesso a toda a rede.",
+  },
+  {
     key: "users.read",
     label: "Consultar usuários e perfis",
     description: "Ver a equipe e seus acessos nesta empresa.",
@@ -39,6 +50,8 @@ export type AccessMember = {
   roleId: string;
   roleName: string;
   mfaEnabled: boolean;
+  allUnits: boolean;
+  unitIds: string[];
 };
 export type AccessInvite = {
   id: string;
@@ -46,6 +59,8 @@ export type AccessInvite = {
   email: string;
   roleName: string;
   expiresAt: string;
+  allUnits: boolean;
+  unitIds: string[];
   status: "pending" | "accepted" | "revoked" | "expired";
 };
 export type AccessOverview = {
@@ -58,6 +73,7 @@ export type AccessOverview = {
   roles: AccessRole[];
   members: AccessMember[];
   invitations: AccessInvite[];
+  units: import("./organizations").UnitOption[];
 };
 export type InvitePreview = {
   email: string;
