@@ -26,7 +26,7 @@ export async function assertRuntimeRole(
     to_regprocedure('identity.has_active_tenant()') IS NULL AS missing_policy_function,
     pg_has_role(current_user, 'invictus_migrator', 'MEMBER') AS migration_member,
     EXISTS (SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
-      WHERE c.relowner=r.oid AND n.nspname IN ('identity','tenancy','infra','organizations','audit','inventory','purchasing')) AS owns_tables
+      WHERE c.relowner=r.oid AND n.nspname IN ('identity','tenancy','infra','organizations','audit','inventory','purchasing','pos')) AS owns_tables
     FROM pg_roles r WHERE r.rolname=current_user`);
   const role = result.rows[0];
   if (

@@ -32,8 +32,8 @@ test("dashboard vazio, navegação e status real da API", async ({ page }) => {
     page.getByRole("heading", { name: "Dashboard administrativo" }),
   ).toBeVisible();
   await expect(
-    page.getByRole("button", { name: "Vendas e PDV" }),
-  ).toBeDisabled();
+    page.getByRole("link", { name: "Vendas e PDV", exact: true }),
+  ).toHaveCount(0);
   await expect(
     page.getByRole("heading", { name: "Sua história começa aqui" }),
   ).toBeVisible();

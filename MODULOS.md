@@ -1,5 +1,9 @@
 # Módulos e dependências
 
+## Incremento 05.1 — PDV web/mobile de teste
+
+Catálogo, carrinho, rascunho, formas mistas simuladas, confirmação vinculada ao estoque, cancelamento/devolução integral, comprovante sem valor fiscal e caixa operacional por unidade. Permissões próprias e auditoria unificada. Etapas 05/06/07 completas seguem pendentes, especialmente pagamentos/fiscal externos e homologação de dispositivos. Guia em [PDV, vendas e caixa](docs/PDV_VENDAS.md).
+
 ## Incrementos 02.2 / 04.1 — fornecedores e ciclo manual de compra
 
 Cadastro de fornecedores, pedidos por unidade, aprovação, recebimento parcial/integral com rateio/custo médio, estorno vinculado e auditoria. Escritas com MFA; comprador, aprovador e conferente têm autorizações separadas. Não concluir a etapa 04 completa: cotações, comparação agregada, XML fiscal, devoluções e financeiro seguem pendentes. Guia em [Fornecedores e compras](docs/FORNECEDORES_COMPRAS.md).

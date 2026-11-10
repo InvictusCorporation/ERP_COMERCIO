@@ -1,5 +1,9 @@
 # Arquitetura proposta
 
+## PDV — 05.1
+
+Módulo pos com quatro tabelas em FORCE RLS, funções restritas para vendas/pagamentos/caixa e ponte para movimentos de estoque. Confirmação e devolução atômicas, CMV congelado, numeric, versão, locks e idempotência. API sem DML direto. Migrações aditivas 012/013/014; verificador agora exige 22 tabelas e 19 capturas. Câmera local com detector nativo ou ZXing sob demanda. Pagamento local_sandbox, bloqueio incondicional em produção. Guia em [PDV, vendas e caixa](docs/PDV_VENDAS.md).
+
 ## Compras — 02.2 / 04.1
 
 Módulo purchasing com fornecedores, pedidos e recebimentos em RLS forçada. Funções de domínio restritas executam transições, congelam snapshots e confirmam a ponte para o ledger de estoque. HTTP não escreve diretamente em pedidos/recibos. Valores cumulativos numeric e transporte decimal textual, locks/versão e chaves idempotentes. Captura transacional na auditoria; verificador exige 18 tabelas e 15 triggers. Guia em [Fornecedores e compras](docs/FORNECEDORES_COMPRAS.md).

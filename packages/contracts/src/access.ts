@@ -1,4 +1,10 @@
 export const PERMISSIONS = [
+{key:'pos.read',label:'Consultar PDV, vendas e caixas',description:'Consultar vendas, custos e caixas nas unidades autorizadas.'},
+{key:'pos.sell',label:'Operar vendas no PDV',description:'Criar e finalizar vendas no próprio caixa; exige consulta, caixa e duas etapas.'},
+{key:'pos.cash',label:'Abrir e fechar o próprio caixa',description:'Abrir e conferir o próprio caixa na unidade; exige duas etapas.'},
+{key:'pos.cash.manage',label:'Gerenciar movimentos de caixa',description:'Sangria, suprimento e fechamento supervisionado; exige caixa e duas etapas.'},
+{key:'pos.discount',label:'Autorizar descontos no PDV',description:'Conceder desconto sobre os preços cadastrados; exige operação de vendas e duas etapas.'},
+{key:'pos.refund',label:'Devolver vendas confirmadas',description:'Devolução integral e reembolso simulado em caixa aberto da unidade; exige caixa e duas etapas.'},
   {
     key: "suppliers.read",
     label: "Consultar fornecedores",

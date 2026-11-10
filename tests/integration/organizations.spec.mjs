@@ -637,6 +637,7 @@ test(
               "purchases.manage",
               "purchases.approve",
               "purchases.receive",
+                "pos.read", "pos.sell", "pos.cash", "pos.cash.manage", "pos.discount", "pos.refund",
             ],
           );
         },

@@ -1,5 +1,9 @@
 # Histórico de alterações
 
+## 09/11/2026 — PDV, vendas e caixa (05.1)
+
+Branch codex/pdv-vendas-mobile. Rotas /pdv, /vendas e /caixa; visual responsivo conforme fotos, busca/câmera com ZXing alternativo, carrinho e pagamentos simulados. Confirmação atômica com estoque/CMV/caixa, troco/misto, cancelamento, devolução integral, fechamento, histórico, permissões por unidade e auditoria. Migrações 012/013/014 preservam anteriores. Sandbox bloqueado em produção; comprovante sem valor fiscal. Guia em [PDV, vendas e caixa](docs/PDV_VENDAS.md). Sem publicação.
+
 ## 09/11/2026 — Fornecedores e compras (02.2 / 04.1)
 
 Branch codex/fornecedores-compras. Cadastro central versionado de fornecedores e pedidos por unidade; aprovação, recebimento parcial/integral, rateio exato de frete/despesas/desconto, idempotência e estorno transacional vinculado ao estoque. Permissões locais separadas e MFA; novas fontes na auditoria. Alertas de margem sugerem preço sem alterá-lo. Páginas /fornecedores e /compras responsivas. Migrações aditivas 010/011, preservando anteriores. Sem publicação. Guia em [Fornecedores e compras](docs/FORNECEDORES_COMPRAS.md).

@@ -1,4 +1,4 @@
-export type AuthConfig = {
+export type AuthConfig = {posSandbox?:boolean;
   databaseUrl: string;
   encryptionKey: string;
   origin: string;
@@ -54,7 +54,8 @@ export function readAuthConfig(env: NodeJS.ProcessEnv): AuthConfig {
       )
         throw new Error();
     }
-    return {
+    if(env.POS_SANDBOX!==undefined&&!['true','false'].includes(env.POS_SANDBOX))throw new Error();if(env.NODE_ENV==='production'&&env.POS_SANDBOX==='true')throw new Error();
+    return {...(env.POS_SANDBOX===undefined?{}:{posSandbox:env.POS_SANDBOX==='true'}),
       databaseUrl: env.AUTH_DATABASE_URL!,
       encryptionKey: env.AUTH_ENCRYPTION_KEY!,
       origin: origin.origin,

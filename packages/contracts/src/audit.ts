@@ -1,4 +1,6 @@
 export const AUDIT_CATEGORIES = {
+  sales: "Vendas e pagamentos",
+  cash: "Caixas",
   suppliers: "Fornecedores",
   purchases: "Compras",
   products: "Produtos",
@@ -12,6 +14,9 @@ export const AUDIT_CATEGORIES = {
 } as const;
 export type AuditCategory = keyof typeof AUDIT_CATEGORIES;
 export const AUDIT_ACTIONS: Record<string, string> = {
+  "sale.created": "Venda criada", "sale.changed": "Venda atualizada",
+  "payment.created": "Pagamento de teste preparado", "payment.changed": "Pagamento de teste atualizado",
+  "register.created": "Caixa aberto", "register.changed": "Caixa fechado", "cash.created": "Lançamento de caixa",
   "supplier.created": "Fornecedor cadastrado",
   "supplier.changed": "Fornecedor alterado",
   "purchase.created": "Pedido de compra criado",
@@ -54,18 +59,19 @@ export const AUDIT_ACTIONS: Record<string, string> = {
   "context.changed": "Contexto de acesso atualizado",
 };
 export const AUDIT_FIELDS: Record<string, string> = {
+  register_id: "Caixa", operator_id: "Operador", operator_name: "Nome do operador", unit_snapshot: "Unidade na venda", gross: "Subtotal", current_payment_id: "Pagamento atual", confirmed_at: "Confirmada em", returned_at: "Devolvida em", returned_by: "Devolvida por", refund_register_id: "Caixa da devolução", opening_amount: "Fundo de abertura", opened_at: "Aberto em", closed_at: "Fechado em", closed_by: "Fechado por", counted: "Valor contado", expected: "Saldo esperado", difference: "Diferença", methods: "Formas de pagamento", cash_amount: "Dinheiro líquido", change_amount: "Troco", provider: "Ambiente do pagamento", sandbox: "Ambiente de teste", sale_id: "Venda de origem", sale_line_id: "Item da venda", amount: "Valor",
   contact_name: "Contato",
   delivery_days: "Prazo de entrega (dias)",
   payment_terms: "Condições de pagamento",
   notes: "Observações",
-  number: "Pedido",
+  number: "Número",
   supplier_snapshot: "Fornecedor na compra",
   items: "Itens e quantidades",
   status: "Situação",
   freight: "Frete",
   extra_cost: "Despesas adicionais",
   discount: "Desconto",
-  total: "Total em custo",
+  total: "Total",
   expected_date: "Previsão",
   cancel_reason: "Motivo do cancelamento",
   approved_by: "Aprovado por",
@@ -106,7 +112,7 @@ export const AUDIT_FIELDS: Record<string, string> = {
   phone: "Telefone",
   address: "Endereço",
   city: "Cidade",
-  state: "UF",
+  state: "Estado / UF",
   postal_code: "CEP",
   active: "Ativo",
   name: "Nome",

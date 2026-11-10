@@ -55,7 +55,7 @@ const valueLabel = (key: string, value: unknown): string => {
           if (v && typeof v === "object") {
             const item = v as Record<string, unknown>;
             if (key === "items" && item.name)
-              return `${item.name} · Quantidade: ${item.quantity ?? "—"} · Fator: ${item.factor ?? "—"}${item.unitCost !== undefined ? ` · Custo unitário: ${item.unitCost}` : ""} · Valor total: ${item.totalValue ?? "—"}${item.receivedQuantity !== undefined ? ` · Recebido: ${item.receivedQuantity} · Valor recebido: ${item.receivedValue}` : ""}`;
+              return `${item.name} · Quantidade: ${item.quantity ?? "—"} · Fator: ${item.factor ?? "—"}${item.unitPrice !== undefined ? ` · Preço unitário: ${item.unitPrice}` : ""}${item.unitCost !== undefined ? ` · Custo unitário: ${item.unitCost}` : ""} · Valor total: ${item.totalValue ?? item.total ?? "—"}${item.receivedQuantity !== undefined ? ` · Recebido: ${item.receivedQuantity} · Valor recebido: ${item.receivedValue}` : ""}`;
             return JSON.stringify(v);
           }
           return PERMISSIONS.find((p) => p.key === v)?.label || String(v);

@@ -122,7 +122,8 @@ export function Workspace({
     | "audit"
     | "inventory"
     | "suppliers"
-    | "purchases";
+    | "purchases"
+    | "pos";
 }) {
   const router = useRouter();
   const [session, setSession] = useState(initialSession);
@@ -303,7 +304,7 @@ export function Workspace({
   }, [menuOpen]);
 
   const sectionTitle =
-    section === "suppliers"
+    section === "pos" ? "Vendas e PDV" : section === "suppliers"
       ? "Fornecedores"
       : section === "purchases"
         ? "Compras e recebimentos"
@@ -315,7 +316,7 @@ export function Workspace({
               ? "Empresas e unidades"
               : "Usuários e permissões";
   const SectionIcon =
-    section === "suppliers"
+    section === "pos" ? ShoppingCart : section === "suppliers"
       ? Truck
       : section === "purchases"
         ? ShoppingBag
@@ -423,6 +424,7 @@ export function Workspace({
               <span>Fornecedores</span>
             </Link>
           )}
+          {session.permissions.includes("pos.read") && <Link href="/pdv" className={`nav-item ${children && section === "pos" ? "active" : ""}`}><ShoppingCart size={21}/><span>Vendas e PDV</span></Link>}
           {session.permissions.includes("purchases.read") && (
             <Link
               href="/compras"
@@ -444,7 +446,7 @@ export function Workspace({
               ([label]) =>
                 label !== "Produtos" &&
                 label !== "Estoque" &&
-                label !== "Compras" &&
+                label !== "Compras" && label !== "Vendas e PDV" &&
                 label !== "Fornecedores",
             )
             .map(([label, Icon]) => (
@@ -619,7 +621,7 @@ export function Workspace({
               </h1>
               <p>
                 {children
-                  ? section === "suppliers"
+                  ? section === "pos" ? "Venda no balcão, caixa e histórico por filial." : section === "suppliers"
                     ? "Parceiros, contatos e condições de abastecimento."
                     : section === "purchases"
                       ? "Planeje, aprove e confira as compras da sua unidade."
@@ -845,20 +847,20 @@ export function Workspace({
                         key={String(label)}
                         disabled={
                           !(
-                            [
+                            (label === "Nova venda (PDV)" && session.permissions.includes("pos.read")) || (label === "Pedido de compra" && session.permissions.includes("purchases.read")) || [
                               "Cadastrar produto",
                               "Entrada de estoque",
                             ].includes(String(label)) &&
                             session.permissions.includes("products.read")
                           )
                         }
-                        onClick={() => router.push("/produtos")}
+                        onClick={() => router.push(label === "Nova venda (PDV)" ? "/pdv" : label === "Pedido de compra" ? "/compras" : "/produtos")}
                         title={
                           ["Cadastrar produto", "Entrada de estoque"].includes(
                             String(label),
                           )
                             ? "Abrir produtos e estoque"
-                            : "Disponível na etapa correspondente do projeto"
+                            : label === "Nova venda (PDV)" ? "Abrir PDV de teste" : label === "Pedido de compra" ? "Abrir compras" : "Disponível na etapa correspondente do projeto"
                         }
                       >
                         <QuickIcon size={30} />
@@ -866,7 +868,7 @@ export function Workspace({
                         <small>
                           {["Cadastrar produto", "Entrada de estoque"].includes(
                             String(label),
-                          ) && session.permissions.includes("products.read")
+                          ) && session.permissions.includes("products.read") || label === "Nova venda (PDV)" && session.permissions.includes("pos.read") || label === "Pedido de compra" && session.permissions.includes("purchases.read")
                             ? "Abrir"
                             : "Em breve"}
                         </small>

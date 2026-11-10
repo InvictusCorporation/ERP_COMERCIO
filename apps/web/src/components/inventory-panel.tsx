@@ -1002,6 +1002,7 @@ export function InventoryPanel({ session }: { session: AuthSession }) {
                           {qty(m.reservedAfter)}
                         </p>
                         <p>{m.reason}</p>
+                        {m.saleId && <Link href="/vendas">Origem: venda no PDV</Link>}
                         {m.purchaseReceiptId && (
                           <p>
                             <Link href="/compras">
@@ -1016,7 +1017,7 @@ export function InventoryPanel({ session }: { session: AuthSession }) {
                         {index === 0 &&
                           detail.movementPage === 0 &&
                           m.kind !== "reverse" &&
-                          !m.purchaseReceiptId &&
+                          !m.purchaseReceiptId && !m.saleId &&
                           data?.canManageStock &&
                           form.active && (
                             <form onSubmit={(e) => void movement(e, m.id)}>

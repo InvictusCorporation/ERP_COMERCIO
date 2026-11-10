@@ -1,5 +1,9 @@
 # Aprendizados e decisões reutilizáveis
 
+## PDV — 09/11/2026
+
+A saída de venda precisa de origem validada no domínio e custo congelado no próprio movimento, sem conceder edição manual de estoque ao caixa. Devolução após compra nova recompõe custo original e preserva último custo. Troco não é receita de caixa. Mudança de turno precisa renovar as chaves locais, preservando tentativas de uma abertura ainda não reconciliada. Chave deve sobreviver à resposta perdida; reconciliação por histórico evita iniciar outra venda. Câmera exige liberação de tracks e pausa antirrepetição. Detector nativo tem disponibilidade limitada, exigindo alternativa testada. Cancelamento expôs colisão parâmetro/coluna reason; correção em migração nova 013 sem reescrever 012.
+
 ## Fornecedores e compras
 
 - Quantidade pedida, conferida e disponível são estados distintos: somente a conferência confirmada vira estoque.

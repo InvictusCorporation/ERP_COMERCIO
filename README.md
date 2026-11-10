@@ -1,5 +1,9 @@
 # Invictus ERP Comercial
 
+## PDV e vendas — 05.1
+
+Disponível localmente em /pdv, /vendas e /caixa: catálogo/carrinho responsivo, câmera no celular, rascunhos, pagamentos mistos simulados, troco, baixa atômica, devolução integral e caixa auditável. Interface preto/branco/dourado conforme referências. Exclusivo de teste; sem cobranças e sem emissão fiscal, bloqueado em produção. Consulte [PDV, vendas e caixa](docs/PDV_VENDAS.md).
+
 Plataforma modular da Invictus Systems para comércio, estivas, mercados e redes de supermercados. Experiência web responsiva e PDV mobile no mesmo produto, com evolução para SaaS e white-label.
 
 ## Estado atual — 09/11/2026

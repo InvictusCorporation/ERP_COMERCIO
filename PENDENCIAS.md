@@ -1,5 +1,9 @@
 # Pendências
 
+## Incremento 05.1 — PDV de teste entregue localmente
+
+PDV desktop/mobile, caixa, rascunhos, simulação explícita de pagamento misto/troco, baixa, devolução integral e auditoria integrados. Restam pagamento real/reconciliação (06), fiscal (07), devolução parcial, atacado/promoções, cliente/crediário, lote/peso/balança, offline, impressão/leitores e homologação em celulares físicos. Produção permanece bloqueada. Guia em [PDV, vendas e caixa](docs/PDV_VENDAS.md).
+
 ## Incrementos 02.2 / 04.1
 
 Entregues fornecedores e ciclo manual de compras: rascunho, aprovação, recebimento parcial/integral, custo rateado, entrada de estoque vinculada, estorno, margem e auditoria. Guia em [Fornecedores e compras](docs/FORNECEDORES_COMPRAS.md).

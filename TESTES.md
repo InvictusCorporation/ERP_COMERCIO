@@ -1,5 +1,21 @@
 # Testes e evidências
 
+## PDV, vendas e caixa — 05.1 — 09/11/2026
+
+- Testes em bancos isolados invictus_test_*, com dados fictícios. Migrações aditivas 012–014; 001–011 e escopo original preservados. Banco local recebe somente estrutura/permissões, sem cadastros comerciais de teste.
+- 24 testes unitários aprovados: validação estrita de itens/formas, precisão, dados arbitrários de cartão e bloqueio do sandbox em produção.
+- npm.cmd run test:integration: 145 testes aprovados, incluindo agrupadores. Integração verifica caixa único, idempotência, concorrência, catálogo GTIN, preços no servidor, soma/troco, autorização sem baixa, confirmação única com CMV, cancelamento, recusa, reservas, preço alterado, devolução pelo custo histórico após nova compra, saldo de caixa, sangria/suprimento e diferença no fechamento.
+- Falha de auditoria após movimentos e dinheiro reverte o conjunto; papéis HTTP sem DML direto, operador sem poderes de estoque, MFA, limites por filial/rede e revogação imediata testados. Comprovante preserva snapshots.
+- Câmera testada com permissão recusada, vídeo sintético, detector nativo simulado com leituras repetidas e ZXing real decodificando EAN no vídeo. Encerramento de tracks ao fechar/trocar aba verificado. Sem homologação física de celulares/leitores.
+- npm.cmd run test:e2e: 78 cenários aprovados na rodada integral final, com 62 regressões e 16 cenários de PDV.
+- Telas em 360/390/768/1440 px, capturas em .local/screenshots/pdv-*.png. Busca/carrinho, venda/misto, cancelamento/devolução, extrato/fechamento, comprovante, recusa e saldo insuficiente cobertos no navegador. Resposta perdida após escrita seguida de repetição gera só um rascunho. Perfil sem PDV recebe negação. Reabrir o mesmo código inicia um novo turno sem reutilizar a chave da abertura anterior.
+- A primeira rodada detectou seletor de alerta também atingindo o anunciador de rota do Next e vídeo sintético sem frames pintados. Corrigidas as fixtures/seletores, sem ocultar erro do produto. Revisão de domínio acrescentou preservação de tentativa recusada no cancelamento em 014.
+- A suíte ampliada atingiu o limite real de 60 logins por IP em cinco minutos; 429 foi confirmado no trace, antes de abrir a câmera. A fixture do PDV agora isola somente os contadores de IP de login/MFA no banco invictus_test_* verificado, dentro de uma rede fictícia nova. Não altera limites da aplicação, contadores de conta ou sessão. A preparação exige HTTP 200 antes de usar o segredo.
+- npm.cmd run build e npm.cmd run typecheck aprovados em contratos, API e web. /pdv, /vendas e /caixa são rotas privadas dinâmicas. next-env normal restaurado, sem referência ao cache de E2E.
+- Diff preparado e JavaScript público sem segredos da configuração local; nenhum arquivo privado rastreado, links Markdown válidos e ESCOPO.md idêntico ao original. Git diff --check aprovado.
+- Guia operacional e limites em [PDV, vendas e caixa](docs/PDV_VENDAS.md). Sem pagamento/cobrança real, emissão fiscal, publicação ou execução remota de CI.
+
+
 ## Fornecedores e compras — 02.2 / 04.1 — 09/11/2026
 
 - PostgreSQL real 18.6; migrações aditivas 010/011, aplicadas também no banco local sem criar cadastros comerciais reais. Migrações 001–009 e escopo mestre original preservados. Fixtures somente em bancos separados com nomes invictus_test_*.

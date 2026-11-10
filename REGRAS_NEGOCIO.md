@@ -1,5 +1,9 @@
 # Regras de negócio
 
+## PDV de teste — 05.1
+
+Operador vende somente no próprio caixa aberto da filial autorizada. Quantidade base e preço de catálogo revalidados ao confirmar; desconto monetário exige permissão. Formas distintas somam o total e troco é somente dinheiro; caixa recebe líquido. Pendente/autorizado não baixa estoque. Confirmação, CMV histórico, dinheiro e auditoria são atômicos/idempotentes. Cancelamento antes de confirmar; após confirmar somente devolução integral rastreável, custo original e pagamento simulado devolvido. Caixa não fica negativo, não fecha com pendências e preserva diferença de contagem. Sandbox explícito, sem cobrança real ou documento fiscal, sempre bloqueado em produção. Detalhes em [PDV, vendas e caixa](docs/PDV_VENDAS.md).
+
 ## Fornecedores e compras — 02.2 / 04.1
 
 Fornecedor central com CNPJ permanente e versão. Pedido/quantidade aprovada não é saldo disponível. Somente recebimento conferido cria entrada, com custo/fator preservados e rateio cumulativo de frete, despesas e desconto. Parcial não recebe além do saldo. Pedido, recibo, estoque e auditoria confirmam ou falham juntos. Estorno exige preservar a cadeia do estoque, sem apagar a origem. Margem gera sugestão e exige aprovação manual do preço. Regras e limites em [Fornecedores e compras](docs/FORNECEDORES_COMPRAS.md).

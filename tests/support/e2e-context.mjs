@@ -5,6 +5,7 @@ import { readLocalConfig } from "../../scripts/database/local-config.mjs";
 import {
   decrypt,
   hashPassword,
+  rateKey,
 } from "../../apps/api/dist/modules/identity/crypto.js";
 import { TEST_PASSWORD } from "./test-credentials.mjs";
 export function e2eContext() {
@@ -20,6 +21,7 @@ export async function createE2EUser({
   mfaRequired = false,
   isolatedTenant = false,
   tenantId = null,
+  isolateAuthIpCounters = false,
 } = {}) {
   const fixture = e2eContext();
   const client = new pg.Client({ connectionString: fixture.adminUrl });
@@ -33,6 +35,14 @@ export async function createE2EUser({
     )
       throw new Error("Banco incorreto.");
     await client.query("BEGIN");
+    // Somente fixtures verificadas: não altera limites ou código da aplicação.
+    if (isolateAuthIpCounters) {
+      if (!isolatedTenant) throw new Error("O isolamento exige uma rede de teste nova.");
+      await client.query("DELETE FROM identity.auth_rate_limits WHERE key_hash = ANY($1::text[])", [[
+        rateKey("login:ip:127.0.0.1", fixture.key),
+        rateKey("mfa:ip:127.0.0.1", fixture.key),
+      ]]);
+    }
     const targetTenant = isolatedTenant
       ? randomUUID()
       : tenantId || fixture.tenantA;
