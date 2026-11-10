@@ -1,5 +1,9 @@
 # Arquitetura proposta
 
+## Plataforma comercial — 13.1
+
+Schema commercial com cinco tabelas FORCE RLS, RPCs restritas, histórico próprio e auditoria unificada. Licença filtra permissões por operação/sessão e complementa a guarda SQL; identidade acompanha a rede autenticada. Runtime com 53 tabelas e 48 capturas. [Guia](docs/WHITE_LABEL_ASSINATURAS.md).
+
 ## Relatórios gerenciais — 12.1
 
 Serviço ReportsService somente consulta sob invictus_auth/RLS. Agregação numérica ocorre no PostgreSQL; reversões são eventos assinados pela data própria. Categorias usam o cadastro atual e saldos são atuais. Dois novos privilégios com dependências e exportação sensível/MFA. Migração 029 adiciona índices e RPC restrita de auditoria de exportação, mantendo 48 tabelas RLS e 45 capturas. CSV protege fórmulas, preserva decimais e recusa mais de cinco mil linhas. Guia em [Relatórios e indicadores](docs/RELATORIOS_INDICADORES.md).

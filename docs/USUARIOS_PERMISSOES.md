@@ -97,3 +97,7 @@ Sete permissões novas, sem concessão automática a perfis não administrativos
 ## Indicadores e relatórios — 12.1
 
 reports.read exige consulta de empresas e não concede consultas de origem. reports.export exige reports.read, MFA e o módulo de origem; custos comerciais também exigem estoque. Veja [Relatórios e indicadores](RELATORIOS_INDICADORES.md).
+
+## Plataforma comercial — 13.1
+
+Planos, assinaturas, módulos e identidade têm autorização Master separada, MFA, cópia de condições e trilha transacional. Cinco tabelas comerciais novas mantêm FORCE RLS: runtime de autenticação com 53 tabelas e 48 capturas. Permissão e filial permanecem necessárias. [White-label e assinaturas](WHITE_LABEL_ASSINATURAS.md).

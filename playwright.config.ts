@@ -17,6 +17,6 @@ export default defineConfig({
     command: "node scripts/e2e-server.mjs",
     url: "http://127.0.0.1:3001/login",
     reuseExistingServer: false,
-    timeout: 120000,
+    timeout: process.env.INVICTUS_E2E_PRODUCTION === '1' ? 300000 : 120000,
   },
 });

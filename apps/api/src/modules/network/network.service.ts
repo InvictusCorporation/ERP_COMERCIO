@@ -12,7 +12,7 @@ const centralFrom = ' FROM network.central_orders c JOIN purchasing.orders o ON 
 export class NetworkService {
     constructor(private readonly auth: AuthService) { }
     private async run<T>(raw: string, fn: (c: PoolClient, ctx: Context) => Promise<T>) { try {
-        return await this.auth.withAccess(raw, async (c, ctx) => { if (!['organizations.read', 'products.read', 'stock.read'].every(p => ctx.permissions.includes(p as Permission)))
+        return await this.auth.withModuleAccess(raw, "network", async (c, ctx) => { if (!['organizations.read', 'products.read', 'stock.read'].every(p => ctx.permissions.includes(p as Permission)))
             throw new ForbiddenException('Consulta da rede exige acesso à estrutura, produtos e estoque.'); return fn(c, ctx); });
     }
     catch (e) {

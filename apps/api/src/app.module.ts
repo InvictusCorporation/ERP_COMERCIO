@@ -1,3 +1,5 @@
+import {CommercialService} from './modules/commercial/commercial.service';
+import {CommercialController} from './modules/commercial/commercial.controller';
 import {ReportsService} from './modules/reports/reports.service';
 import {ReportsController} from './modules/reports/reports.controller';
 import {CrmService} from './modules/crm/crm.service';
@@ -56,7 +58,7 @@ export class AppModule {
               OrganizationsController,
               AuditController,
               InventoryController,
-              PurchasingController, PosController, FinanceController, FiscalController, LotsController, SupermarketController, NetworkController, CrmController, ReportsController,
+              PurchasingController, PosController, FinanceController, FiscalController, LotsController, SupermarketController, NetworkController, CrmController, ReportsController, CommercialController,
             ]
           : []),
       ],
@@ -68,7 +70,9 @@ export class AppModule {
         ...(authConfig
           ? [
               {
-                provide: ReportsService, inject: [AuthService], useFactory: (auth:AuthService)=>new ReportsService(auth),
+                provide: CommercialService, inject: [AuthService], useFactory: (auth:AuthService)=>new CommercialService(auth),
+}, {
+provide: ReportsService, inject: [AuthService], useFactory: (auth:AuthService)=>new ReportsService(auth),
 }, {
 provide: CrmService, inject: [AuthService], useFactory: (auth:AuthService)=>new CrmService(auth),
 }, {

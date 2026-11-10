@@ -1,5 +1,9 @@
 # Invictus ERP Comercial
 
+## Planos, assinatura e identidade — 13.1
+
+Painel /plataforma com visual preto, branco e dourado e adaptação móvel. Master separado, contratos manuais, módulos/limites, identidade por rede e auditoria. [Guia e habilitação local do Master](docs/WHITE_LABEL_ASSINATURAS.md). Teste com build de produção local: npm.cmd run test:e2e:production; os dados continuam isolados.
+
 ## Relatórios, dashboards e indicadores — 12.1
 
 Dashboard gerencial em / e /dashboard para perfis autorizados e relatórios em /relatorios. Vendas/devoluções, curva ABC, rankings, fluxo financeiro, pendências, conferências, estoque/validade, compras recebidas e perdas. Filtros por empresa/filial/período, categoria e fornecedor conforme o relatório, com CSV auditado e visual preto/branco/dourado responsivo. Vendas simuladas do PDV permanecem identificadas e separadas do financeiro manual. Guia em [Relatórios e indicadores](docs/RELATORIOS_INDICADORES.md).

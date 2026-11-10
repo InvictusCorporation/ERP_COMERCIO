@@ -24,9 +24,10 @@ import { csrfToken, equalSecret } from "./crypto";
 export class AuthExceptionFilter implements ExceptionFilter {
   catch(error: unknown, host: ArgumentsHost) {
     const response = host.switchToHttp().getResponse<Response>();
-    const status = error instanceof HttpException ? error.getStatus() : 503;
+    const commercialLimit=(error as {code?:string}).code==='P1301';
+    const status = commercialLimit ? 409 : error instanceof HttpException ? error.getStatus() : 503;
     const message =
-      error instanceof HttpException
+      commercialLimit ? 'Limite do plano atingido ou assinatura indisponível para novos cadastros.' : error instanceof HttpException
         ? error.message
         : "Serviço de acesso indisponível. Tente novamente em instantes.";
     if (status === 429) response.setHeader("Retry-After", "300");

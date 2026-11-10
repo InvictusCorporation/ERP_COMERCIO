@@ -113,3 +113,7 @@ Categoria customers com seis fontes adicionais e remoção de documento/contato/
 ## Indicadores e relatórios — 12.1
 
 Exportação gerencial é registrada com contexto e quantidade; falha de auditoria impede entregar o arquivo. Consultas comuns não alteram dados comerciais. Veja [Relatórios e indicadores](RELATORIOS_INDICADORES.md).
+
+## Plataforma comercial — 13.1
+
+Planos, assinaturas, módulos e identidade têm autorização Master separada, MFA, cópia de condições e trilha transacional. Cinco tabelas comerciais novas mantêm FORCE RLS: runtime de autenticação com 53 tabelas e 48 capturas. Permissão e filial permanecem necessárias. [White-label e assinaturas](WHITE_LABEL_ASSINATURAS.md).

@@ -11,7 +11,7 @@ const sector = 'id,unit_id AS "unitId",name,active,version', scale = 'id,unit_id
 export class SupermarketService {
     constructor(private readonly auth: AuthService) { }
     private async execute<T>(raw: string, fn: (c: PoolClient, ctx: Context) => Promise<T>) { try {
-        return await this.auth.withAccess(raw, async (c, ctx) => { if (!ctx.permissions.includes('stock.read') || !ctx.permissions.includes('products.read'))
+        return await this.auth.withModuleAccess(raw, "supermarket", async (c, ctx) => { if (!ctx.permissions.includes('stock.read') || !ctx.permissions.includes('products.read'))
             throw new ForbiddenException('Seu perfil não permite consultar setores e produção.'); return fn(c, ctx); });
     }
     catch (e) {

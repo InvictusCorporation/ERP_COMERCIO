@@ -123,3 +123,7 @@ Migrações 026–028 adicionam seis tabelas crm, vínculos de cliente/pedido e 
 ## Indicadores e relatórios — 12.1
 
 Migração 029 aditiva: permissões, dependências, índices de relatório e RPC de auditoria; permanecem 48 tabelas FORCE RLS e 45 capturas. Consultas continuam no papel HTTP sob RLS. Veja [Relatórios e indicadores](RELATORIOS_INDICADORES.md).
+
+## Plataforma comercial — 13.1
+
+Planos, assinaturas, módulos e identidade têm autorização Master separada, MFA, cópia de condições e trilha transacional. Cinco tabelas comerciais novas mantêm FORCE RLS: runtime de autenticação com 53 tabelas e 48 capturas. Permissão e filial permanecem necessárias. [White-label e assinaturas](WHITE_LABEL_ASSINATURAS.md).

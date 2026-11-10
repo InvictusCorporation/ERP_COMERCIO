@@ -45,6 +45,7 @@ type Row = {
   expires_at: Date;
 };
 type RecoveryMessage = { to: string; url: string; kind?: "invitation" };
+type AccessContext = {userId:string;tenantId:string;permissions:Permission[];allUnits:boolean;unitIds:string[];activeUnitId:string|null};
 export type MailDelivery = (message: RecoveryMessage) => Promise<void>;
 const denied = () => new UnauthorizedException("E-mail ou senha inválidos.");
 export class AuthService implements OnApplicationShutdown {
@@ -189,9 +190,10 @@ export class AuthService implements OnApplicationShutdown {
     const permissions: Permission[] = member.is_owner
       ? [...OWNER_PERMISSIONS]
       : member.permissions || (member.role_id ? [] : ["organizations.read"]);
+    const licensed: Permission[] = (await client.query("SELECT p FROM unnest($2::text[]) p WHERE commercial.module_allowed($1,commercial.permission_module(p))", [tenantId, permissions])).rows.map(r=>r.p);
     return member.is_owner || member.all_units
-      ? permissions
-      : permissions.filter(
+      ? licensed
+      : licensed.filter(
           (p) =>
             p === "organizations.read" ||
             p === "audit.read" ||
@@ -273,6 +275,13 @@ export class AuthService implements OnApplicationShutdown {
       return action(client, row.user_id);
     });
   }
+  async withModuleAccess<T>(raw: string, feature: string, action: (c:PoolClient,ctx:AccessContext)=>Promise<T>): Promise<T> {
+    return this.withAccess(raw, async (c, ctx) => {
+      if (!(await c.query('SELECT commercial.module_allowed($1,$2) AS allowed',[ctx.tenantId,feature])).rows[0].allowed)
+        throw new ForbiddenException('Módulo não contratado ou assinatura indisponível.');
+      return action(c,ctx);
+    });
+  }
   async identityTransaction<T>(action: (client: PoolClient) => Promise<T>) {
     return this.store.transaction(action);
   }
@@ -328,6 +337,8 @@ export class AuthService implements OnApplicationShutdown {
         );
       return {
         id: row.id,
+        commercial: selected && row.stage==='authenticated' ? (await client.query('SELECT commercial.license($1) AS value',[selected])).rows[0].value : null,
+        platformOperator: row.stage==='authenticated' && (await client.query('SELECT commercial.is_operator() AS value')).rows[0].value,
         stage: row.stage,
         csrf: csrfToken(raw, this.config.encryptionKey),
         expiresAt: row.expires_at.toISOString(),

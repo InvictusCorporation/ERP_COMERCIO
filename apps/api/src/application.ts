@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import { json } from 'express';
 import { auditRequestMiddleware } from "./modules/audit/request-context";
 import { NestFactory } from "@nestjs/core";
 import type { Type } from "@nestjs/common";
@@ -15,6 +16,7 @@ export async function createApplication(
     bodyParser: false,
   });
   app.use(auditRequestMiddleware);
+  app.use('/api/v1/commercial/branding', json({limit:'280kb'}));
   app.useBodyParser("json", { limit: "16kb" });
   app.useGlobalFilters({
     catch(error: unknown, host: ArgumentsHost) {

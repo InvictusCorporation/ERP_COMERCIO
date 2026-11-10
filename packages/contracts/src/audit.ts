@@ -1,4 +1,5 @@
 export const AUDIT_CATEGORIES = {
+ commercial:"Plataforma comercial",
  reports:"Relatórios e indicadores",
  customers:"Clientes, pedidos e entregas",
   fiscal: "Fiscal",
@@ -18,6 +19,7 @@ export const AUDIT_CATEGORIES = {
 } as const;
 export type AuditCategory = keyof typeof AUDIT_CATEGORIES;
 export const AUDIT_ACTIONS: Record<string, string> = {
+ "commercial_plans.created":"Plano criado","commercial_plans.changed":"Plano alterado","commercial_subscriptions.created":"Assinatura registrada","commercial_subscriptions.changed":"Assinatura alterada","commercial_brandings.created":"Identidade registrada","commercial_brandings.changed":"Identidade alterada","commercial_operator.changed":"Acesso Master alterado",
 "report.exported":"Relatório gerencial exportado",
 "customer_deliveries.created":"Entrega registrado","customer_deliveries.changed":"Entrega atualizado",
 "customer_orders.created":"Pedido de cliente registrado","customer_orders.changed":"Pedido de cliente atualizado",

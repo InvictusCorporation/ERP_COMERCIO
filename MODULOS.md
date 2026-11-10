@@ -1,5 +1,9 @@
 # Módulos e dependências
 
+## Plataforma comercial e white-label — 13.1
+
+Planos, cópia de condições em assinatura, vigência manual, ativação com dependências, limites, identidade e diretório Master paginado. Disponibilidade comercial se soma às permissões e ao escopo de filiais. [Regras e dependências](docs/WHITE_LABEL_ASSINATURAS.md).
+
 ## Gestão e indicadores — incremento 12.1
 
 Dashboard e relatórios determinísticos dos módulos existentes. Consulta de relatórios não substitui a permissão da origem; custo/margem exige estoque e exportação exige MFA. Receita comercial por origem manual ou simulada, financeiro manual independente, estoque atual, curva ABC/rankings, recebimentos de compra e perdas auditadas. DRE, metas, relatórios agendados e IA seguem como complementos. Guia em [Relatórios e indicadores](docs/RELATORIOS_INDICADORES.md).

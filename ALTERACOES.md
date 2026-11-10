@@ -1,5 +1,9 @@
 # Histórico de alterações
 
+## Plataforma comercial — 13.1 — 10/11/2026
+
+Catálogo, assinaturas administrativas, módulos, limites, identidade e Master separados dos proprietários. Condições históricas, concorrência, MFA, RLS e auditoria integrados. Migrações 030–032 e tela móvel /plataforma. Guia em [White-label e assinaturas](docs/WHITE_LABEL_ASSINATURAS.md).
+
 ## 10/11/2026 — Relatórios gerenciais, dashboards e indicadores (12.1)
 
 Branch codex/relatorios-dashboards-indicadores. Dashboard inicial real por autorização e /relatorios, filtros, gráfico diário explorável, comparação, alertas, onze relatórios paginados e CSV com proteção de fórmulas/limite explícito. Indicadores distinguem receita, recebimento, saldo atual e resultado bruto dos produtos, conservando eventos de devolução/estorno em suas datas. Migração 029 aditiva para permissões/índices/auditoria; consultas sob RLS e sem registros ilustrativos no banco local. Configurações mantidas em rota própria. Sem publicação, comunicação externa, DRE presumida ou IA. Guia em [Relatórios e indicadores](docs/RELATORIOS_INDICADORES.md).

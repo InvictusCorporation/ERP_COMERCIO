@@ -1,5 +1,9 @@
 # Pendências
 
+## Incremento 13.1 — plataforma comercial entregue localmente
+
+Catálogo, contrato administrativo, módulos/limites, identidade e Master com MFA implementados. Complementos: cobrança/provedor, preços definitivos, faturas/anualidade, onboarding público, provisionamento de produção, domínio/TLS/login por marca, documentos personalizados, suporte/SLA e telemetria. Sem promoção automática de usuário real, cobrança ou publicação. [Guia](docs/WHITE_LABEL_ASSINATURAS.md).
+
 ## Incremento 12.1 — relatórios e gestão entregues localmente
 
 Dashboards, indicadores, filtros, onze relatórios paginados e CSV auditado implementados. Complementos: DRE/classificação contábil, metas/orçamentos, categoria histórica, identificação única do responsável em pedidos antigos, preferências, relatórios agendados/envio, PDF/XLSX nativos, saldos históricos, previsão, IA e BI. Sem integrações externas presumidas. Guia em [Relatórios e indicadores](docs/RELATORIOS_INDICADORES.md).

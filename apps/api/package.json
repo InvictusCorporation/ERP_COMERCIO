@@ -7,7 +7,7 @@
     "dev": "tsc -p tsconfig.json && node --watch dist/main.js",
     "start": "node dist/main.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "tsc -p tsconfig.json && node --test dist/config.spec.js dist/health/health.spec.js dist/modules/identity/auth.spec.js dist/modules/organizations/validation.spec.js dist/modules/audit/audit.spec.js dist/modules/inventory/validation.spec.js dist/modules/purchasing/validation.spec.js dist/modules/pos/validation.spec.js dist/modules/finance/validation.spec.js dist/modules/fiscal/fiscal.spec.js dist/modules/lots/validation.spec.js dist/modules/supermarket/validation.spec.js dist/modules/network/validation.spec.js dist/modules/crm/validation.spec.js dist/modules/reports/validation.spec.js"
+    "test": "tsc -p tsconfig.json && node --test dist/config.spec.js dist/health/health.spec.js dist/modules/identity/auth.spec.js dist/modules/organizations/validation.spec.js dist/modules/audit/audit.spec.js dist/modules/inventory/validation.spec.js dist/modules/purchasing/validation.spec.js dist/modules/pos/validation.spec.js dist/modules/finance/validation.spec.js dist/modules/fiscal/fiscal.spec.js dist/modules/lots/validation.spec.js dist/modules/supermarket/validation.spec.js dist/modules/network/validation.spec.js dist/modules/crm/validation.spec.js dist/modules/reports/validation.spec.js dist/modules/commercial/validation.spec.js"
   },
   "dependencies": {
     "@invictus/contracts": "0.1.0",
@@ -20,7 +20,8 @@
     "pg": "8.23.1",
     "qrcode": "1.5.4",
     "reflect-metadata": "0.2.2",
-    "rxjs": "7.8.2"
+    "rxjs": "7.8.2",
+    "express": "5.3.0"
   },
   "devDependencies": {
     "@types/express": "5.0.6",

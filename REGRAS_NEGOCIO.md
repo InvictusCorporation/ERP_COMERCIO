@@ -1,5 +1,9 @@
 # Regras de negócio
 
+## Contratação e identidade — 13.1
+
+Proprietário não se concede contrato ou módulos; Master exige vínculo separado e MFA. Planos editados não reprecificam contratos antigos. Datas inclusivas pela operação de Fortaleza; suspensão/cancelamento preservam condições e dados. Limites por vínculo/unidade/produto ativo, sem exclusão automática; downgrade abaixo do uso é recusado. Não há cobrança real. [Regras completas](docs/WHITE_LABEL_ASSINATURAS.md).
+
 ## Relatórios e indicadores — 12.1
 
 Não somar PDV simulado à venda manual ou ao financeiro real. Conclusão de venda e devolução pertencem a datas próprias; resultado bruto de produtos usa custo histórico e exclui entrega. Comparação percentual exige base anterior positiva. Saldos de estoque, contas e pendências são atuais; não apresentar como posição passada. Quantidades só são agregadas dentro do mesmo SKU. Categoria atual e fornecedor têm aplicação específica; exportação exige autorização da origem, auditoria e limite sem truncamento. Guia em [Relatórios e indicadores](docs/RELATORIOS_INDICADORES.md).

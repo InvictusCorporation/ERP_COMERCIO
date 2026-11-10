@@ -79,3 +79,7 @@ Clientes, crédito, pontos, pedidos e entregas seguem cabeçalhos pretos, ícone
 ## Indicadores e relatórios — 12.1
 
 Novo dashboard com cartões pretos/dourados, gráfico de vendas explorável por dia, ranking, alertas e tabelas claras. Filtros e cartões se reorganizam no celular e tabelas rolam internamente. Veja [Relatórios e indicadores](RELATORIOS_INDICADORES.md).
+
+## Plataforma comercial — 13.1
+
+Planos, assinaturas, módulos e identidade têm autorização Master separada, MFA, cópia de condições e trilha transacional. Cinco tabelas comerciais novas mantêm FORCE RLS: runtime de autenticação com 53 tabelas e 48 capturas. Permissão e filial permanecem necessárias. [White-label e assinaturas](WHITE_LABEL_ASSINATURAS.md).

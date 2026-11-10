@@ -1,5 +1,7 @@
 export type SessionStage = "authenticated" | "mfa_setup" | "mfa_challenge";
 export type AuthSession = {
+  commercial?: import('./commercial').CommercialLicense | null;
+  platformOperator?: boolean;
   id: string;
   stage: SessionStage;
   csrf: string;

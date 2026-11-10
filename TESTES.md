@@ -1,5 +1,17 @@
 # Testes e evidências
 
+## Plataforma comercial e white-label — 13.1 — 10/11/2026
+
+- npm.cmd test: 71 testes unitários aprovados; sete novos cobrem catálogo/dependências, limites indefinidos, centavos, vigência inclusiva/calendário, identificador/cor, PNG limitado e versões/campos desconhecidos.
+- npm.cmd run test:integration: 292 testes aprovados na regressão completa. A suíte comercial soma 23 com agrupador: Master separado, MFA/revogação, RLS/sem DML/EXECUTE público, origem/CSRF, condições históricas, módulos/API/RPC, concorrência, limites/reativação/downgrade, auditoria atômica, suspensão/cancelamento/expiração, plano retirado, PNG e limite próprio de transporte.
+- Navegador: onze casos novos aprovados na execução dirigida e novamente na regressão. Cobrem contrato manual, personalização persistente, suspensão/reativação, resposta perdida sem duplicação, falha sem dado antigo e larguras 360/390/768/1440.
+- Regressão geral: 177 cenários, 171 aprovados e seis falhas. Revalidações: menu/comercial/fiscal 31/32 e PDV/compras/supermercado 36/40; todos os dezesseis casos de PDV passaram. Depois, os treze cenários fiscais passaram em uma execução interrompida ao iniciar compras. Os dois casos ainda sem aprovação (compras a 390 px e etiqueta de pesagem) produziram resultados ok em execução isolada. A conferência automática por arquivo e nome confirmou aprovação dos 177 casos entre as rodadas.
+- Não houve rodada única inteiramente verde. As execuções longas tiveram timeouts e pausas sob pressão de memória. O processo da última execução dirigida foi encerrado após os dois resultados aprovados devido ao encerramento prolongado; não se declara código de saída zero para ela. As confirmações finais reutilizaram o mesmo build, verificando hash das fontes antes de iniciar novo banco e servidor de teste. Sem repetição automática de testes.
+- Correções verificadas: Configurações permanece no fim do menu/foco; motivo da devolução desabilitado durante carregamento; testes aguardam respostas e conclusão das leituras antes de editar ou confirmar. Seletores novos usam nome acessível do combobox e alert dentro do painel, evitando texto de opções e o anunciador interno do Next. Comando reproduzível com build novo: npm.cmd run test:e2e:production; o atalho local usado nas últimas confirmações foi .local/commercial-cached-playwright.config.ts.
+- Build de contratos/API/web e typecheck aprovados. Capturas finais fictícias de desktop/celular inspecionadas em .local/commercial-plans-*.png e commercial-brand-*.png, sem transbordamento horizontal nas larguras 360, 390, 768 e 1440. Valores demonstrados nos testes não configuram preços do banco de uso.
+- Migrações 030–032 aplicadas localmente, 32 no total. Contagens anteriores preservadas; quatro planos de catálogo com preços/limites indefinidos e nenhuma assinatura, identidade, evento comercial ou promoção Master real. Runtime com 53 tabelas FORCE RLS e 48 capturas; nenhuma execução pública das funções comerciais. PostgreSQL portátil iniciado nesta tarefa encerrado, com dados preservados.
+- Checagem final de segredos, arquivos privados, links, escopo mestre e diff. Nenhuma publicação, domínio, cobrança, mensagem externa ou pagamento. Os testes usam bancos isolados.
+
 ## Relatórios, dashboards e indicadores — 12.1 — 10/11/2026
 
 - npm.cmd test: 64 testes unitários aprovados; seis novos cobrem datas, filtros/dimensões, proteção contra fórmulas, negativos e casas decimais, limite de linhas e tamanho UTF-8 do CSV.

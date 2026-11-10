@@ -28,3 +28,4 @@ export * from "./network";
 export * from "./crm";
 
 export * from "./reports";
+export * from './commercial';

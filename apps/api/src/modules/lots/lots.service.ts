@@ -13,7 +13,7 @@ export class LotsService {
     constructor(private readonly auth: AuthService) { }
     private async run<T>(raw: string, fn: (c: PoolClient, ctx: Context) => Promise<T>) {
         try {
-            return await this.auth.withAccess(raw, async (c, ctx) => {
+            return await this.auth.withModuleAccess(raw, "lots", async (c, ctx) => {
                 if (!ctx.permissions.includes('stock.read') || !ctx.permissions.includes('products.read'))
                     throw new ForbiddenException('Seu perfil não permite consultar lotes e perdas.');
                 return fn(c, ctx);

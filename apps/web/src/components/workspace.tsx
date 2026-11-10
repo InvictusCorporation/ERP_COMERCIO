@@ -1,10 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { authRequest } from "../lib/auth-client";
 import {
+  Palette as PaletteIcon,
   ArrowRight,
   ArrowDownToLine,
   BarChart3,
@@ -97,13 +98,13 @@ const steps = [
   },
 ];
 
-function Brand() {
+function Brand({branding}:{branding?:import('@invictus/contracts').TenantBrand|null}) {
   return (
     <div className="brand">
-      <ShieldCheck size={38} strokeWidth={2.1} aria-hidden="true" />
+      {branding?.logoPng?<img className="tenant-logo" src={branding.logoPng} alt="Logomarca da rede"/>:<ShieldCheck size={38} strokeWidth={2.1} aria-hidden="true" />}
       <div>
-        <strong>INVICTUS</strong>
-        <span>ERP COMERCIAL</span>
+        <strong>{branding?.displayName||'INVICTUS'}</strong>
+        <span>{branding?'GESTÃO COMERCIAL':'ERP COMERCIAL'}</span>
       </div>
     </div>
   );
@@ -126,11 +127,13 @@ export function Workspace({
     | "suppliers"
     | "purchases"
     | "pos"
-    | "finance" | "fiscal" | "lots" | "supermarket" | "network" | "crm" | "reports" | "dashboard";
+    | "finance" | "fiscal" | "lots" | "supermarket" | "network" | "crm" | "reports" | "dashboard" | "commercial";
 }) {
   const router = useRouter();
   const pathname=usePathname();
   const [session, setSession] = useState(initialSession);
+  const branding=session.commercial?.branding;
+  const hasModule=(id:import('@invictus/contracts').CommercialModule)=>session.commercial?.modules.includes(id)??true;
   const [sessionError, setSessionError] = useState("");
   useEffect(() => {
     setSession(initialSession);
@@ -309,7 +312,7 @@ export function Workspace({
   }, [menuOpen]);
 
   const sectionTitle =
-    section === "dashboard" ? "Dashboard administrativo" : section === "reports" ? "Relatórios gerenciais" : section === "crm" ? "Clientes, pedidos e entregas" : section === "network" ? "Gestão da rede e distribuição" : section === "supermarket" ? "Setores, pesagem e produção" : section === "lots" ? "Lotes, validade e perdas" : section === "fiscal" ? "Fiscal · NF-e e NFC-e" : section === "finance" ? "Financeiro" : section === "pos" ? "Vendas e PDV" : section === "suppliers"
+    section === "commercial" ? "Planos, assinatura e identidade" : section === "dashboard" ? "Dashboard administrativo" : section === "reports" ? "Relatórios gerenciais" : section === "crm" ? "Clientes, pedidos e entregas" : section === "network" ? "Gestão da rede e distribuição" : section === "supermarket" ? "Setores, pesagem e produção" : section === "lots" ? "Lotes, validade e perdas" : section === "fiscal" ? "Fiscal · NF-e e NFC-e" : section === "finance" ? "Financeiro" : section === "pos" ? "Vendas e PDV" : section === "suppliers"
       ? "Fornecedores"
       : section === "purchases"
         ? "Compras e recebimentos"
@@ -321,7 +324,7 @@ export function Workspace({
               ? "Empresas e unidades"
               : "Usuários e permissões";
   const SectionIcon =
-    section === "dashboard" ? LayoutDashboard : section === "reports" ? BarChart3 : section === "crm" ? Users : section === "network" ? Building2 : section === "supermarket" ? Store : section === "lots" ? Boxes : section === "fiscal" ? FileText : section === "finance" ? Wallet : section === "pos" ? ShoppingCart : section === "suppliers"
+    section === "commercial" ? PaletteIcon : section === "dashboard" ? LayoutDashboard : section === "reports" ? BarChart3 : section === "crm" ? Users : section === "network" ? Building2 : section === "supermarket" ? Store : section === "lots" ? Boxes : section === "fiscal" ? FileText : section === "finance" ? Wallet : section === "pos" ? ShoppingCart : section === "suppliers"
       ? Truck
       : section === "purchases"
         ? ShoppingBag
@@ -340,7 +343,7 @@ export function Workspace({
         ? "Fundação do sistema"
         : "Ambiente e configurações";
   return (
-    <div className={`app-shell view-${view}`}>
+    <div className={`app-shell view-${view} ${branding?'tenant-customized':''}`} style={branding?{'--gold':branding.accent,'--gold-hover':branding.accent}as CSSProperties:undefined}>
       <a className="skip-link" href="#main">
         Pular para o conteúdo
       </a>
@@ -361,7 +364,7 @@ export function Workspace({
         aria-label="Menu do ERP"
       >
         <div className="brand-wrap">
-          <Brand />
+          <Brand branding={branding}/>
           <button
             className="icon-button close-menu"
             aria-label="Fechar menu"
@@ -432,9 +435,9 @@ export function Workspace({
           )}
           {session.permissions.includes('crm.read') && <Link href="/clientes" className={`nav-item ${children && pathname==='/clientes'?'active':''}`} onClick={()=>setMenuOpen(false)}><Users size={21}/><span>Clientes e fidelidade</span></Link>}
           {session.permissions.includes('orders.read') && <><Link href="/pedidos" className={`nav-item ${pathname==='/pedidos'?'active':''}`} onClick={()=>setMenuOpen(false)}><ClipboardList size={21}/><span>Pedidos</span></Link><Link href="/entregas" className={`nav-item ${pathname==='/entregas'?'active':''}`} onClick={()=>setMenuOpen(false)}><Truck size={21}/><span>Entregas</span></Link></>}
-          {session.permissions.includes("organizations.read") && session.permissions.includes("stock.read") && session.permissions.includes("products.read") && <Link href="/rede" className={`nav-item ${children && section === "network" ? "active" : ""}`} onClick={() => setMenuOpen(false)}><Building2 size={21}/><span>Rede e distribuição</span></Link>}
-          {session.permissions.includes("stock.read") && session.permissions.includes("products.read") && <Link href="/supermercado" className={`nav-item ${children && section === "supermarket" ? "active" : ""}`} onClick={() => setMenuOpen(false)}><Store size={21}/><span>Setores e produção</span></Link>}
-          {session.permissions.includes("stock.read") && session.permissions.includes("products.read") && <Link href="/lotes" className={`nav-item ${children && section === "lots" ? "active" : ""}`} onClick={() => setMenuOpen(false)}><Boxes size={21}/><span>Lotes e validade</span></Link>}
+          {hasModule("network") && session.permissions.includes("organizations.read") && session.permissions.includes("stock.read") && session.permissions.includes("products.read") && <Link href="/rede" className={`nav-item ${children && section === "network" ? "active" : ""}`} onClick={() => setMenuOpen(false)}><Building2 size={21}/><span>Rede e distribuição</span></Link>}
+          {hasModule("supermarket") && session.permissions.includes("stock.read") && session.permissions.includes("products.read") && <Link href="/supermercado" className={`nav-item ${children && section === "supermarket" ? "active" : ""}`} onClick={() => setMenuOpen(false)}><Store size={21}/><span>Setores e produção</span></Link>}
+          {hasModule("lots") && session.permissions.includes("stock.read") && session.permissions.includes("products.read") && <Link href="/lotes" className={`nav-item ${children && section === "lots" ? "active" : ""}`} onClick={() => setMenuOpen(false)}><Boxes size={21}/><span>Lotes e validade</span></Link>}
           {session.permissions.includes("fiscal.read") && <Link href="/fiscal" className={`nav-item ${children && section === "fiscal" ? "active" : ""}`} onClick={() => setMenuOpen(false)}><FileText size={21}/><span>Fiscal</span></Link>}
 {session.permissions.includes("finance.read") && <Link href="/financeiro" className={`nav-item ${children && section === "finance" ? "active" : ""}`}><Wallet size={21}/><span>Financeiro</span></Link>}
           {session.permissions.includes("pos.read") && <Link href="/pdv" className={`nav-item ${children && section === "pos" ? "active" : ""}`}><ShoppingCart size={21}/><span>Vendas e PDV</span></Link>}
@@ -510,6 +513,7 @@ export function Workspace({
             <ShieldCheck size={19} />
             Acesso e segurança
           </Link>
+          <Link href="/plataforma" className={"nav-item "+(section==="commercial"?"active":"")} onClick={()=>setMenuOpen(false)}><PaletteIcon/><span>Plano e identidade</span></Link>
           <button
             className={`nav-item ${view === "settings" ? "active" : ""}`}
             aria-current={view === "settings" ? "page" : undefined}
@@ -541,8 +545,8 @@ export function Workspace({
             <Menu size={23} />
           </button>
           <div className="topbar-title">
-            <strong>Invictus ERP Comercial</strong>
-            <span>Gestão completa para o seu negócio</span>
+            <strong>{branding?.displayName||'Invictus ERP Comercial'}</strong>
+            <span>{branding?.tagline||'Gestão completa para o seu negócio'}</span>
           </div>
           <div className="context-controls">
             <label className="context-select">
@@ -644,7 +648,7 @@ export function Workspace({
                           ? "Acompanhe quem alterou, quando e o que mudou, com acesso ao histórico autorizado."
                           : section === "organizations"
                             ? "Matriz, filiais e depósitos conectados em uma só gestão."
-                            : "Gerencie sua equipe e os acessos à empresa selecionada."
+                            : section === "commercial" ? "Contrato, recursos e identidade visual da sua rede." : "Gerencie sua equipe e os acessos à empresa selecionada."
                   : view === "dashboard"
                     ? "Visão geral do seu negócio em tempo real"
                     : "Acompanhe a construção de uma gestão segura e integrada."}
@@ -721,6 +725,7 @@ export function Workspace({
               {sessionError}
             </p>
           )}
+          {session.commercial?.managed&&!session.commercial.effective&&<p className="commercial-license-warning" role="status">Assinatura fora da vigência ou indisponível. Os dados foram preservados. <Link href="/plataforma">Consultar contrato</Link></p>}
           {children}
           {!children && view === "dashboard" && (
             <>

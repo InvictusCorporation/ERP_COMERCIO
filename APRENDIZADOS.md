@@ -1,5 +1,11 @@
 # Aprendizados e decisões reutilizáveis
 
+## Comercialização — 10/11/2026
+
+Contratação não é permissão de usuário nem confirmação de pagamento. Master comercial exige autoridade separada do proprietário, sem obter acesso operacional. Condições devem ser copiadas ao contrato; suspender/cancelar plano retirado não pode renovar seu preço. Limites exigem validação na transação, inclusive reativação, sem desativação automática para caber em downgrade.
+
+Novos links devem manter Configurações no fim do menu para preservar a navegação por foco. Operações com leitura posterior precisam sinalizar conclusão antes de editar ou confirmar outra ação; o motivo de devolução não deve aceitar edição durante o carregamento. Testes devem aguardar respostas e estados observáveis, sem atrasos fixos ou aumento arbitrário de prazo.
+
 ## Relatórios — 10/11/2026
 
 Disponibilidade de relatório não concede acesso ao módulo de origem. Dado indisponível deve permanecer indisponível, sem parecer zero. Eventos assinados por data preservam a análise de períodos antigos após devoluções e estornos. Faturamento, caixa e saldo são bases distintas; custos de compra já rateados e custos de venda históricos evitam reprecificação acidental. Preparar conjuntos sob RLS reduz reconsultas por SKU; testar catálogos grandes e exportações além do limite faz parte da validação.

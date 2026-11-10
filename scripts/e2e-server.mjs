@@ -7,6 +7,7 @@ import { readLocalConfig } from "./database/local-config.mjs";
 import { runtimeEnvironment } from "./runtime-environment.mjs";
 const require = createRequire(import.meta.url);
 const run = randomBytes(8).toString("hex");
+const production = process.env.INVICTUS_E2E_PRODUCTION === '1';
 const webConfig = JSON.parse(readFileSync("apps/web/tsconfig.json", "utf8"));
 webConfig.include = [
   "next-env.d.ts",
@@ -72,6 +73,12 @@ const env = {
   INVICTUS_E2E_RUN: run,
 };
 const children = [];
+if(production){
+  const build=spawnSync(process.execPath,[require.resolve('next/dist/bin/next'),'build','apps/web','--webpack'],{
+    stdio:'inherit',windowsHide:true,env:runtimeEnvironment({...env,NODE_ENV:'production'},'web'),
+  });
+  if(build.status!==0)process.exit(1);
+}
 let stopping = false;
 const stop = (code = 0) => {
   if (stopping) return;
@@ -85,9 +92,9 @@ for (const [target, args] of [
     "web",
     [
       require.resolve("next/dist/bin/next"),
-      "dev",
+      production ? "start" : "dev",
       "apps/web",
-      "--webpack",
+      ...(production ? [] : ["--webpack"]),
       "--hostname",
       "127.0.0.1",
       "--port",
@@ -99,7 +106,7 @@ for (const [target, args] of [
     stdio: "inherit",
     windowsHide: true,
     env: runtimeEnvironment(
-      { ...env, ...(target === "web" ? { NODE_ENV: "development" } : {}) },
+      { ...env, ...(target === "web" ? { NODE_ENV: production ? "production" : "development" } : {}) },
       target,
     ),
   });
