@@ -63,3 +63,7 @@ Referências de produtos/estoque e rede orientam quatro indicadores escuros, tab
 ## Lotes, validade e perdas — 08.1
 
 Referência de produtos/estoque orienta tabela e editor lateral com cabeçalho preto, ícones dourados e ação principal amarela. Indicadores mostram contagens reais de lotes, vencimento e classificação pendente. Perdas têm total pelo custo histórico; reposição compara saldo e limites por produto/unidade. No celular, campos empilham, abas reorganizam e tabelas têm rolagem interna. As capturas usam somente fixtures fictícias, sem dados de referência apresentados como operação real.
+
+## Setores, pesagem e produção — 09.1
+
+Referências de produtos/estoque e PDV mobile orientam cabeçalhos pretos, superfícies claras, quatro indicadores escuros e ações/ícones dourados. Seis abas por operação, seletores com busca no servidor, peso líquido destacado, prévia de etiqueta branca e ficha com insumos/unidades explícitos. Telas largas usam dois painéis; celular empilha campos, reorganiza abas em duas colunas e contém tabelas/seletores com rolagem própria. Pesagem no PDV abre diálogo com confirmação de bruto/tara; impressão mostra somente a etiqueta interna. Capturas exclusivamente fictícias em bancos de teste.

@@ -16,6 +16,18 @@ export const AUDIT_CATEGORIES = {
 } as const;
 export type AuditCategory = keyof typeof AUDIT_CATEGORIES;
 export const AUDIT_ACTIONS: Record<string, string> = {
+"sector.created":"Setor registrado",
+"sector.changed":"Setor alterado",
+"weighed_product.created":"Perfil de pesagem registrado",
+"weighed_product.changed":"Perfil de pesagem alterado",
+"scale.created":"Balança registrado",
+"scale.changed":"Balança alterado",
+"weighing.created":"Pesagem registrado",
+"weighing.changed":"Pesagem alterado",
+"recipe.created":"Ficha técnica registrado",
+"recipe.changed":"Ficha técnica alterado",
+"production.created":"Produção registrado",
+"production.changed":"Produção alterado",
 "lot_control.created":"Controle de lotes ativado", "lot_control.changed":"Alerta de validade alterado", "lot.created":"Lote cadastrado", "lot.changed":"Lote atualizado", "lot_event.created":"Operação de lote registrada",
 "fiscal_issuer.created":"Emitente fiscal configurado",
 "fiscal_issuer.changed":"Emitente fiscal alterado",
@@ -81,6 +93,8 @@ export const AUDIT_ACTIONS: Record<string, string> = {
   "context.changed": "Contexto de acesso atualizado",
 };
 export const AUDIT_FIELDS: Record<string, string> = {
+sector_id:"Setor",weighted:"Vendido por peso",plu:"PLU",capacity:"Capacidade (kg)",resolution:"Resolução (kg)",prefix:"Prefixo da etiqueta",tare:"Tara",net:"Peso líquido",scale_id:"Balança",source:"Origem",recipe_id:"Ficha técnica",recipe_version:"Versão da ficha",yield_quantity:"Rendimento previsto",ingredients:"Insumos da ficha",input_items:"Consumo da produção",output_product_id:"Produto acabado",expected_quantity:"Rendimento previsto",actual_quantity:"Rendimento real",total_cost:"Custo consumido",output_lot_id:"Lote produzido",lot_code:"Código do lote",
+
 alert_days:"Antecedência do alerta",manufactured_on:"Fabricação",expires_on:"Vencimento",blocked:"Lote bloqueado",quantity_delta:"Variação no lote",lot_id:"Lote",loss_kind:"Tipo de perda",
 data:"Cadastro fiscal",
 reviewed_by:"Revisado por",

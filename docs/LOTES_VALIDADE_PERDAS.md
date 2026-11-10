@@ -71,3 +71,7 @@ A confirmação usa chave idempotente e uma saída de estoque vinculada ao lote.
 ## Próximos complementos
 
 Coleta por lote diretamente no recebimento, vínculo detalhado por origem/fornecedor, leitura GS1 e conferência assistida por câmera, inventário aprovado por lote, quarentena formal de devoluções, rastreabilidade fiscal/XML, alertas/notificações agendados, sugestões de promoção sujeitas a margem/aprovação e previsão de reposição continuam pendentes. Não há alteração automática de preço, envio a fornecedor, mensagem externa ou descarte automático. A homologação em dispositivos físicos e o procedimento operacional da loja também permanecem necessários antes de produção.
+
+## Produção — 09.1
+
+Consumo em produção usa FEFO para insumos controlados e registra lotes históricos. Produto acabado recebe lote e validade conferidos, limitados pela menor validade consumida, sem criar datas para estoque anterior. Rendimento menor aparece no histórico de produção, sem duplicar descarte; estorno integral recompõe os mesmos lotes e custo sem renovar validade. Guia em [Setores, pesagem e produção](SETORES_PESAGEM_PRODUCAO.md).

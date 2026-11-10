@@ -58,6 +58,7 @@ export class InventoryService {
       return await action();
     } catch (e) {
       const code = (e as { code?: string }).code;
+      if(code === "P0901") throw new ConflictException("Confira o prefixo reservado das etiquetas e a origem da produção. Estorne produção pelo módulo Supermercado.");
       if (code === "P0801") throw new ConflictException("Controle de lotes: confira classificação, validade, bloqueio e reservas. Regularize os lotes antes de vender ou estornar a entrada.");
       if (code === "23505")
         throw new ConflictException(

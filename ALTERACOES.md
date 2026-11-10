@@ -1,5 +1,9 @@
 # Histórico de alterações
 
+## 10/11/2026 — Setores, pesagem e produção (09.1)
+
+Branch codex/setores-balancas-producao. Rota /supermercado e navegação privada, setores/perfis KG por filial, balanças configuradas, pesagem manual, etiquetas vetoriais internas, fichas versionadas e produção atômica com custo integral, rendimento real, lotes e estorno. PDV móvel confere bruto/tara, decodifica PLU/gramas e conserva pesagens agrupadas. Migrações 020/021 aditivas, seis novas fontes auditadas e RLS. Hardware continua pendente de modelos e homologação. Guia em [Setores, pesagem e produção](docs/SETORES_PESAGEM_PRODUCAO.md). Sem publicação.
+
 ## 10/11/2026 — Lotes, validade e perdas (08.1)
 
 Branch codex/lotes-validade-perdas. Novo /lotes responsivo conforme referências, controle por filial, classificação sem duplicar estoque, validade/bloqueio, perda/estorno, relatório e reposição sugerida. PDV reserva saldo válido, baixa FEFO e mostra lotes utilizados; devolução recompõe os mesmos lotes. Entradas de compra geram saldo não classificado e estorno não pode deixar lotes acima do físico. Três tabelas com RLS/auditoria e funções restritas, migrações 018/019 preservando anteriores. Lotes também aparecem ao reabrir a venda e no comprovante de teste. Regressão corrigiu mensagem de sucesso do vínculo financeiro apagada pela leitura automática da lista, sem alterar lançamentos. Guia em [Lotes, validade e perdas](docs/LOTES_VALIDADE_PERDAS.md). Sem serviços externos ou habilitação de produção.

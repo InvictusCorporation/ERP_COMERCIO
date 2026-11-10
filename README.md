@@ -1,5 +1,9 @@
 # Invictus ERP Comercial
 
+## Setores, pesagem e produção — 09.1
+
+Novo módulo /supermercado: setores e perfis por filial, cadastro de balanças, bruto/tara, etiquetas internas por peso, fichas técnicas e produção atômica com custo e lotes. PDV móvel aceita peso manual e etiquetas com PLU/gramas, mantendo preto/branco/dourado. Equipamentos físicos ainda dependem de modelos e homologação. Guia em [Setores, pesagem e produção](docs/SETORES_PESAGEM_PRODUCAO.md).
+
 ## Lotes, validade e perdas — 08.1
 
 Novo módulo /lotes: classificação do saldo por filial, alertas, bloqueio, perdas/avarias, estorno auditado, relatório e reposição sugerida. PDV baixa lotes válidos por vencimento e devolve aos mesmos lotes; entradas de compras ficam pendentes de classificação quando há controle. Visual responsivo preto/branco/dourado, mantendo o custo médio. Guia em [Lotes, validade e perdas](docs/LOTES_VALIDADE_PERDAS.md).

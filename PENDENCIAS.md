@@ -1,8 +1,12 @@
 # Pendências
 
+## Supermercado — 09.1 entregue localmente
+
+Implementados setores por filial, peso manual, etiquetas internas por gramas, fichas técnicas, consumo FEFO, custo exato de produção e estorno auditado. Etapa 09 completa pendente: informar equipamentos/protocolos, integrar e homologar hardware, carga de PLUs, formatos por preço/fabricante, impressão/rotulagem real, planejamento/ordens, subprodutos e custo indireto. Não houve comunicação física ou publicação. Guia em [Setores, pesagem e produção](docs/SETORES_PESAGEM_PRODUCAO.md).
+
 ## Estoque avançado — 08.1 entregue localmente
 
-Lotes, alertas de validade, classificação sem duplicar saldo, bloqueio, perdas/avarias, estorno, relatório, reposição por limites e baixa/devolução rastreadas no PDV. Compras continuam uma entrada e exigem classificação posterior para produtos controlados. Pendentes: coleta no recebimento com origem/fornecedor, leitura GS1, inventário por lote aprovado, quarentena formal, XML de rastreabilidade, notificações agendadas, promoções com aprovação, previsão de demanda e homologação física. Custos médios e bloqueios de produção existentes preservados. Guia em [Lotes, validade e perdas](docs/LOTES_VALIDADE_PERDAS.md).
+Lotes, alertas de validade, classificação sem duplicar saldo, bloqueio, perdas/avarias, estorno, relatório, reposição por limites e baixa/devolução rastreadas no PDV. Compras continuam uma entrada e exigem classificação posterior para produtos controlados. Pendentes: coleta no recebimento com origem/fornecedor, leitura GS1, inventário por lote aprovado, quarentena formal, XML de rastreabilidade, notificações agendadas, promoções com aprovação, previsão de demanda e homologação física. Custos médios e bloqueios de ambiente de produção existentes preservados. Guia em [Lotes, validade e perdas](docs/LOTES_VALIDADE_PERDAS.md).
 
 ## Fiscal — 07.1 entregue localmente; homologação externa pendente
 
@@ -14,7 +18,7 @@ Contas a pagar/receber, parcelas, baixas e estornos, caixa/banco manual, fluxo/e
 
 ## Incremento 05.1 — PDV de teste entregue localmente
 
-PDV desktop/mobile, caixa, rascunhos, simulação explícita de pagamento misto/troco, baixa, devolução integral e auditoria integrados. Restam pagamento real/reconciliação (06), fiscal (07), devolução parcial, atacado/promoções, cliente/crediário, lote/peso/balança, offline, impressão/leitores e homologação em celulares físicos. Produção permanece bloqueada. Guia em [PDV, vendas e caixa](docs/PDV_VENDAS.md).
+PDV desktop/mobile, caixa, rascunhos, simulação explícita de pagamento misto/troco, baixa, devolução integral e auditoria integrados. Restam pagamento real/reconciliação (06), fiscal (07), devolução parcial, atacado/promoções, cliente/crediário, homologação de balanças/etiquetas, offline, impressão/leitores e homologação em celulares físicos. Uso do PDV em ambiente de produção permanece bloqueado. Guia em [PDV, vendas e caixa](docs/PDV_VENDAS.md).
 
 ## Incrementos 02.2 / 04.1
 
@@ -30,7 +34,7 @@ Próximos complementos: foto, fornecedores e dados fiscais de produto; compras/r
 
 ## Próximos passos
 
-- Próximo avanço: complementar rastreabilidade no recebimento, notificações e previsão/reposição; Etapa 09 acrescenta setores, peso, balanças e produção conforme o escopo. Homologações externas do fiscal e financeiro continuam pendentes.
+- Próximo avanço: complementar rastreabilidade no recebimento, notificações e previsão/reposição; Complementar a Etapa 09 com integração/homologação física e produção avançada. Homologações externas do fiscal e financeiro continuam pendentes.
 - CI está preparada, mas sua execução no GitHub/Linux depende de publicação/autorização e permanece sem evidência remota.
 - Antes de produção: SMTP real, recuperação de fator perdido, infraestrutura/HTTPS, backup/restauração e política definitiva de retenção/arquivamento do histórico.
 

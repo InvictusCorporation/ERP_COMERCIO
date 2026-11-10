@@ -1,5 +1,11 @@
 # Aprendizados e decisões reutilizáveis
 
+## Supermercado — 10/11/2026
+
+Código de circulação restrita não define sozinho o protocolo ou layout de uma balança. Configurar formato interno explícito e distinguir peso manual de leitura física evita atribuir ao sistema uma medição que ele não realizou. Somar gramas e centavos como inteiros conserva pesagens agrupadas. Validar novamente código/produto/soma no servidor impede que metadados alterem estoque. Transformação precisa conservar o custo total mesmo quando custo unitário arredonda; registrar perda adicional após consumir a receita duplicaria a baixa. Estorno multiforme deve ser uma única transação, com origem e último movimento conferidos.
+
+Uma confirmação idempotente precisa sobreviver também à consulta que sucede a gravação. Descartar a chave assim que o POST responde impede recuperar o mesmo registro se o GET seguinte falha; pesagem e produção mantêm a confirmação até concluir todo o fluxo. Reservas de estoque devem ser comparadas ao saldo válido restante após FEFO: físico vencido não substitui lote reservado.
+
 ## Lotes — 10/11/2026
 
 Ordem física por vencimento e método contábil de custo são independentes. Classificar estoque já existente não pode criar outra entrada. Saldo físico não é igual ao vendável: desconhecido, vencido e bloqueado não sustentam reserva do PDV. A data pode mudar entre reserva e confirmação; checar novamente e reverter pagamento/caixa/estoque juntos. Devolução precisa dos lotes históricos, sem renovar validade. Estorno de compra deve impedir estoque físico abaixo da soma classificada. Relatório conserva perda bruta e contrapartida, sem apagar descarte.

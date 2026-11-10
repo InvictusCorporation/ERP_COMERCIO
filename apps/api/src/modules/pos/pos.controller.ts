@@ -45,6 +45,7 @@ export class PosController {
     r: Request,
     @Query()
     v: unknown) { const i = body(v, ['unitId', 'query', 'barcode', 'page']); return this.pos.catalog(this.raw(r), i.unitId === undefined ? undefined : uuid(i.unitId), field(i.query, 100), i.barcode === undefined ? '' : gtin(i.barcode), page(i.page)); }
+    @Get('weighted') weighted(@Req() r:Request,@Query() v:unknown){const i=body(v,['barcode']),barcode=gtin(i.barcode);return this.pos.weighted(this.raw(r),barcode);}
     @Get('sales')
     sales(
     @Req()

@@ -1,5 +1,17 @@
 # Testes e evidências
 
+## Setores, pesagem e produção — 09.1 — 10/11/2026
+
+- npm.cmd test: 48 testes unitários aprovados; gramas/centavos inteiros, arredondamento, DV, precisão, capacidade/resolução, insumos únicos e metadados de pesagem.
+- npm.cmd run test:integration: 208 testes aprovados, incluindo 19 da suíte de supermercado. PostgreSQL real isolado: CSRF, MFA, escopo por filial, PLU/GTIN, peso/tara, idempotência, setor inativo, FEFO, validade da saída, custo integral/resíduos, insuficiência, auditoria, estorno e reservas explícitas de lotes válidos diante de estoque vencido.
+- npm.cmd run test:e2e -- tests/e2e/supermarket.spec.ts: 13 testes aprovados. Cadastros, ficha, produção/estorno, pesagem/etiqueta, leitura do SVG rasterizado com ZXing, impressão isolada simulada, resposta perdida e falha de consulta após gravação sem duplicação, busca além da primeira página e pesagem agrupada no PDV móvel.
+- npm.cmd run test:e2e: 132 testes aprovados em uma rodada completa, sem repetição automática, incluindo toda a regressão anterior e os treze novos casos.
+- Capturas fictícias em .local/market-pesagem-360.png, -390.png, -768.png, -1440.png e equivalentes market-producao-*.png. Inspeção de desktop/celular e verificações de largura sem transbordamento; tabelas/seletores têm rolagem interna. Capturas retornam ao topo para preservar a posição de elementos fixos.
+- Build de contratos/API/web e typecheck aprovados. Migrações 020/021 aplicadas no banco local (21 no total); seis tabelas novas com RLS forçada e sem DML direto do papel HTTP, 37 capturas ativas e verificação de 40 tabelas no runtime. Novas tabelas sem registros e contagens comerciais anteriores preservadas. PostgreSQL portátil iniciado nesta tarefa encerrado com dados preservados.
+- Etiqueta identificada como interna e exclusiva da filial. Nenhuma pesagem/estabilidade física, impressão em equipamento, cobrança, emissão externa ou publicação foi realizada. Marcas/modelos e homologação seguem pendentes.
+- Checagem final: diff e JavaScript público sem segredos locais, nenhum arquivo privado rastreado, links Markdown válidos, escopo mestre idêntico ao anexo e migrações 001–019 preservadas. git diff --check aprovado; portas 3001/3334/55432 encerradas.
+- Guia em [Setores, pesagem e produção](docs/SETORES_PESAGEM_PRODUCAO.md).
+
 ## Lotes, validade e perdas — 08.1 — 10/11/2026
 
 - npm.cmd test: 42 testes unitários aprovados, incluindo três novos casos de validação de lote, datas, quantidade, categoria, versão e rejeição de saldo/estado forjado.

@@ -2,12 +2,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ShoppingCart, Search, Plus, Minus, Trash2, Package, Check, Wallet, ReceiptText, RefreshCw, ArrowLeftRight, Store } from "lucide-react";
-import { PAYMENT_METHODS, SALE_STATUSES, type AuthSession, type PosOverview, type PosProduct, type SalePage, type SaleDetail, type RegisterDetail, type CashRegister, type PaymentMethod } from "@invictus/contracts";
+import { quantityMilli, quantityText, weighedTotal, type WeightMeasurement, type WeighedLabel, PAYMENT_METHODS, SALE_STATUSES, type AuthSession, type PosOverview, type PosProduct, type SalePage, type SaleDetail, type RegisterDetail, type CashRegister, type PaymentMethod } from "@invictus/contracts";
 import { posRequest } from "../lib/pos-client";
 import { PosScanner } from "./pos-scanner";
 type CartLine = {
     product: PosProduct;
     quantity: string;
+    measurement?: WeightMeasurement;
 };
 type Tab = "sale" | "history" | "cash";
 type Method = {
@@ -16,11 +17,18 @@ type Method = {
     tendered: string;
 };
 const money = (v: string | number) => Number(v).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+const previewTotal = (quantity: string, price: string) => { try {
+    return weighedTotal(quantity || '0', price);
+}
+catch {
+    return '0.00';
+} };
 const date = (v: string) => new Date(v).toLocaleString("pt-BR");
 export function PosPanel({ session, initialTab = "sale" }: {
     session: AuthSession;
     initialTab?: Tab;
 }) {
+    const [weighProduct, setWeighProduct] = useState<PosProduct | null>(null), [weighGross, setWeighGross] = useState(''), [weighTare, setWeighTare] = useState('0'), [weighStable, setWeighStable] = useState(false);
     const [tab, setTab] = useState<Tab>(initialTab), [overview, setOverview] = useState<PosOverview | null>(null), [error, setError] = useState(""), [notice, setNotice] = useState(""), [busy, setBusy] = useState(false);
     const [query, setQuery] = useState(""), [catalog, setCatalog] = useState<{
         items: PosProduct[];
@@ -38,90 +46,181 @@ export function PosPanel({ session, initialTab = "sale" }: {
     const lastRegister = useRef<string | null>(null);
     const allowed = session.permissions.includes("pos.read");
     useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
-    const write = async (path: string, body: Record<string, unknown>, keyed = true) => { const signature = epoch.current + path + JSON.stringify(body); let key = keys.current.get(signature); if (!key) {
-        key = crypto.randomUUID();
-        keys.current.set(signature, key);
-    } return posRequest<{
-        id: string;
-    }>(path, keyed ? { ...body, requestKey: key } : body, session.csrf); };
-    const refresh = useCallback(async () => { const o = await posRequest<PosOverview>("overview"); if(lastRegister.current && lastRegister.current !== o.activeRegister?.id){epoch.current=crypto.randomUUID();keys.current.clear();}lastRegister.current=o.activeRegister?.id||null; if (mounted.current)
-        setOverview(o); return o; }, []);
-    const loadCatalog = useCallback(async (q: string, page = 0) => { const result = await posRequest<typeof catalog>("catalog?query=" + encodeURIComponent(q) + "&page=" + page); if (mounted.current)
-        setCatalog(result); }, []);
+    const write = async (path: string, body: Record<string, unknown>, keyed = true) => {
+        const signature = epoch.current + path + JSON.stringify(body);
+        let key = keys.current.get(signature);
+        if (!key) {
+            key = crypto.randomUUID();
+            keys.current.set(signature, key);
+        }
+        return posRequest<{
+            id: string;
+        }>(path, keyed ? { ...body, requestKey: key } : body, session.csrf);
+    };
+    const refresh = useCallback(async () => {
+        const o = await posRequest<PosOverview>("overview");
+        if (lastRegister.current && lastRegister.current !== o.activeRegister?.id) {
+            epoch.current = crypto.randomUUID();
+            keys.current.clear();
+        }
+        lastRegister.current = o.activeRegister?.id || null;
+        if (mounted.current)
+            setOverview(o);
+        return o;
+    }, []);
+    const loadCatalog = useCallback(async (q: string, page = 0) => {
+        const result = await posRequest<typeof catalog>("catalog?query=" + encodeURIComponent(q) + "&page=" + page);
+        if (mounted.current)
+            setCatalog(result);
+    }, []);
     const loadSales = async (page = 0) => setSales(await posRequest<SalePage>("sales?status=" + status + "&query=" + encodeURIComponent(saleQuery) + "&page=" + page));
     const loadRegisters = async (page = 0) => setRegisters(await posRequest<typeof registers>("registers?page=" + page));
-    const execute = async (fn: () => Promise<void>) => { if (inFlight.current)
-        return; inFlight.current = true; setBusy(true); setError(""); setNotice(""); try {
-        await fn();
-    }
-    catch (e) {
-        if (mounted.current) {
-            setError(e instanceof Error ? e.message : "Não foi possível concluir. Atualize a consulta.");
-            if ((e as {
-                status?: number;
-            }).status === 403) {
-                setSelected(null);
-                setCatalog({ items: [], total: 0, page: 0 });
-                setSales({ items: [], total: 0, page: 0 });
-                setLedger(null);
+    const execute = async (fn: () => Promise<void>) => {
+        if (inFlight.current)
+            return;
+        inFlight.current = true;
+        setBusy(true);
+        setError("");
+        setNotice("");
+        try {
+            await fn();
+        }
+        catch (e) {
+            if (mounted.current) {
+                setError(e instanceof Error ? e.message : "Não foi possível concluir. Atualize a consulta.");
+                if ((e as {
+                    status?: number;
+                }).status === 403) {
+                    setSelected(null);
+                    setCatalog({ items: [], total: 0, page: 0 });
+                    setSales({ items: [], total: 0, page: 0 });
+                    setLedger(null);
+                }
             }
         }
-    }
-    finally {
-        inFlight.current = false;
-        if (mounted.current)
-            setBusy(false);
-    } };
-    useEffect(() => { if (!allowed)
-        return; void refresh().catch(e => setError(e.message)); const focus = () => { void refresh().catch(e => setError(e.message)); }; window.addEventListener("focus", focus); return () => window.removeEventListener("focus", focus); }, [allowed, refresh]);
+        finally {
+            inFlight.current = false;
+            if (mounted.current)
+                setBusy(false);
+        }
+    };
+    useEffect(() => {
+        if (!allowed)
+            return;
+        void refresh().catch(e => setError(e.message));
+        const focus = () => { void refresh().catch(e => setError(e.message)); };
+        window.addEventListener("focus", focus);
+        return () => window.removeEventListener("focus", focus);
+    }, [allowed, refresh]);
     useEffect(() => {
         if (!overview?.unitId)
             return;
-        void execute(async () => { if (tab === "sale")
-            await loadCatalog(query); if (tab === "history")
-            await loadSales(); if (tab === "cash")
-            await loadRegisters(); }); /* tab refresh */ // eslint-disable-next-line react-hooks/exhaustive-deps
+        void execute(async () => {
+            if (tab === "sale")
+                await loadCatalog(query);
+            if (tab === "history")
+                await loadSales();
+            if (tab === "cash")
+                await loadRegisters();
+        }); /* tab refresh */ // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tab, overview?.unitId]);
+    const addQuantity = (product: PosProduct, quantity: string, measurement?: WeightMeasurement) => { setCart(lines => { const found = lines.find(l => l.product.id === product.id); if (!found)
+        return [...lines, { product, quantity, ...(measurement ? { measurement } : {}) }]; const q = quantityText(quantityMilli(found.quantity) + quantityMilli(quantity)); const parts = (v: WeightMeasurement | undefined, amount: string): import('@invictus/contracts').WeightPart[] => v ? (v.source === 'combined' ? v.parts : [v]) : [{ source: 'manual', gross: amount, tare: '0' }]; return lines.map(l => l === found ? { product, quantity: q, ...(product.baseUnit === 'KG' ? { measurement: { source: 'combined' as const, parts: [...parts(l.measurement, l.quantity), ...parts(measurement, quantity)] } } : {}) } : l); }); };
     const add = (product: PosProduct) => { if (selected)
-        return; setCart(lines => { const found = lines.find(l => l.product.id === product.id); return found ? lines.map(l => l === found ? { ...l, quantity: String(Number(l.quantity) + 1) } : l) : [...lines, { product, quantity: "1" }]; }); };
-    const scan = async (barcode: string) => { if (selected)
-        throw Error("Inicie uma nova venda para adicionar produtos."); const result = await posRequest<typeof catalog>("catalog?barcode=" + encodeURIComponent(barcode)); if (result.items.length !== 1)
-        throw Error("Código não encontrado no catálogo desta unidade."); const product = result.items[0]!; add(product); setNotice("Produto lido: " + product.name); };
-    const search = async () => { const q = query.trim(); if (/^\d{8,14}$/.test(q)) {
-        try {
-            await scan(q);
-            return;
+        return; if (product.baseUnit === 'KG') {
+        setWeighProduct(product);
+        setWeighGross('');
+        setWeighTare('0');
+        setWeighStable(false);
+        return;
+    } addQuantity(product, '1'); };
+    const scan = async (barcode: string) => { if (weighProduct)
+        throw Error('Conclua ou cancele a pesagem manual.'); if (selected)
+        throw Error('Inicie uma nova venda para adicionar produtos.'); const weighted = await posRequest<{
+        label: WeighedLabel | null;
+        product?: PosProduct;
+    }>('weighted?barcode=' + encodeURIComponent(barcode)); if (weighted.label && weighted.product) {
+        addQuantity(weighted.product, weighted.label.quantity, { source: 'label', barcode });
+        setNotice('Etiqueta por peso: ' + weighted.product.name + ' · ' + weighted.label.quantity + ' kg. Confira lote e validade na embalagem.');
+        return;
+    } const result = await posRequest<typeof catalog>('catalog?barcode=' + encodeURIComponent(barcode)); if (result.items.length !== 1)
+        throw Error('Código não encontrado no catálogo desta unidade.'); const product = result.items[0]!; add(product); setNotice('Produto lido: ' + product.name); };
+    const search = async () => {
+        const q = query.trim();
+        if (/^\d{8,14}$/.test(q)) {
+            try {
+                await scan(q);
+                return;
+            }
+            catch { /* allow internal numeric product codes */ }
         }
-        catch { /* allow internal numeric product codes */ }
-    } await loadCatalog(q); };
-    const gross = cart.reduce((sum, l) => sum + Math.round(Number(l.quantity) * Number(l.product.price) * 100), 0) / 100, total = Math.max(0, gross - Number(discount || 0));
+        await loadCatalog(q);
+    };
+    const gross = cart.reduce((sum, l) => sum + Math.round(Number(previewTotal(l.quantity, l.product.price)) * 100), 0) / 100, total = Math.max(0, gross - Number(discount || 0));
     const sale = selected?.sale, payment = selected?.payments.find(p => p.id === sale?.paymentId);
     const active = overview?.activeRegister;
     const openSale = async (id: string) => { const d = await posRequest<SaleDetail>("sales/" + id); setSelected(d); setReason(""); setMethods([{ method: "cash", amount: d.sale.total, tendered: d.sale.total }]); };
-    const fresh = () => { epoch.current = crypto.randomUUID(); keys.current.clear(); setSelected(null); setCart([]); setDiscount("0"); setNotes(""); setReason(""); setMethods([{ method: "cash", amount: "", tendered: "" }]); setNotice(""); };
-    const save = () => execute(async () => { if (!active)
-        throw Error("Abra seu caixa antes de vender."); const result = await write("sales/save", { registerId: active.id, items: cart.map(l => ({ productId: l.product.id, quantity: l.quantity, expectedPrice: l.product.price })), discount: discount || "0", notes }); await openSale(result.id); setNotice("Rascunho salvo. Confira e prepare o pagamento de teste."); });
-    const prepare = () => execute(async () => { if (!sale)
-        return; const result = await write("payments", { saleId: sale.id, version: sale.version, methods: methods.map(m => ({ ...m, tendered: m.method === "cash" ? m.tendered : m.amount })) }); await openSale(sale.id); await refresh(); setNotice("Pagamento de teste pendente. ID: " + result.id); });
-    const settle = (outcome: "confirmed" | "authorized" | "declined") => execute(async () => { if (!payment || !sale)
-        return; await write("payments/simulate", { paymentId: payment.id, outcome }, false); await openSale(sale.id); await refresh(); if (tab === "history")
-        await loadSales(sales.page); setNotice(outcome === "confirmed" ? "Venda de teste confirmada. Estoque e caixa atualizados." : outcome === "authorized" ? "Autorizado em teste. O estoque só muda na confirmação." : "Pagamento de teste recusado. A venda voltou ao rascunho."); });
-    const cancel = () => execute(async () => { if (!sale)
-        return; await write("sales/cancel", { saleId: sale.id, version: sale.version, reason }, false); await openSale(sale.id); await refresh(); if (tab === "history")
-        await loadSales(sales.page); });
-    const refund = () => execute(async () => { if (!sale || !active)
-        throw Error("Abra seu caixa para receber a devolução."); await write("sales/return", { saleId: sale.id, version: sale.version, registerId: active.id, reason }); await openSale(sale.id); await refresh(); if (tab === "history")
-        await loadSales(sales.page); setNotice("Devolução integral de teste registrada; estoque e caixa recompostos."); });
+    const fresh = () => { setWeighProduct(null); epoch.current = crypto.randomUUID(); keys.current.clear(); setSelected(null); setCart([]); setDiscount("0"); setNotes(""); setReason(""); setMethods([{ method: "cash", amount: "", tendered: "" }]); setNotice(""); };
+    const save = () => execute(async () => {
+        if (!active)
+            throw Error("Abra seu caixa antes de vender.");
+        const result = await write("sales/save", { registerId: active.id, items: cart.map(l => ({ productId: l.product.id, quantity: l.quantity, expectedPrice: l.product.price, ...(l.measurement ? { measurement: l.measurement } : {}) })), discount: discount || "0", notes });
+        await openSale(result.id);
+        setNotice("Rascunho salvo. Confira e prepare o pagamento de teste.");
+    });
+    const prepare = () => execute(async () => {
+        if (!sale)
+            return;
+        const result = await write("payments", { saleId: sale.id, version: sale.version, methods: methods.map(m => ({ ...m, tendered: m.method === "cash" ? m.tendered : m.amount })) });
+        await openSale(sale.id);
+        await refresh();
+        setNotice("Pagamento de teste pendente. ID: " + result.id);
+    });
+    const settle = (outcome: "confirmed" | "authorized" | "declined") => execute(async () => {
+        if (!payment || !sale)
+            return;
+        await write("payments/simulate", { paymentId: payment.id, outcome }, false);
+        await openSale(sale.id);
+        await refresh();
+        if (tab === "history")
+            await loadSales(sales.page);
+        setNotice(outcome === "confirmed" ? "Venda de teste confirmada. Estoque e caixa atualizados." : outcome === "authorized" ? "Autorizado em teste. O estoque só muda na confirmação." : "Pagamento de teste recusado. A venda voltou ao rascunho.");
+    });
+    const cancel = () => execute(async () => {
+        if (!sale)
+            return;
+        await write("sales/cancel", { saleId: sale.id, version: sale.version, reason }, false);
+        await openSale(sale.id);
+        await refresh();
+        if (tab === "history")
+            await loadSales(sales.page);
+    });
+    const refund = () => execute(async () => {
+        if (!sale || !active)
+            throw Error("Abra seu caixa para receber a devolução.");
+        await write("sales/return", { saleId: sale.id, version: sale.version, registerId: active.id, reason });
+        await openSale(sale.id);
+        await refresh();
+        if (tab === "history")
+            await loadSales(sales.page);
+        setNotice("Devolução integral de teste registrada; estoque e caixa recompostos.");
+    });
     const viewRegister = async (id: string, page = 0) => { const d = await posRequest<RegisterDetail>("registers/" + id + "?page=" + page); setLedger(d); setCounted(d.register.balance); };
     if (!allowed)
         return <div className="panel pos-empty">Seu perfil não permite consultar o PDV.</div>;
     return <div className="pos-root">
  <div className="pos-sandbox"><ShieldIcon /><span><strong>Ambiente de teste</strong> · Todos os pagamentos são simulados. Sem cobrança e sem emissão fiscal.</span></div>
- <nav className="pos-tabs" aria-label="Vendas e caixa"><Link href="/pdv" aria-current={tab === "sale" ? "page" : undefined} onClick={e => { e.preventDefault(); setTab("sale"); }}><ShoppingCart size={18}/>Nova venda</Link><Link href="/vendas" aria-current={tab === "history" ? "page" : undefined} onClick={e => { e.preventDefault(); setTab("history"); }}><ReceiptText size={18}/>Vendas</Link><Link href="/caixa" aria-current={tab === "cash" ? "page" : undefined} onClick={e => { e.preventDefault(); setTab("cash"); }}><Wallet size={18}/>Caixa</Link><button aria-label="Atualizar PDV" disabled={busy} onClick={() => void execute(async () => { await refresh(); if (sale)
-        await openSale(sale.id); if (tab === "cash")
-        await loadRegisters(registers.page); if (tab === "history")
-        await loadSales(sales.page); if (tab === "sale")
-        await loadCatalog(query, catalog.page); })}><RefreshCw size={18}/></button></nav>
+ <nav className="pos-tabs" aria-label="Vendas e caixa"><Link href="/pdv" aria-current={tab === "sale" ? "page" : undefined} onClick={e => { e.preventDefault(); setTab("sale"); }}><ShoppingCart size={18}/>Nova venda</Link><Link href="/vendas" aria-current={tab === "history" ? "page" : undefined} onClick={e => { e.preventDefault(); setTab("history"); }}><ReceiptText size={18}/>Vendas</Link><Link href="/caixa" aria-current={tab === "cash" ? "page" : undefined} onClick={e => { e.preventDefault(); setTab("cash"); }}><Wallet size={18}/>Caixa</Link><button aria-label="Atualizar PDV" disabled={busy} onClick={() => void execute(async () => {
+            await refresh();
+            if (sale)
+                await openSale(sale.id);
+            if (tab === "cash")
+                await loadRegisters(registers.page);
+            if (tab === "history")
+                await loadSales(sales.page);
+            if (tab === "sale")
+                await loadCatalog(query, catalog.page);
+        })}><RefreshCw size={18}/></button></nav>
  {error && <p role="alert" className="pos-error">{error} Se houve perda de conexão, consulte o histórico antes de iniciar outra venda.</p>}{notice && <p role="status" className="pos-notice">{notice}</p>}
  {!overview?.unitId ? <div className="pos-empty panel">{overview ? "Selecione uma filial no topo para operar o PDV." : "Carregando PDV…"}</div> : <>
  <div className="pos-stats"><div><Store /><span>Caixa do operador<strong>{active ? active.code : "Fechado"}</strong></span></div><div><ShoppingCart /><span>Vendas confirmadas hoje<strong>{overview.summary.confirmed}</strong></span></div><div><Wallet /><span>Vendas de teste hoje<strong>{money(overview.summary.total)}</strong></span></div><div><ArrowLeftRight /><span>Pagamentos pendentes<strong>{overview.summary.pending}</strong></span></div></div>
@@ -129,7 +228,7 @@ export function PosPanel({ session, initialTab = "sale" }: {
  <div className="pos-products">{catalog.items.map(p => <button type="button" key={p.id} className="pos-product" disabled={!!selected || busy || !active || !overview.capabilities.sell} onClick={() => add(p)}><span className="pos-product-icon"><Package /></span><span><small>{p.code} · {p.category || p.baseUnit}</small><strong>{p.name}</strong><small>Disponível: {Number(p.available).toLocaleString("pt-BR")} {p.baseUnit}</small></span><b>{money(p.price)}</b><Plus size={17}/></button>)}{!catalog.items.length && <p className="pos-empty">Nenhum produto disponível para venda nesta consulta.</p>}</div><Pager page={catalog.page} total={catalog.total} busy={busy} onPage={p => void execute(() => loadCatalog(query, p))}/></section>
  <section className="panel pos-cart"><div className="pos-heading"><h2><ShoppingCart />Carrinho da venda</h2><button disabled={busy} onClick={fresh}>{sale ? "Nova venda" : "Limpar"}</button></div>
  {sale ? <div className="pos-sale-state"><strong>{sale.number}</strong><span className={"pos-badge " + sale.status}>{SALE_STATUSES[sale.status]}</span></div> : <p className="pos-cart-hint">Adicione produtos pelo catálogo, busca ou câmera.</p>}
- <div className="pos-cart-lines">{sale ? sale.items.map(i => <div className="pos-line" key={i.id}><Package /><div><strong>{i.name}</strong><small>{i.quantity} {i.baseUnit} × {money(i.unitPrice)}</small>{selected?.lotAllocations?.filter(l=>l.lineId===i.id).map(l=><small key={l.lotId}>Lote {l.code} · vence {new Date(l.expiresOn+"T12:00:00Z").toLocaleDateString("pt-BR")} · {l.quantity} {i.baseUnit}</small>)}</div><b>{money(i.total)}</b></div>) : cart.map(l => <div className="pos-line" key={l.product.id}><Package /><div><strong>{l.product.name}</strong><small>{money(l.product.price)} / {l.product.baseUnit}</small><div className="pos-quantity"><button aria-label={"Diminuir " + l.product.name} onClick={() => setCart(lines => lines.map(x => x === l ? { ...x, quantity: String(Math.max(.001, Number(x.quantity) - 1)) } : x))}><Minus size={14}/></button><input aria-label={"Quantidade de " + l.product.name} type="number" min="0.001" step="0.001" value={l.quantity} onChange={e => setCart(lines => lines.map(x => x === l ? { ...x, quantity: e.target.value } : x))}/><button aria-label={"Aumentar " + l.product.name} onClick={() => add(l.product)}><Plus size={14}/></button></div></div><b>{money(Number(l.quantity) * Number(l.product.price))}</b><button aria-label={"Remover " + l.product.name} onClick={() => setCart(lines => lines.filter(x => x !== l))}><Trash2 size={17}/></button></div>)}{!sale && !cart.length && <p className="pos-empty">O carrinho está vazio.</p>}</div>
+ <div className="pos-cart-lines">{sale ? sale.items.map(i => <div className="pos-line" key={i.id}><Package /><div><strong>{i.name}</strong><small>{i.quantity} {i.baseUnit} × {money(i.unitPrice)}</small>{selected?.lotAllocations?.filter(l => l.lineId === i.id).map(l => <small key={l.lotId}>Lote {l.code} · vence {new Date(l.expiresOn + "T12:00:00Z").toLocaleDateString("pt-BR")} · {l.quantity} {i.baseUnit}</small>)}</div><b>{money(i.total)}</b></div>) : cart.map(l => <div className="pos-line" key={l.product.id}><Package /><div><strong>{l.product.name}</strong><small>{money(l.product.price)} / {l.product.baseUnit}</small><div className="pos-quantity"><button disabled={l.product.baseUnit === 'KG'} aria-label={"Diminuir " + l.product.name} onClick={() => setCart(lines => lines.map(x => x === l ? { ...x, quantity: String(Math.max(.001, Number(x.quantity) - 1)), measurement: undefined } : x))}><Minus size={14}/></button><input aria-label={"Quantidade de " + l.product.name} type="number" min="0.001" step="0.001" value={l.quantity} onChange={e => setCart(lines => lines.map(x => x === l ? { ...x, quantity: e.target.value, measurement: undefined } : x))}/><button aria-label={"Aumentar " + l.product.name} onClick={() => add(l.product)}><Plus size={14}/></button></div>{l.product.baseUnit === 'KG' && <small>{l.measurement ? l.measurement.source === 'label' ? 'Peso da etiqueta' : l.measurement.source === 'combined' ? 'Pesagens agrupadas' : 'Pesagem manual conferida' : 'Quantidade manual'}</small>}</div><b>{money(previewTotal(l.quantity, l.product.price))}</b><button aria-label={"Remover " + l.product.name} onClick={() => setCart(lines => lines.filter(x => x !== l))}><Trash2 size={17}/></button></div>)}{!sale && !cart.length && <p className="pos-empty">O carrinho está vazio.</p>}</div>
  <div className="pos-totals"><span>Subtotal <b>{money(sale?.gross ?? gross)}</b></span><label>Desconto {sale ? <b>{money(sale.discount)}</b> : <input aria-label="Desconto da venda" type="number" min="0" step="0.01" disabled={!overview.capabilities.discount || busy} value={discount} onChange={e => setDiscount(e.target.value)}/>}</label><div className="pos-total">Total da venda <strong>{money(sale?.total ?? total)}</strong></div></div>
  {!sale && <><label className="pos-field">Observações<input value={notes} maxLength={1000} onChange={e => setNotes(e.target.value)}/></label><button className="pos-gold pos-wide" disabled={busy || !cart.length || !active || !overview.capabilities.sell} onClick={save}><Check size={21}/>Salvar rascunho</button>{!active && <p>Abra seu caixa na aba Caixa para iniciar uma venda.</p>}</>}
  </section></div>}
@@ -146,10 +245,21 @@ export function PosPanel({ session, initialTab = "sale" }: {
  {payment && <div className="pos-payment-state"><strong>Pagamento simulado: {payment.state === "confirmed" ? "confirmado" : payment.state === "authorized" ? "autorizado" : payment.state === "pending" ? "pendente" : payment.state === "declined" ? "recusado" : payment.state === "refunded" ? "devolvido" : "cancelado"}</strong><span>{payment.methods.map(m => PAYMENT_METHODS[m.method] + ": " + money(m.amount)).join(" · ")} · Troco: {money(payment.changeAmount)}</span><small>Referência de teste: {payment.id}</small>{sale.status === "pending" && overview.capabilities.sell && <div className="pos-actions"><button className="pos-gold" disabled={busy} onClick={() => settle("confirmed")}><Check size={18}/>Confirmar venda de teste</button><button disabled={busy} onClick={() => settle("authorized")}>Simular autorização</button><button disabled={busy} onClick={() => settle("declined")}>Simular recusa</button></div>}</div>}
  {((['draft', 'pending'].includes(sale.status) && overview.capabilities.sell) || (sale.status === "confirmed" && overview.capabilities.refund)) && <div className="pos-form"><label>Motivo do cancelamento ou devolução<input value={reason} minLength={3} maxLength={300} onChange={e => setReason(e.target.value)}/></label>{sale.status === "confirmed" ? <button disabled={busy || !active || reason.trim().length < 3} onClick={refund}>Confirmar devolução integral de teste</button> : <button disabled={busy || reason.trim().length < 3} onClick={cancel}>Cancelar venda</button>}</div>}
  {sale.reason && <p className="pos-form">Motivo registrado: {sale.reason}</p>}
- <details className="pos-receipt-details"><summary>Comprovante de teste</summary><div id="pos-receipt" className="pos-receipt"><strong>INVICTUS ERP COMERCIAL</strong><h3>Comprovante de teste</h3><b>SEM VALOR FISCAL · PAGAMENTO SIMULADO</b><p>{sale.unit.companyName}<br />{sale.unit.unitName} · {sale.unit.unitCode}<br />{sale.unit.cnpj}</p><p>{sale.number} · {SALE_STATUSES[sale.status]}<br />{date(sale.createdAt)} · {sale.operatorName}</p>{sale.items.map(i => <div key={i.id}><span>{i.name}<small>{i.quantity} {i.baseUnit} × {money(i.unitPrice)}</small>{selected?.lotAllocations?.filter(l=>l.lineId===i.id).map(l=><small key={l.lotId}>Lote {l.code} · vence {new Date(l.expiresOn+"T12:00:00Z").toLocaleDateString("pt-BR")} · {l.quantity} {i.baseUnit}</small>)}</span><b>{money(i.total)}</b></div>)}<p>Desconto: {money(sale.discount)}</p><h3>Total: {money(sale.total)}</h3>{payment && <p>{payment.methods.map(m => PAYMENT_METHODS[m.method] + " " + money(m.amount)).join(" · ")}<br />Troco: {money(payment.changeAmount)}</p>}<p>Não comprova cobrança ou pagamento real.</p></div><button onClick={() => window.print()}>Imprimir comprovante de teste</button></details>
+ <details className="pos-receipt-details"><summary>Comprovante de teste</summary><div id="pos-receipt" className="pos-receipt"><strong>INVICTUS ERP COMERCIAL</strong><h3>Comprovante de teste</h3><b>SEM VALOR FISCAL · PAGAMENTO SIMULADO</b><p>{sale.unit.companyName}<br />{sale.unit.unitName} · {sale.unit.unitCode}<br />{sale.unit.cnpj}</p><p>{sale.number} · {SALE_STATUSES[sale.status]}<br />{date(sale.createdAt)} · {sale.operatorName}</p>{sale.items.map(i => <div key={i.id}><span>{i.name}<small>{i.quantity} {i.baseUnit} × {money(i.unitPrice)}</small>{selected?.lotAllocations?.filter(l => l.lineId === i.id).map(l => <small key={l.lotId}>Lote {l.code} · vence {new Date(l.expiresOn + "T12:00:00Z").toLocaleDateString("pt-BR")} · {l.quantity} {i.baseUnit}</small>)}</span><b>{money(i.total)}</b></div>)}<p>Desconto: {money(sale.discount)}</p><h3>Total: {money(sale.total)}</h3>{payment && <p>{payment.methods.map(m => PAYMENT_METHODS[m.method] + " " + money(m.amount)).join(" · ")}<br />Troco: {money(payment.changeAmount)}</p>}<p>Não comprova cobrança ou pagamento real.</p></div><button onClick={() => window.print()}>Imprimir comprovante de teste</button></details>
  <details className="pos-attempts"><summary>Histórico de pagamentos ({selected.payments.length})</summary>{selected.payments.map(p => <p key={p.id}>{date(p.createdAt)} · {p.state} · {money(p.total)}<small>{p.id}</small></p>)}</details>
  </section>}
  </>}
+ {weighProduct && <div className="market-modal-backdrop"><section className="panel market-weight-dialog" role="dialog" aria-modal="true" aria-labelledby="pos-weigh-title" onKeyDown={e=>{if(e.key==='Escape'){e.preventDefault();setWeighProduct(null);return;}if(e.key==='Tab'){const fields=Array.from(e.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled),input:not(:disabled)')),first=fields[0],last=fields[fields.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}}}}><div className="pos-heading"><h2 id="pos-weigh-title">Pesagem manual · {weighProduct.name}</h2><button aria-label="Fechar pesagem" onClick={() => setWeighProduct(null)}>×</button></div><form className="pos-form" onSubmit={e => { e.preventDefault(); try {
+        const g = quantityMilli(weighGross), t = quantityMilli(weighTare || '0');
+        if (g <= t || g > 99999n || !weighStable)
+            throw Error('Confira bruto, tara e peso estável.');
+        addQuantity(weighProduct, quantityText(g - t), { source: 'manual', gross: weighGross, tare: weighTare || '0' });
+        setNotice('Peso manual conferido: ' + quantityText(g - t) + ' kg.');
+        setWeighProduct(null);
+    }
+    catch (e) {
+        setError((e as Error).message);
+    } }}><p>Informe o peso exibido no equipamento. Preço por kg: <strong>{money(weighProduct.price)}</strong>.</p><label>Peso bruto (kg)<input autoFocus type="number" required min="0.001" max="99.999" step="0.001" value={weighGross} onChange={e => { setWeighGross(e.target.value); setWeighStable(false); }}/></label><label>Tara (kg)<input type="number" required min="0" max="99.999" step="0.001" value={weighTare} onChange={e => { setWeighTare(e.target.value); setWeighStable(false); }}/></label><label className="fin-checkbox"><input type="checkbox" required checked={weighStable} onChange={e => setWeighStable(e.target.checked)}/>Conferi o peso estável e a tara.</label><button className="pos-gold" disabled={!weighStable}>Aceitar peso manual</button><button type="button" onClick={() => setWeighProduct(null)}>Cancelar pesagem</button></form></section></div>}
  </div>;
 }
 function ShieldIcon() { return <Check size={19}/>; }

@@ -107,3 +107,7 @@ Migrações aditivas 008/009 e módulo inventory; 15 tabelas protegidas no verif
 ## Compras e recebimentos
 
 Migrações aditivas 010/011 acrescentam três tabelas purchasing em RLS forçada e três capturas de auditoria. AuthStore verifica 18 tabelas e 15 triggers. A ponte de estoque conserva o valor exato do recebimento e impede estorno manual isolado de entrada de compra. Pedidos/recibos não recebem escrita HTTP direta. Guia em [Fornecedores e compras](FORNECEDORES_COMPRAS.md).
+
+## Supermercado — 09.1
+
+As migrações 020/021 adicionam supermarket.sectors/product_profiles/scales/weighings/recipes/runs, todas com FORCE RLS e leitura por filial; RPCs restritas fazem a escrita e seis capturas de auditoria integram estoque. Validação de inicialização exige quarenta tabelas protegidas e trinta e sete capturas ativas. Pesagens/fichas/produções mantêm snapshots; origens de produção no ledger permitem estorno integral sem substituir movimentos comerciais anteriores. Consulte [Setores, pesagem e produção](SETORES_PESAGEM_PRODUCAO.md).

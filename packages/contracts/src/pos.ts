@@ -15,6 +15,7 @@ export type SaleItemInput = {
     productId: string;
     quantity: string;
     expectedPrice: string;
+    measurement?: import("./supermarket").WeightMeasurement;
 };
 export type SaleItem = {
     id: string;
@@ -28,6 +29,7 @@ export type SaleItem = {
     discount: string;
     total: string;
     stockCost: string;
+    measurement?: (import("./supermarket").WeightMeasurement|{source:"manual_quantity";quantity:string}) & {quantity?:string};
 };
 export type Sale = {
     id: string;

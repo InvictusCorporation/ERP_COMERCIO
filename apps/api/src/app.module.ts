@@ -1,3 +1,5 @@
+import {SupermarketService} from './modules/supermarket/supermarket.service';
+import {SupermarketController} from './modules/supermarket/supermarket.controller';
 import {LotsService} from "./modules/lots/lots.service";
 import {LotsController} from "./modules/lots/lots.controller";
 import {FiscalService} from "./modules/fiscal/fiscal.service";
@@ -48,7 +50,7 @@ export class AppModule {
               OrganizationsController,
               AuditController,
               InventoryController,
-              PurchasingController, PosController, FinanceController, FiscalController, LotsController,
+              PurchasingController, PosController, FinanceController, FiscalController, LotsController, SupermarketController,
             ]
           : []),
       ],
@@ -60,6 +62,8 @@ export class AppModule {
         ...(authConfig
           ? [
               {
+                provide: SupermarketService,useFactory:(auth:AuthService)=>new SupermarketService(auth),inject:[AuthService],
+              },{
                 provide: LotsService,useFactory:(auth:AuthService)=>new LotsService(auth),inject:[AuthService],
               },{
                 provide: FiscalService,useFactory:(auth:AuthService)=>new FiscalService(auth,fiscalGateway),inject:[AuthService],

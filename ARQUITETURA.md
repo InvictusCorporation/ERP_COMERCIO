@@ -1,5 +1,9 @@
 # Arquitetura proposta
 
+## Supermercado — 09.1
+
+Seis tabelas em supermarket com FORCE RLS e RPCs restritas, sem DML direto do papel HTTP. Escopo por filial, products.read/stock.read e stock.manage/MFA. Ponte de movimentos aceita origem de produção somente nos estados internos transacionais; insumos e saída conservam custo em seis casas e rastreio FEFO, com estorno integral. Decoder restrito ao caixa resolve PLU/peso e campos do catálogo sem abrir SELECT de estoque. Metadados de pesagem são revalidados no servidor, inclusive somas agrupadas. Verificação passa a 40 tabelas/37 capturas. Guia em [Setores, pesagem e produção](docs/SETORES_PESAGEM_PRODUCAO.md).
+
 ## Lotes — 08.1
 
 Três tabelas em inventory com FORCE RLS e escrita por funções restritas: controles por produto/filial, lotes e eventos. Classificação distribui saldo existente, sem nova entrada/custo. Trigger transacional de movimentos integra compras, perdas, vendas e devoluções; reserva e confirmação verificam validade e bloqueio, baixa FEFO registra lotes por linha. Custos permanecem no ledger de estoque. API exige products.read/stock.read e stock.manage para alteração; catálogo do PDV consulta saldo vendável e detalhe da venda expõe rastreabilidade apenas no escopo autorizado. Verificação passa a 34 tabelas/31 capturas. Migrações 018/019 aditivas; guia em [Lotes, validade e perdas](docs/LOTES_VALIDADE_PERDAS.md).

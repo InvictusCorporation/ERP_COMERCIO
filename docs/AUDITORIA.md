@@ -97,3 +97,7 @@ Incrementos 02.1/03.1 acrescentam categorias products e inventory: cadastro/pre�
 ## Fornecedores e compras
 
 Categorias suppliers e purchases capturam cadastro/inativação, rascunho, aprovação, cancelamento, recebimento e estorno com snapshots permitidos. Eventos de pedido/recebimento têm unidade, responsável e correlação com as entradas de estoque; fornecedor central exige escopo global na auditoria. Falha posterior aos movimentos reverte o recebimento inteiro. Guia em [Fornecedores e compras](FORNECEDORES_COMPRAS.md).
+
+## Setores, pesagem e produção — 09.1
+
+Seis novas fontes na categoria Estoque: sector, weighed_product, scale, weighing, recipe e production. Capturas transacionais incluem configuração/versionamento, bruto/tara/líquido e snapshot da pesagem, ficha/insumos/rendimento, custo e reversão da produção. Falha de auditoria reverte também as alterações de estoque/lotes. Eventos de lote identificam consumo e saída de produção e suas contrapartidas. Históricos preservam os registros originais; consulta continua sujeita ao escopo atual da filial. Guia em [Setores, pesagem e produção](SETORES_PESAGEM_PRODUCAO.md).

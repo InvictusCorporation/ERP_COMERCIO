@@ -1,5 +1,9 @@
 # Módulos e dependências
 
+## Supermercado — incremento 09.1
+
+Setores, produtos KG/PLU, configurações de balança, pesagem manual, etiquetas internas, fichas versionadas, produção/custeio/lotes e estorno integral. Integração ao PDV desktop/mobile sem alterar pagamentos simulados e bloqueios fiscais. Hardware, layouts de fabricante, planejamento e custo indireto seguem pendentes. Guia em [Setores, pesagem e produção](docs/SETORES_PESAGEM_PRODUCAO.md).
+
 ## Estoque avançado — incremento 08.1
 
 Lotes por produto/filial, validade, bloqueio, classificação do estoque existente, descarte/estorno, relatório e reposição por saldo vendável. Baixa FEFO e devolução rastreada no PDV, sem alterar custeio. Compras aumentam saldo não classificado; conferência móvel pelo formulário responsivo. A etapa 08 completa ainda depende de recebimento detalhado, notificações, promoções aprovadas e previsão de demanda. Guia em [Lotes, validade e perdas](docs/LOTES_VALIDADE_PERDAS.md).

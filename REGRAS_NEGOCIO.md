@@ -1,5 +1,9 @@
 # Regras de negócio
 
+## Supermercado — 09.1
+
+Setor e PLU pertencem à filial; PLU e formato da balança são permanentes. Peso líquido = bruto − tara, com capacidade/resolução e conferência manual. Etiqueta contém peso, não preço, lote ou validade; PDV usa preço atual. Pesagem não movimenta estoque. Ficha revisada determina consumo; produção transfere custo integral aos produtos realmente obtidos e consome lotes válidos por vencimento. Validade de saída é conferida e limitada pelos insumos consumidos. Estorno completo preserva histórico e exige movimentos como últimos. Guia em [Setores, pesagem e produção](docs/SETORES_PESAGEM_PRODUCAO.md).
+
 ## Lotes, validade e perdas — 08.1
 
 Controle ativado por produto/filial é permanente; saldo desconhecido não recebe datas inventadas. Classificar não altera físico/custo e exige saldo sem reservas. Vencimento anterior ao dia America/Fortaleza ou bloqueio impede venda; PDV verifica novamente na confirmação e consome por vencimento. Devolução recompõe os lotes originais sem renovar datas. Perda exige lote, quantidade, tipo e motivo; descarte e estoque são atômicos e idempotentes. Estorno preserva original e segue a regra de último movimento. Reposição é sugestão por limites e saldo vendável, sem pedido/preço/descarte automático. Guia em [Lotes, validade e perdas](docs/LOTES_VALIDADE_PERDAS.md).
