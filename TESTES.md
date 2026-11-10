@@ -1,5 +1,25 @@
 # Testes e evidências
 
+## Fiscal NF-e/NFC-e — 07.1 — 09/11/2026
+
+- Testes em bancos PostgreSQL reais isolados invictus_test_*, com dados fictícios. Migração 017 aditiva, 001–016 e escopo original preservados.
+- npm.cmd test: 39 testes unitários aprovados. Fiscal acrescenta 12 casos: CPF/códigos/precisão, bases explícitas, arredondamento, CEST e totais IBS/CBS, bloqueio de produção, vínculo rede/unidade/CNPJ, DV da chave, protocolo/ambiente, retorno perdido, redirecionamentos, tamanho/tipo de arquivos e remoção de credenciais/CPF dos retornos.
+- npm.cmd run test:integration: 174 testes aprovados, incluindo agrupadores. Após o ajuste dos campos CEST/totais, a suíte fiscal isolada foi repetida: 13 testes aprovados. Toda a regressão de identidade, usuários, unidades, auditoria, estoque, compras, PDV e financeiro passou.
+- Adaptador real FocusGateway exercitado por fetch sintético injetado somente nas fixtures; nenhum contato externo. Casos de modelos 55/65, rejeição, processamento assíncrono, autorização com protocolo completo de ambiente 2, download privado e cancelamento. Não equivale a homologação fiscal real, XSD ou emissão externa autorizada.
+- Concorrência/idempotência registra um POST para duas confirmações da mesma chave. Resposta perdida deixa retorno a conciliar e consulta GET recupera autorização, sem repetir o POST. Configuração tributária alterada invalida conferência anterior.
+- Falha transacional de auditoria antes de enfileirar impede a rede; falha depois do envio deixa processamento conciliável por consulta. Estoque não é rebaixado novamente, cancelamento fiscal não devolve venda, devolução do PDV com fiscal ativo é bloqueada.
+- Rede/filial alheias não leem documentos, perfil de consulta não configura nem emite, e MFA é exigido nas escritas. Papel HTTP sem UPDATE/INSERT direto nas tabelas fiscais. Auditoria fiscal não inclui CPF do destinatário. Verificador exige 31 tabelas com FORCE RLS e 28 capturas.
+- Primeira rodada de navegador: 9 aprovados e 4 falhas em seletores getByLabel de selects. Snapshot confirmou os nomes acessíveis dos comboboxes; seletores ajustados para getByRole('combobox'), sem alterar regras fiscais para satisfazer os testes. Regime passou a exigir escolha explícita na tela; edição do emitente não é sobrescrita ao voltar à janela.
+- Rodada integral de navegador: 94 aprovados e 12 falhas em carregamento/indisponibilidade de módulos anteriores; os 13 cenários fiscais passaram. Diagnóstico registrado em .local/fiscal-all-e2e.log; traces foram inspecionados na rodada. Auditoria enviou somente a segunda data ao preencher antes da inicialização; teste passa a aguardar o botão Buscar habilitado. Financeiro podia abrir fluxo antes de inicializar as datas: abas agora aguardam unidade e inicialização, com teste segurando a resposta de overview para comprovar o bloqueio.
+- Runner de navegador passa a usar 60 segundos por cenário e 10 segundos por asserção para compilação inicial do Next no workspace Windows. Timeouts e limites da aplicação não foram ampliados. Todos os cenários afetados são repetidos explicitamente, sem retries automáticos ou exclusões.
+- Migração 017 aplicada no banco local: zero registros em issuer_profiles, product_profiles, documents e operations; quatro tabelas fiscais com RLS forçada e 28 capturas de auditoria ativas. Verificação confirma migrações 001–016 intactas. Variáveis FISCAL_* excluídas do ambiente web em verificação independente.
+- Repetição final: 25 cenários aprovados em 3 minutos, reunindo os 12 anteriormente afetados e todos os 13 fiscais. No conjunto das rodadas, os 106 cenários distintos foram aprovados; não foi uma rodada integral única sem falhas. Log final em .local/fiscal-rerun-e2e.log.
+- Capturas finais de documentos/detalhe, emitente, tributação e vendas disponíveis em 360/390/768/1440 px, com checagem de overflow e revisão visual de desktop/celular. Arquivos em .local/screenshots/fiscal-*.png, somente fixtures fictícias. Tabelas preservam rolagem interna e formulários empilham campos no celular.
+- npm.cmd run build e npm.cmd run typecheck aprovados em contratos, API e web. /fiscal é rota privada dinâmica. next-env normal restaurado sem referência ao cache de E2E.
+- Verificação final: diff preparado e JavaScript público sem segredos locais; nenhum arquivo privado rastreado, links Markdown válidos, escopo idêntico ao anexo original e migrações 001–016 preservadas. Git diff --check aprovado. Serviços de teste encerrados; nenhuma publicação ou emissão externa.
+- Guia operacional, configuração privada, fontes primárias e limites em [Fiscal](docs/FISCAL.md). Emissão externa e homologação real, dispositivos físicos, produção e publicação permanecem pendentes.
+
+
 ## Financeiro manual — 06.1 — 09/11/2026
 
 - PostgreSQL real em bancos isolados invictus_test_*, com fixtures fictícias; migrações 015/016 aditivas. Migrações 001–014 e escopo mestre preservados. Nenhuma operação bancária externa ou dado comercial fictício inserido no banco de desenvolvimento.

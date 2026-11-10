@@ -1,5 +1,9 @@
 # Arquitetura proposta
 
+## Fiscal — 07.1
+
+Migração 017 adiciona quatro tabelas com FORCE RLS; verificação exige 31 tabelas e 28 capturas. FiscalGateway separa domínio e transporte externo; implementação opcional Focus apenas em homologação. Operação persistida/auditada antes da rede, payload congelado, lease e idempotência; retorno normalizado com verificação de referência/CNPJ/modelo/protocolo/ambiente. Resultado perdido exige consulta da mesma referência, sem reenvio automático. Credencial vinculada a rede/unidade/CNPJ e excluída do ambiente web. Nenhuma nova baixa de estoque ou financeiro; devolução comercial protegida enquanto fiscal ativo. Guia em [Fiscal](docs/FISCAL.md).
+
 ## Financeiro — 06.1
 
 Cinco tabelas em finance com RLS forçada e funções restritas. Títulos e liquidações parciais com numeric/versão/idempotência; ledger imutável projeta saldo, estorno gera contrapartida e transferência cria duas pernas atômicas. Conferências congelam períodos de caixa. Importação explícita de recebimento preserva origem e bloqueia estorno isolado da compra. Auditoria transacional: 27 tabelas verificadas e 24 capturas. Financeiro manual não incorpora caixa simulado do PDV nem aciona banco. Guia em [Financeiro](docs/FINANCEIRO.md).

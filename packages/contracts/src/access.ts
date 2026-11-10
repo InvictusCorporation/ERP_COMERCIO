@@ -1,4 +1,8 @@
 export const PERMISSIONS = [
+{"key":"fiscal.read","label":"Consultar documentos fiscais","description":"Consultar documentos, cadastros e retornos nas filiais autorizadas."},
+{"key":"fiscal.manage","label":"Preparar e configurar o fiscal","description":"Configurar emitente/tributação e conferir rascunhos; exige consulta de produtos e duas etapas."},
+{"key":"fiscal.issue","label":"Transmitir e consultar homologação","description":"Solicitar emissão e reconciliar retornos externos no ambiente de homologação; exige duas etapas."},
+{"key":"fiscal.cancel","label":"Cancelar documento fiscal","description":"Solicitar cancelamento ao provedor, com justificativa e duas etapas."},
 {"key":"finance.read","label":"Consultar o financeiro","description":"Consultar títulos, contas e extratos das unidades autorizadas."},
 {"key":"finance.manage","label":"Gerenciar contas e títulos","description":"Cadastrar contas, criar títulos e ajustar vencimentos; exige duas etapas."},
 {"key":"finance.settle","label":"Registrar pagamentos e recebimentos","description":"Baixar valores informados manualmente, sem envio de dinheiro; exige duas etapas."},

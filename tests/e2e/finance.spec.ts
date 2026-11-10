@@ -406,7 +406,10 @@ test('extrato abre título e registra ajuste de vencimento auditável', async ({
     await f.post('finance/settlements', {
         titleId: t.id, version: d.title.version, accountId: f.cash, principal: '5', interest: '0', fee: '0', discount: '0', postedDate: f.today, method: 'pix', reference: 'REC-05', notes: '', requestKey: randomUUID()
     });
+    let release!:()=>void; const gate=new Promise<void>(resolve=>{release=resolve;});
+    await page.route('**/api/v1/finance/overview',async route=>{await gate;await route.continue();});
     await page.goto('/financeiro');
+    try { await expect(page.getByRole('button',{name:'Fluxo e extrato',exact:true})).toBeDisabled(); } finally { release(); }
     await page.getByRole('button', {
         name: 'Fluxo e extrato', exact: true
     }).click();

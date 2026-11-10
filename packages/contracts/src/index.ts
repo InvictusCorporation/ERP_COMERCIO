@@ -16,3 +16,5 @@ export * from "./purchasing";
 export * from "./pos";
 
 export * from "./finance";
+
+export * from "./fiscal";

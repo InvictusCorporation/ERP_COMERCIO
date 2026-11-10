@@ -9,6 +9,7 @@ export function runtimeEnvironment(source, target) {
       delete env[key];
   }
   if (target === "web") {
+    for(const key of Object.keys(env))if(key.startsWith("FISCAL_"))delete env[key];
     for (const name of [
       "DATABASE_URL",
       "AUTH_DATABASE_URL",

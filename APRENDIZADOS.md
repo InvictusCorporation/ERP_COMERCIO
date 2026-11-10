@@ -1,5 +1,11 @@
 # Aprendizados e decisões reutilizáveis
 
+## Fiscal — 09/11/2026
+
+Timeout não comprova rejeição: referência estável e consulta evitam duplicidade. Auditoria antes da chamada externa deve confirmar a fila; falha após a rede exige conciliação, pois banco e provedor não compartilham transação. Protocolo completo e ambiente precisam ser verificados, sem criar chave localmente. CNPJ sozinho não identifica autorização entre clientes SaaS: credencial precisa de vínculo rede/unidade/CNPJ. Número comercial e número fiscal são identidades distintas. Bases e taxas explícitas evitam transformar preço de venda em hipótese tributária.
+
+O extrato financeiro também evidenciou uma corrida de inicialização: abas não devem abrir consultas de período antes de inicializar unidade e datas. O teste controla a resposta de overview para verificar esse comportamento sem depender da velocidade da máquina.
+
 ## Financeiro — 09/11/2026
 
 Principal quitado e dinheiro movimentado precisam de campos distintos para juros/desconto e baixas parciais. Parcela conserva o total por arredondamento cumulativo. Saldo inicial e transferências entram no fluxo, sem virar faturamento. Recebimentos líquidos descontam estornos; ledger preserva ambas as operações. Conferência de caixa não deve ocultar diferença com ajuste automático. Origem de compra precisa de trava financeira para não estornar estoque com obrigação ativa. O PDV de teste não pode contaminar a escrituração manual.

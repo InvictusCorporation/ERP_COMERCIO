@@ -190,6 +190,7 @@ test("histórico por filial não mostra unidade alheia e revogação afeta consu
 test("erro de período é claro e filtros podem ser limpos", async ({ page }) => {
   await seed(page);
   await page.goto("/auditoria");
+  await expect(page.getByRole("button", {name:"Buscar",exact:true})).toBeEnabled();
   await page.getByLabel("Data inicial do histórico").fill("2026-12-01");
   await page.getByLabel("Data final do histórico").fill("2026-01-01");
   await page.getByRole("button", { name: "Buscar", exact: true }).click();

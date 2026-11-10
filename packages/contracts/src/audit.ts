@@ -1,4 +1,5 @@
 export const AUDIT_CATEGORIES = {
+  fiscal: "Fiscal",
   finance: "Financeiro",
   sales: "Vendas e pagamentos",
   cash: "Caixas",
@@ -15,6 +16,15 @@ export const AUDIT_CATEGORIES = {
 } as const;
 export type AuditCategory = keyof typeof AUDIT_CATEGORIES;
 export const AUDIT_ACTIONS: Record<string, string> = {
+"fiscal_issuer.created":"Emitente fiscal configurado",
+"fiscal_issuer.changed":"Emitente fiscal alterado",
+"fiscal_product.created":"Tributação de produto configurada",
+"fiscal_product.changed":"Tributação de produto alterada",
+"fiscal_document.created":"Rascunho fiscal criado",
+"fiscal_document.changed":"Documento fiscal atualizado",
+"fiscal_operation.created":"Operação fiscal solicitada",
+"fiscal_operation.changed":"Retorno fiscal registrado",
+"fiscal_document.downloaded":"Arquivo fiscal obtido",
 "financial_account.created": "Conta financeira registrada",
 "financial_account.changed": "Conta financeira alterada",
 "financial_title.created": "Título financeiro registrado",
@@ -70,6 +80,20 @@ export const AUDIT_ACTIONS: Record<string, string> = {
   "context.changed": "Contexto de acesso atualizado",
 };
 export const AUDIT_FIELDS: Record<string, string> = {
+data:"Cadastro fiscal",
+reviewed_by:"Revisado por",
+model:"Modelo",
+environment:"Ambiente",
+issuer_cnpj:"CNPJ emitente",
+access_key:"Chave de acesso",
+protocol:"Protocolo",
+series:"Série",
+cancel_protocol:"Protocolo de cancelamento",
+sefaz_code:"Código SEFAZ",
+message:"Mensagem do retorno",
+document_id:"Documento fiscal",
+finished_at:"Retorno registrado em",
+artifact:"Arquivo",
 opening_date: "Data da abertura",
 closed_through: "Período fechado até",
 counterparty: "Cliente / fornecedor",

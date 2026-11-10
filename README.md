@@ -1,5 +1,9 @@
 # Invictus ERP Comercial
 
+## Fiscal — 07.1
+
+Disponível em /fiscal: NF-e/NFC-e a partir das vendas, emitente e tributação por filial, conferência, histórico, consulta e cancelamento em homologação. Visual responsivo preto/branco/dourado. Adaptador opcional Focus NFe, desabilitado por padrão; testado com transporte sintético, sem emissão externa real. Produção bloqueada. Guia e requisitos para habilitar homologação em [Fiscal](docs/FISCAL.md).
+
 ## Financeiro manual — 06.1
 
 Contas a pagar/receber, parcelas, baixas parciais, estornos e caixa financeiro por filial em /financeiro. Contas de caixa/banco, extrato/fluxo, transferências internas, conferência e vínculo com recebimentos de compras. Layout responsivo preto/branco/dourado. Escrituração manual sem envio de dinheiro ou integração bancária; PDV simulado permanece separado. Guia em [Financeiro](docs/FINANCEIRO.md).
@@ -28,7 +32,7 @@ Guia do histórico e controles: [Auditoria](docs/AUDITORIA.md). CI preparada em 
 
 Guia de operação, regras e limites: [Produtos e estoque](docs/PRODUTOS_ESTOQUE.md).
 
-Guia de fornecedores e recebimentos: [Fornecedores e compras](docs/FORNECEDORES_COMPRAS.md). Rotas /fornecedores e /compras. XML fiscal, cotações e contas a pagar permanecem previstos em próximos incrementos.
+Guia de fornecedores e recebimentos: [Fornecedores e compras](docs/FORNECEDORES_COMPRAS.md). Rotas /fornecedores e /compras. XML fiscal e cotações permanecem previstos; vínculo de contas a pagar entregue em 06.1.
 
 ## Documentação
 

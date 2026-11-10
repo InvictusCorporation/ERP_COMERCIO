@@ -59,6 +59,7 @@ await fixture.admin.end();
 const env = {
   ...process.env,
   NODE_ENV: "test",
+  FISCAL_PROVIDER: "disabled", FISCAL_FOCUS_HOMOLOG_TOKENS: "{}",
   API_HOST: "127.0.0.1",
   API_PORT: "3334",
   API_INTERNAL_URL: "http://127.0.0.1:3334",

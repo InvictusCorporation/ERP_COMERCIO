@@ -25,6 +25,7 @@ export class PosService {
         const code = (e as {
             code?: string;
         }).code;
+        if(code==='P0701')throw new ConflictException('Regularize ou cancele o documento fiscal antes de registrar a devolução da venda.');
         if (code === '23505')
             throw new ConflictException('Caixa, operação ou confirmação já registrada. Atualize a consulta.');
         if (code === '23514')

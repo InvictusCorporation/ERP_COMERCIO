@@ -100,7 +100,7 @@ export function FinancePanel({ session, initialTab = 'payable' }: {
         Tab,
         string,
         LucideIcon
-    ][]).map(([key, label, Icon]) => <button key={key} aria-pressed={tab === key} disabled={busy} onClick={() => navigate(key as Tab)}><Icon size={17}/>{label}</button>)}<button aria-label="Atualizar financeiro" disabled={busy} onClick={() => void execute(async () => { await refresh(); if (tab === 'payable' || tab === 'receivable') {
+    ][]).map(([key, label, Icon]) => <button key={key} aria-pressed={tab === key} disabled={busy || !overview?.unitId || !initialized.current} onClick={() => navigate(key as Tab)}><Icon size={17}/>{label}</button>)}<button aria-label="Atualizar financeiro" disabled={busy} onClick={() => void execute(async () => { await refresh(); if (tab === 'payable' || tab === 'receivable') {
         await loadTitles(titles.page);
         if (titleDetail)
             await openTitle(titleDetail.title.id);

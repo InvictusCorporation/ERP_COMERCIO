@@ -1,5 +1,9 @@
 # Regras de negócio
 
+## Fiscal — 07.1
+
+Documento tem origem em venda confirmada, com itens/valores do servidor e um documento ativo por venda. Configuração fiscal por filial, revisão explícita e bases tributárias informadas; não presumir classificação ou taxa. Conferência não representa autorização; chave/número/protocolo/arquivos dependem de retorno verificável em ambiente 2. Produção bloqueada, integração desabilitada por padrão. Cancelamento fiscal não estorna a venda e devolução do PDV exige regularizar fiscal ativo. Permissões separadas para consultar, configurar, emitir e cancelar, com MFA e escopo atual. Guia em [Fiscal](docs/FISCAL.md).
+
 ## Financeiro — 06.1
 
 Título não movimenta caixa até a baixa; parcelas conservam centavos. Principal e valor financeiro são distintos quando existem juros, encargos ou desconto. Não ultrapassar principal pendente ou deixar caixa físico negativo. Transferência entre contas da mesma filial confirma duas pernas e não é receita. Estorno preserva origem e gera contrapartida; cancelar título exige principal baixado zero. Conferência preserva diferença sem ajuste automático e congela período, com reabertura supervisionada. Recebimento importado tem título único; cancelar o vínculo antes de estornar a compra. Escrituração manual não envia dinheiro nem confirma pagamento externo, e não inclui PDV simulado. Regras e limites em [Financeiro](docs/FINANCEIRO.md).

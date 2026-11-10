@@ -1,3 +1,6 @@
+import {FiscalService} from "./modules/fiscal/fiscal.service";
+import {FiscalController} from "./modules/fiscal/fiscal.controller";
+import type {FiscalGateway} from "./modules/fiscal/focus.gateway";
 import {FinanceService} from "./modules/finance/finance.service";
 import {FinanceController} from "./modules/finance/finance.controller";
 import {PosService} from "./modules/pos/pos.service";
@@ -30,6 +33,7 @@ export class AppModule {
     databaseUrl: string,
     authConfig?: AuthConfig,
     mailDelivery?: MailDelivery,
+    fiscalGateway?: FiscalGateway,
   ): DynamicModule {
     return {
       module: AppModule,
@@ -42,7 +46,7 @@ export class AppModule {
               OrganizationsController,
               AuditController,
               InventoryController,
-              PurchasingController, PosController, FinanceController,
+              PurchasingController, PosController, FinanceController, FiscalController,
             ]
           : []),
       ],
@@ -54,6 +58,8 @@ export class AppModule {
         ...(authConfig
           ? [
               {
+                provide: FiscalService,useFactory:(auth:AuthService)=>new FiscalService(auth,fiscalGateway),inject:[AuthService],
+              },{
                 provide: FinanceService,useFactory:(auth:AuthService)=>new FinanceService(auth),inject:[AuthService],
               },{
                 provide: PosService,useFactory:(auth:AuthService)=>new PosService(auth),inject:[AuthService],

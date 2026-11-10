@@ -1,5 +1,9 @@
 # Módulos e dependências
 
+## Fiscal — incremento 07.1
+
+Preparação NF-e 55/NFC-e 65, configuração por filial/produto, snapshots, operações idempotentes, retorno verificável, cancelamento e arquivos privados. Permissões, MFA e auditoria integrados. Adaptador opcional exclusivo de homologação, desabilitado por padrão e validado apenas por transporte sintético. A etapa 07 completa, homologação real, RTC completo e produção seguem pendentes. Guia em [Fiscal](docs/FISCAL.md).
+
 ## Incremento 06.1 — financeiro manual por filial
 
 A pagar/receber, parcelas em dias corridos, baixas parciais com juros/encargos/desconto informados, estorno, contas, fluxo/extrato e caixa financeiro com transferência e conferência. Recebimentos de compras podem gerar título vinculado; caixa do PDV continua simulado e separado. Etapa 06 completa ainda depende de provedores, conciliação e demais complementos. Guia em [Financeiro](docs/FINANCEIRO.md).

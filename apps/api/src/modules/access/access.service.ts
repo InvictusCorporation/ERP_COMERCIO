@@ -49,6 +49,7 @@ const systemRoles: [string, Permission[]][] = [
       "purchases.approve",
       "purchases.receive", "pos.read", "pos.sell", "pos.cash", "pos.cash.manage", "pos.discount", "pos.refund",
       "finance.read", "finance.manage", "finance.settle", "finance.reverse", "finance.cash",
+      "fiscal.read", "fiscal.manage", "fiscal.issue", "fiscal.cancel",
     ],
   ],
   ["Gerente", ["users.read", "organizations.read"]],
@@ -72,7 +73,7 @@ const sensitive = (p: Permission[]) =>
   p.includes("suppliers.manage") ||
   p.includes("purchases.manage") ||
   p.includes("purchases.approve") ||
-  p.includes("purchases.receive") || p.some(v=>(v.startsWith("pos.")&&v!=="pos.read")||(v.startsWith("finance.")&&v!=="finance.read"));
+  p.includes("purchases.receive") || p.some(v=>(v.startsWith("pos.")&&v!=="pos.read")||(v.startsWith("finance.")&&v!=="finance.read")||(v.startsWith("fiscal.")&&v!=="fiscal.read"));
 export class AccessService {
   constructor(private readonly auth: AuthService) {}
   private require(ctx: Context, p: Permission) {
@@ -351,6 +352,7 @@ export class AccessService {
           "Permissões não autorizadas para este perfil.",
         );
       await this.roles(c, ctx.tenantId);
+ if((permissions.some(p=>p.startsWith('fiscal.')&&p!=='fiscal.read')&&!permissions.includes('fiscal.read'))||(permissions.includes('fiscal.manage')&&!permissions.includes('products.read')))throw new BadRequestException('Inclua consulta fiscal e consulta de produtos para preparar documentos.');
  if(permissions.some(p=>p.startsWith('finance.')&&p!=='finance.read')&&!permissions.includes('finance.read'))throw new BadRequestException('Inclua a consulta financeira antes de liberar alterações.');
  if((permissions.includes('pos.read')&&!permissions.includes('products.read'))||(permissions.some(p=>p.startsWith('pos.')&&p!=='pos.read')&&!permissions.includes('pos.read'))||(['pos.sell','pos.cash.manage','pos.refund'].some(p=>permissions.includes(p as Permission))&&!permissions.includes('pos.cash'))||(permissions.includes('pos.discount')&&!permissions.includes('pos.sell')))throw new BadRequestException('Inclua as consultas de produtos/PDV e as permissões de caixa/venda necessárias à ação.');
       if (

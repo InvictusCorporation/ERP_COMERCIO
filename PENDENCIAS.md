@@ -1,5 +1,9 @@
 # Pendências
 
+## Fiscal — 07.1 entregue localmente; homologação externa pendente
+
+Conferência, emitente/produtos por filial, documentos, operações, arquivos e auditoria implementados. Adaptador opcional Focus NFe homologação testado com transporte sintético; nenhum envio real. Falta definir provedor/piloto/UF/CRT, certificado/CSC, credenciamento e validar NF-e/NFC-e, XML/DANFE, rejeições e cancelamento reais com responsável fiscal. Produção permanece bloqueada. Próximos complementos: motor tributário/RTC, contingência, CC-e/inutilização, devolução fiscal, XML de compras, retenção e webhooks. Guia em [Fiscal](docs/FISCAL.md).
+
 ## Incremento 06.1 — financeiro manual entregue localmente
 
 Contas a pagar/receber, parcelas, baixas e estornos, caixa/banco manual, fluxo/extrato, transferência interna e conferência, com escopo e auditoria. Compras têm geração explícita de título por recebimento. PDV simulado continua separado. Próximos: provedores/recebíveis, conciliação bancária, CRM/crediário, renegociação, DRE/consolidação e homologação operacional. Guia em [Financeiro](docs/FINANCEIRO.md).
@@ -74,4 +78,4 @@ Essas decisões não impedem a implementação local da fundação com adaptador
 
 ## Etapas posteriores
 
-Provedores Invictus Pay e alternativas, documentação e homologações fiscais, balanças, equipamentos, regras tributárias validadas, limites/preços de planos e integração de IA permanecem sem implementação. Não foram solicitadas credenciais para funcionalidades futuras.
+Provedores Invictus Pay e alternativas, homologações fiscais externas, balanças, equipamentos, regras tributárias validadas, limites/preços de planos e integração de IA permanecem sem implementação. Não foram solicitadas credenciais para funcionalidades futuras.

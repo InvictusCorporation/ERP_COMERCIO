@@ -1,5 +1,9 @@
 # Histórico de alterações
 
+## 09/11/2026 — Fiscal NF-e/NFC-e (07.1)
+
+Branch codex/fiscal-nfe-nfce. Rota /fiscal responsiva conforme referências, emitente/tributação por unidade, conferência por venda, documentos, histórico, operações e arquivos privados. Adaptador opcional Focus NFe homologação, bloqueio de produção, estados verificáveis e recuperação por consulta sem duplicar POST. Quatro permissões com MFA, auditoria e RLS; migração 017 preserva anteriores. Devolução do PDV protegida quando houver fiscal ativo. Transporte sintético nos testes, sem emissão real ou publicação. Regressão também corrigiu abertura prematura do fluxo financeiro antes da inicialização de unidade/datas; teste controla a resposta inicial para comprovar o bloqueio. Guia em [Fiscal](docs/FISCAL.md).
+
 ## 09/11/2026 — Financeiro manual (06.1)
 
 Branch codex/financeiro-contas-caixa. Novas rotas privadas de financeiro, pagar/receber e caixa. Contas, títulos/parcelas, baixas parciais, juros/encargos/desconto informados, estornos, transferências, conferências e fluxo/extrato. Permissões com MFA/escopo e cinco fontes de auditoria. Vínculo explícito com recebimentos e bloqueio de estorno isolado da compra. Valores simulados do PDV separados. Guia em [Financeiro](docs/FINANCEIRO.md). Sem publicação ou comunicação bancária.

@@ -54,3 +54,7 @@ Quarta imagem como referência principal: cartões pretos/dourados, listagem com
 ## Fornecedores e compras — 02.2 / 04.1
 
 Lista clara e editor lateral com cabeçalho preto, métricas escuras e ícones/ações douradas. Fornecedores têm contatos/condições e pedidos recentes; compras usam abas Pedido, Receber e Histórico. No celular, campos/editor empilham, métricas em duas colunas e tabelas ficam contidas. Capturas usam quatro fornecedores e pedidos fictícios em redes de teste isoladas.
+
+## Fiscal — 07.1
+
+Referências de produtos/estoque e rede orientam quatro indicadores escuros, tabela clara de documentos, conferência e tributação no editor lateral. Cabeçalhos pretos, ícones dourados, ação principal ouro e estados legíveis. Celular reorganiza editor e campos em uma coluna, mantém tabela com rolagem própria e menu recolhível. Contexto de homologação e integração aparece junto das ações. Número/chave/protocolo não são ilustrativos; telas vazias usam mensagens reais. Capturas usam somente fixtures fictícias e emissão externa desabilitada.
