@@ -217,6 +217,10 @@ test("permissão por filial configurada na interface limita a navegação do ope
     await operator
       .getByRole("combobox", { name: "Unidade", exact: true })
       .selectOption(structure.branch.id);
+    // Wait for the server-confirmed controlled value before reloading.
+    await expect(
+      operator.getByRole("combobox", { name: "Unidade", exact: true }),
+    ).toHaveValue(structure.branch.id);
     await operator.reload();
     await expect(
       operator.getByRole("combobox", { name: "Unidade", exact: true }),

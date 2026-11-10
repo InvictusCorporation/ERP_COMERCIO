@@ -1,5 +1,9 @@
 # Histórico de alterações
 
+## 10/11/2026 — Relatórios gerenciais, dashboards e indicadores (12.1)
+
+Branch codex/relatorios-dashboards-indicadores. Dashboard inicial real por autorização e /relatorios, filtros, gráfico diário explorável, comparação, alertas, onze relatórios paginados e CSV com proteção de fórmulas/limite explícito. Indicadores distinguem receita, recebimento, saldo atual e resultado bruto dos produtos, conservando eventos de devolução/estorno em suas datas. Migração 029 aditiva para permissões/índices/auditoria; consultas sob RLS e sem registros ilustrativos no banco local. Configurações mantidas em rota própria. Sem publicação, comunicação externa, DRE presumida ou IA. Guia em [Relatórios e indicadores](docs/RELATORIOS_INDICADORES.md).
+
 ## 10/11/2026 — Clientes, crediário, fidelidade, pedidos e entregas (11.1)
 
 Branch codex/clientes-crediario-pedidos-entregas. Novas páginas responsivas e sete permissões; seis tabelas RLS/auditadas, migrações 026–028 sem alterar anteriores. Clientes com CPF/CNPJ opcional, contato/endereço, situação, adesão e histórico manual/PDV identificado. Limite considera dívida e pedidos reservados; conclusão gera parcelas ou baixa manual, protege reservas e lotes/custo. Fidelidade tem regra da filial, ganho, ajuste, resgate e reversão; entregas com designação, rota, tentativa/reentrega e recebedor. Auditoria oculta dados de contato/endereço. Sem publicação, cobrança externa ou emissão fiscal automática de pedidos. Guia em [Clientes, pedidos e entregas](docs/CLIENTES_PEDIDOS_ENTREGAS.md).

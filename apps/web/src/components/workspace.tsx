@@ -113,9 +113,11 @@ export function Workspace({
   initialSession,
   children,
   section = "access",
+  initialView = "dashboard",
 }: {
   initialSession: AuthSession;
   children?: React.ReactNode;
+  initialView?: View;
   section?:
     | "access"
     | "organizations"
@@ -124,7 +126,7 @@ export function Workspace({
     | "suppliers"
     | "purchases"
     | "pos"
-    | "finance" | "fiscal" | "lots" | "supermarket" | "network" | "crm";
+    | "finance" | "fiscal" | "lots" | "supermarket" | "network" | "crm" | "reports" | "dashboard";
 }) {
   const router = useRouter();
   const pathname=usePathname();
@@ -197,7 +199,7 @@ export function Workspace({
       );
     }
   }
-  const [view, setView] = useState<View>("dashboard");
+  const [view, setView] = useState<View>(initialView);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [health, setHealth] = useState<Health>({
@@ -214,9 +216,10 @@ export function Workspace({
   const sidebar = useRef<HTMLElement>(null);
   const navigate = (next: View) => {
     if (children) {
-      router.push("/");
+      router.push(next === "settings" ? "/configuracoes" : "/");
       return;
     }
+    if(next === "dashboard" && session.permissions.includes("reports.read")){router.push("/");setMenuOpen(false);return;}
     setView(next);
     setMenuOpen(false);
   };
@@ -306,7 +309,7 @@ export function Workspace({
   }, [menuOpen]);
 
   const sectionTitle =
-    section === "crm" ? "Clientes, pedidos e entregas" : section === "network" ? "Gestão da rede e distribuição" : section === "supermarket" ? "Setores, pesagem e produção" : section === "lots" ? "Lotes, validade e perdas" : section === "fiscal" ? "Fiscal · NF-e e NFC-e" : section === "finance" ? "Financeiro" : section === "pos" ? "Vendas e PDV" : section === "suppliers"
+    section === "dashboard" ? "Dashboard administrativo" : section === "reports" ? "Relatórios gerenciais" : section === "crm" ? "Clientes, pedidos e entregas" : section === "network" ? "Gestão da rede e distribuição" : section === "supermarket" ? "Setores, pesagem e produção" : section === "lots" ? "Lotes, validade e perdas" : section === "fiscal" ? "Fiscal · NF-e e NFC-e" : section === "finance" ? "Financeiro" : section === "pos" ? "Vendas e PDV" : section === "suppliers"
       ? "Fornecedores"
       : section === "purchases"
         ? "Compras e recebimentos"
@@ -318,7 +321,7 @@ export function Workspace({
               ? "Empresas e unidades"
               : "Usuários e permissões";
   const SectionIcon =
-    section === "crm" ? Users : section === "network" ? Building2 : section === "supermarket" ? Store : section === "lots" ? Boxes : section === "fiscal" ? FileText : section === "finance" ? Wallet : section === "pos" ? ShoppingCart : section === "suppliers"
+    section === "dashboard" ? LayoutDashboard : section === "reports" ? BarChart3 : section === "crm" ? Users : section === "network" ? Building2 : section === "supermarket" ? Store : section === "lots" ? Boxes : section === "fiscal" ? FileText : section === "finance" ? Wallet : section === "pos" ? ShoppingCart : section === "suppliers"
       ? Truck
       : section === "purchases"
         ? ShoppingBag
@@ -373,7 +376,7 @@ export function Workspace({
         <nav aria-label="Navegação principal">
           <span className="nav-label">PRINCIPAL</span>
           <button
-            className={`nav-item ${!children && view === "dashboard" ? "active" : ""}`}
+            className={`nav-item ${((!children && view === "dashboard") || section === "dashboard") ? "active" : ""}`}
             aria-current={
               !children && view === "dashboard" ? "page" : undefined
             }
@@ -382,6 +385,7 @@ export function Workspace({
             <LayoutDashboard size={19} />
             Dashboard
           </button>
+          {session.permissions.includes('reports.read') && <Link href="/relatorios" className={`nav-item ${section==='reports'?'active':''}`} onClick={()=>setMenuOpen(false)}><BarChart3 size={21}/><span>Relatórios e indicadores</span></Link>}
           {session.permissions.includes("organizations.read") && (
             <Link
               href="/empresas"
@@ -456,7 +460,7 @@ export function Workspace({
                 label !== "Produtos" &&
                 label !== "Estoque" &&
                 label !== "Compras" && label !== "Vendas e PDV" && label !== "Financeiro" && label !== "Fiscal" &&
-                label !== "Fornecedores" && label !== "Clientes" && label !== "Entregas",
+                label !== "Fornecedores" && label !== "Clientes" && label !== "Entregas" && label !== "Relatórios",
             )
             .map(([label, Icon]) => (
               <button
@@ -630,7 +634,7 @@ export function Workspace({
               </h1>
               <p>
                 {children
-                  ? section === "crm" ? "Relacionamento, crediário, fidelidade e atendimento por filial." : section === "network" ? "Matriz, filiais, centros de distribuição e mercadorias em trânsito." : section === "supermarket" ? "Operação de supermercado, balcão e produção por filial." : section === "lots" ? "Controle por filial, descarte e reposição de mercadorias." : section === "fiscal" ? "Conferência, emissão em homologação e histórico por filial." : section === "finance" ? "Contas a pagar, a receber e caixa por filial." : section === "pos" ? "Venda no balcão, caixa e histórico por filial." : section === "suppliers"
+                  ? section === "dashboard" || section === "reports" ? "Resultados, tendências e posição atual da sua operação." : section === "crm" ? "Relacionamento, crediário, fidelidade e atendimento por filial." : section === "network" ? "Matriz, filiais, centros de distribuição e mercadorias em trânsito." : section === "supermarket" ? "Operação de supermercado, balcão e produção por filial." : section === "lots" ? "Controle por filial, descarte e reposição de mercadorias." : section === "fiscal" ? "Conferência, emissão em homologação e histórico por filial." : section === "finance" ? "Contas a pagar, a receber e caixa por filial." : section === "pos" ? "Venda no balcão, caixa e histórico por filial." : section === "suppliers"
                     ? "Parceiros, contatos e condições de abastecimento."
                     : section === "purchases"
                       ? "Planeje, aprove e confira as compras da sua unidade."

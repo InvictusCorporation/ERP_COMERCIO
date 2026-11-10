@@ -18,6 +18,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import {
+  REPORT_KINDS,
   AUDIT_ACTIONS,
   AUDIT_CATEGORIES,
   AUDIT_FIELDS,
@@ -41,6 +42,8 @@ const date = (value: string) =>
   }).format(new Date(value));
 const valueLabel = (key: string, value: unknown): string => {
   if (value === undefined || value === null || value === "") return "—";
+  if(key === "report_kind")return REPORT_KINDS[value as keyof typeof REPORT_KINDS]||String(value);
+  if(key === "source" && (value === "manual" || value === "sandbox"))return value === "sandbox"?"PDV simulado":"Manual";
   if (typeof value === "boolean") return value ? "Sim" : "Não";
   if (key === "kind")
     return (

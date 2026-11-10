@@ -1,4 +1,5 @@
 export const AUDIT_CATEGORIES = {
+ reports:"Relatórios e indicadores",
  customers:"Clientes, pedidos e entregas",
   fiscal: "Fiscal",
   finance: "Financeiro",
@@ -17,6 +18,7 @@ export const AUDIT_CATEGORIES = {
 } as const;
 export type AuditCategory = keyof typeof AUDIT_CATEGORIES;
 export const AUDIT_ACTIONS: Record<string, string> = {
+"report.exported":"Relatório gerencial exportado",
 "customer_deliveries.created":"Entrega registrado","customer_deliveries.changed":"Entrega atualizado",
 "customer_orders.created":"Pedido de cliente registrado","customer_orders.changed":"Pedido de cliente atualizado",
 "customer_loyalty_events.created":"Movimento de pontos registrado","customer_loyalty_events.changed":"Movimento de pontos atualizado",
@@ -101,6 +103,7 @@ export const AUDIT_ACTIONS: Record<string, string> = {
   "context.changed": "Contexto de acesso atualizado",
 };
 export const AUDIT_FIELDS: Record<string, string> = {
+report_kind:"Relatório",unit_ids:"Filiais selecionadas",rows:"Registros exportados",from:"Início do período",to:"Fim do período",
 customer_id:"Cliente",customer_order_id:"Pedido de cliente",customer_line_id:"Item do pedido de cliente",customer_role:"Operação do pedido de cliente",credit_limit:"Limite de crédito",enabled:"Habilitado",loyalty_opt_in:"Participa da fidelidade",cents_per_point:"Centavos por ponto",points:"Pontos",changedFields:"Campos alterados",delivery_fee:"Taxa de entrega",mode:"Atendimento",channel:"Origem do atendimento",payment:"Recebimento",interval_days:"Intervalo em dias",fulfilled_at:"Concluído em",recipient:"Recebedor",courier:"Entregador",scheduled_on:"Previsão da entrega",
 "source_id":"Unidade de origem","destination_id":"Unidade de destino","document_ref":"Referência documental","central_id":"Compra centralizada de origem","allocations":"Destinações planejadas","distributed":"Distribuição gerada","distributed_at":"Distribuída em","distributed_by":"Distribuída por","dispatched_at":"Expedida em","dispatched_by":"Expedida por","received_at":"Recebida em","received_by":"Recebida por","cancelled_by":"Cancelada por","cancelled_at":"Cancelada em","order_id":"Pedido de origem","transfer_line_id":"Item da transferência","transfer_role":"Ponta do movimento","last_action":"Última operação",
 sector_id:"Setor",weighted:"Vendido por peso",plu:"PLU",capacity:"Capacidade (kg)",resolution:"Resolução (kg)",prefix:"Prefixo da etiqueta",tare:"Tara",net:"Peso líquido",scale_id:"Balança",source:"Origem",recipe_id:"Ficha técnica",recipe_version:"Versão da ficha",yield_quantity:"Rendimento previsto",ingredients:"Insumos da ficha",input_items:"Consumo da produção",output_product_id:"Produto acabado",expected_quantity:"Rendimento previsto",actual_quantity:"Rendimento real",total_cost:"Custo consumido",output_lot_id:"Lote produzido",lot_code:"Código do lote",

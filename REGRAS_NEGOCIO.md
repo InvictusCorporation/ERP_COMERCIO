@@ -1,5 +1,9 @@
 # Regras de negócio
 
+## Relatórios e indicadores — 12.1
+
+Não somar PDV simulado à venda manual ou ao financeiro real. Conclusão de venda e devolução pertencem a datas próprias; resultado bruto de produtos usa custo histórico e exclui entrega. Comparação percentual exige base anterior positiva. Saldos de estoque, contas e pendências são atuais; não apresentar como posição passada. Quantidades só são agregadas dentro do mesmo SKU. Categoria atual e fornecedor têm aplicação específica; exportação exige autorização da origem, auditoria e limite sem truncamento. Guia em [Relatórios e indicadores](docs/RELATORIOS_INDICADORES.md).
+
 ## Clientes, crédito e atendimento — 11.1
 
 Reserva exclusiva do pedido não pode ser liberada genericamente. Exposição de crédito soma principal pendente e pedidos reservados/separados, excluindo o próprio pedido no recheck; vencidos bloqueiam novo crédito. Conclusão registra estoque, parcelas/baixa manual, pontos e entrega atomicamente. Devolução integral exige estornar recebimentos e resolver rota; recompõe custo/lote original e reverte pontos sem apagar eventos. Entrega e recebimento bancário são registros manuais; PDV simulado não gera pontos ou crediário. Guia em [Clientes, pedidos e entregas](docs/CLIENTES_PEDIDOS_ENTREGAS.md).

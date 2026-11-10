@@ -1,5 +1,9 @@
 # Módulos e dependências
 
+## Gestão e indicadores — incremento 12.1
+
+Dashboard e relatórios determinísticos dos módulos existentes. Consulta de relatórios não substitui a permissão da origem; custo/margem exige estoque e exportação exige MFA. Receita comercial por origem manual ou simulada, financeiro manual independente, estoque atual, curva ABC/rankings, recebimentos de compra e perdas auditadas. DRE, metas, relatórios agendados e IA seguem como complementos. Guia em [Relatórios e indicadores](docs/RELATORIOS_INDICADORES.md).
+
 ## Relacionamento e atendimento — incremento 11.1
 
 Cadastro/histórico de clientes, crediário por filial e recebíveis no financeiro, regra/ledger de pontos, pedidos manuais ligados a reservas e baixa FEFO, devolução integral e entregas acompanhadas por estado. Consulta de clientes no PDV preserva distinção de pagamentos simulados. Integrações digitais, cobrança, cashback, transporte/fiscal e devoluções parciais seguem como complementos. Guia em [Clientes, pedidos e entregas](docs/CLIENTES_PEDIDOS_ENTREGAS.md).

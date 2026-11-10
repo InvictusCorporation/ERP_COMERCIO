@@ -119,3 +119,7 @@ Migrações 022–025 adicionam network.transfers/central_orders, FORCE RLS, fun
 ## Integração com clientes — 11.1
 
 Migrações 026–028 adicionam seis tabelas crm, vínculos de cliente/pedido e guardas em estoque, financeiro e PDV; total de 48 tabelas RLS e 45 capturas verificado por transação. Veja [Clientes, pedidos e entregas](CLIENTES_PEDIDOS_ENTREGAS.md).
+
+## Indicadores e relatórios — 12.1
+
+Migração 029 aditiva: permissões, dependências, índices de relatório e RPC de auditoria; permanecem 48 tabelas FORCE RLS e 45 capturas. Consultas continuam no papel HTTP sob RLS. Veja [Relatórios e indicadores](RELATORIOS_INDICADORES.md).

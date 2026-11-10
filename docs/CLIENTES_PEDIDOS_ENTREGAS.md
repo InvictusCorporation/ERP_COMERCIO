@@ -48,3 +48,7 @@ A categoria Clientes, pedidos e entregas registra criação e mudança de cadast
 ## Próximos complementos
 
 Unificação de clientes entre filiais com governança, condições/juros de crediário, cobrança externa, extrato consolidado de inadimplência, expiração/campanhas/cashback, descontos por pontos, pedidos digitais externos, edição/reprecificação controlada, atendimento parcial, devolução parcial, integração fiscal de pedidos e integração de transportadoras dependem de incrementos posteriores. Nenhum serviço externo foi acionado e nenhuma publicação foi feita.
+
+## Indicadores e relatórios — 12.1
+
+Pedidos concluídos alimentam os relatórios manuais com custo histórico; devoluções são negativas na data própria e não apagam a conclusão original. Veja [Relatórios e indicadores](RELATORIOS_INDICADORES.md).

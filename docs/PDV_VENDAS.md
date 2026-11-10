@@ -56,3 +56,7 @@ KG abre conferência de bruto e tara no desktop/celular; etiqueta interna config
 ## Integração com clientes — 11.1
 
 Seleção opcional de cliente com crm.read vincula a venda ao histórico como teste; simulações não geram recebíveis de clientes nem pontos. Veja [Clientes, pedidos e entregas](CLIENTES_PEDIDOS_ENTREGAS.md).
+
+## Indicadores e relatórios — 12.1
+
+Relatórios do PDV aparecem como origem simulada, sem somar aos pedidos manuais ou ao financeiro manual. Devoluções são eventos negativos na própria data. Veja [Relatórios e indicadores](RELATORIOS_INDICADORES.md).

@@ -73,3 +73,7 @@ Transferências operacionais preservam valor e lotes: expedição baixa origem e
 ## Integração com clientes — 11.1
 
 Pedidos de clientes reservam estoque exclusivo e concluem com baixa FEFO. Liberações genéricas não consomem essas reservas; devolução integral preserva custos e lotes históricos. Veja [Clientes, pedidos e entregas](CLIENTES_PEDIDOS_ENTREGAS.md).
+
+## Indicadores e relatórios — 12.1
+
+Posição gerencial é atual; período filtra ausência de movimentação física. Estoque baixo, falta e validade usam saldo vendável e mínimo da filial. Quantidades de SKUs diferentes não são somadas. Veja [Relatórios e indicadores](RELATORIOS_INDICADORES.md).

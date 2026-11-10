@@ -93,3 +93,7 @@ suppliers.read/manage e purchases.read/manage/approve/receive acrescentados ao c
 ## Clientes, pedidos e entregas — 11.1
 
 Sete permissões novas, sem concessão automática a perfis não administrativos. Consulta de clientes exige empresas; pedidos exigem consulta de clientes e produtos. Escritas exigem MFA e dependem do escopo por filial; estoque e financeiro conservam suas autorizações próprias. Limite de crédito só é consultado com crm.credit ou finance.read. Veja [Clientes, pedidos e entregas](CLIENTES_PEDIDOS_ENTREGAS.md).
+
+## Indicadores e relatórios — 12.1
+
+reports.read exige consulta de empresas e não concede consultas de origem. reports.export exige reports.read, MFA e o módulo de origem; custos comerciais também exigem estoque. Veja [Relatórios e indicadores](RELATORIOS_INDICADORES.md).

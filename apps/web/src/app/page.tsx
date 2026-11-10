@@ -1,3 +1,4 @@
+import {ReportsPanel} from '../components/reports-panel';
 import { Workspace } from "../components/workspace";
 import { serverSession } from "../lib/server-session";
 import { ConnectionUnavailable } from "../components/connection-unavailable";
@@ -6,5 +7,6 @@ export default async function Page() {
   const session = await serverSession();
   if (!session) return <ConnectionUnavailable />;
   if (session.stage !== "authenticated") redirect("/verificar-acesso");
+  if(session.permissions.includes("reports.read"))return <Workspace initialSession={session} section="dashboard"><ReportsPanel key={session.activeTenantId+'/'+session.activeUnitId} session={session}/></Workspace>;
   return <Workspace initialSession={session} />;
 }

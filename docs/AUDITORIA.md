@@ -109,3 +109,7 @@ Transferências geram captura transacional nas duas pontas, com mesma entidade e
 ## Integração com clientes — 11.1
 
 Categoria customers com seis fontes adicionais e remoção de documento/contato/endereço do snapshot; lista de campos alterados conserva evidência de mudanças protegidas. Veja [Clientes, pedidos e entregas](CLIENTES_PEDIDOS_ENTREGAS.md).
+
+## Indicadores e relatórios — 12.1
+
+Exportação gerencial é registrada com contexto e quantidade; falha de auditoria impede entregar o arquivo. Consultas comuns não alteram dados comerciais. Veja [Relatórios e indicadores](RELATORIOS_INDICADORES.md).

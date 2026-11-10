@@ -75,3 +75,7 @@ Referência de gestão multiloja orienta a estrutura escura da rede, indicadores
 ## Integração com clientes — 11.1
 
 Clientes, crédito, pontos, pedidos e entregas seguem cabeçalhos pretos, ícones e ações douradas e painéis claros. Grades se reorganizam e tabelas rolam internamente em 360/390/768/1440 px. Veja [Clientes, pedidos e entregas](CLIENTES_PEDIDOS_ENTREGAS.md).
+
+## Indicadores e relatórios — 12.1
+
+Novo dashboard com cartões pretos/dourados, gráfico de vendas explorável por dia, ranking, alertas e tabelas claras. Filtros e cartões se reorganizam no celular e tabelas rolam internamente. Veja [Relatórios e indicadores](RELATORIOS_INDICADORES.md).

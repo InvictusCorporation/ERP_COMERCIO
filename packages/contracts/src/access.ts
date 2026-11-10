@@ -1,5 +1,7 @@
+import {REPORT_PERMISSIONS} from './reports';
 import {CRM_PERMISSIONS} from './crm';
 export const PERMISSIONS = [
+...REPORT_PERMISSIONS,
 ...CRM_PERMISSIONS,
 {"key":"fiscal.read","label":"Consultar documentos fiscais","description":"Consultar documentos, cadastros e retornos nas filiais autorizadas."},
 {"key":"fiscal.manage","label":"Preparar e configurar o fiscal","description":"Configurar emitente/tributação e conferir rascunhos; exige consulta de produtos e duas etapas."},

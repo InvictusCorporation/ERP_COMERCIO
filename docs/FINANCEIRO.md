@@ -68,3 +68,7 @@ Use npm run db:portable para iniciar o PostgreSQL local e aplicar migrações; n
 ## Integração com clientes — 11.1
 
 Recebíveis de pedidos de clientes possuem vínculo com cliente/filial/pedido. Conclusão pode gerar parcelas ou baixa manual; cancelamento isolado é bloqueado e devolução exige estornar baixas antes. Veja [Clientes, pedidos e entregas](CLIENTES_PEDIDOS_ENTREGAS.md).
+
+## Indicadores e relatórios — 12.1
+
+Indicadores gerenciais separam recebimentos/pagamentos realizados de faturamento, saldo atual e principal pendente. Diferenças de caixa são somadas em valor absoluto e conferências reabertas são excluídas. Veja [Relatórios e indicadores](RELATORIOS_INDICADORES.md).

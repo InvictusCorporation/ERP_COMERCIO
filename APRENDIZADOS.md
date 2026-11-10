@@ -1,5 +1,11 @@
 # Aprendizados e decisões reutilizáveis
 
+## Relatórios — 10/11/2026
+
+Disponibilidade de relatório não concede acesso ao módulo de origem. Dado indisponível deve permanecer indisponível, sem parecer zero. Eventos assinados por data preservam a análise de períodos antigos após devoluções e estornos. Faturamento, caixa e saldo são bases distintas; custos de compra já rateados e custos de venda históricos evitam reprecificação acidental. Preparar conjuntos sob RLS reduz reconsultas por SKU; testar catálogos grandes e exportações além do limite faz parte da validação.
+
+Em testes de navegação, selecionar uma opção não confirma o término da gravação assíncrona. Aguarde o valor controlado retornar da API antes de recarregar a página. Sob pressão de memória, diferencie travamento de chunk/HMR no modo dev de falha funcional, valide também o build de produção e registre todas as falhas e revalidações sem apresentar rodadas parciais como aprovação única.
+
 ## Relacionamento — 10/11/2026
 
 Limite disponível precisa considerar compromissos ainda não faturados para evitar duas reservas usando o mesmo crédito. Reserva global só é segura para pedidos se guardas protegem o total de compromissos em todos os movimentos, inclusive liberação e estorno genéricos. Devolução deve usar custo e lotes originais, preservar entradas posteriores e reverter benefícios usados sem esconder dívida de pontos. Auditoria pode comparar dados brutos e registrar campos alterados antes de remover contatos/endereço; assim alterações pessoais continuam comprovadas sem duplicar dados sensíveis no log.

@@ -26,3 +26,5 @@ export * from "./supermarket";
 export * from "./network";
 
 export * from "./crm";
+
+export * from "./reports";

@@ -1,5 +1,9 @@
 # Invictus ERP Comercial
 
+## Relatórios, dashboards e indicadores — 12.1
+
+Dashboard gerencial em / e /dashboard para perfis autorizados e relatórios em /relatorios. Vendas/devoluções, curva ABC, rankings, fluxo financeiro, pendências, conferências, estoque/validade, compras recebidas e perdas. Filtros por empresa/filial/período, categoria e fornecedor conforme o relatório, com CSV auditado e visual preto/branco/dourado responsivo. Vendas simuladas do PDV permanecem identificadas e separadas do financeiro manual. Guia em [Relatórios e indicadores](docs/RELATORIOS_INDICADORES.md).
+
 ## Clientes, crediário e atendimento — 11.1
 
 Novos /clientes, /pedidos e /entregas: cadastro e histórico por filial, aprovação de limite, recebíveis parcelados, pontos auditáveis, pedidos com reserva/separação/conclusão e entregas com recebedor e tentativas. Integração manual com estoque e financeiro; PDV vinculado continua simulado. Visual preto/branco/dourado e adaptação para celular. Guia em [Clientes, pedidos e entregas](docs/CLIENTES_PEDIDOS_ENTREGAS.md).

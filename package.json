@@ -18,7 +18,7 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm run build -w @invictus/contracts && npm run test -w @invictus/api",
     "test:e2e": "playwright test",
-    "test:integration": "npm run build -w @invictus/contracts && npm run build -w @invictus/api && node --test tests/integration/tenant-isolation.spec.mjs tests/integration/authentication.spec.mjs tests/integration/permissions.spec.mjs tests/integration/organizations.spec.mjs tests/integration/audit.spec.mjs tests/integration/inventory.spec.mjs tests/integration/purchasing.spec.mjs tests/integration/pos.spec.mjs tests/integration/finance.spec.mjs tests/integration/fiscal.spec.mjs tests/integration/lots.spec.mjs tests/integration/supermarket.spec.mjs tests/integration/network.spec.mjs tests/integration/crm.spec.mjs",
+    "test:integration": "npm run build -w @invictus/contracts && npm run build -w @invictus/api && node --test tests/integration/tenant-isolation.spec.mjs tests/integration/authentication.spec.mjs tests/integration/permissions.spec.mjs tests/integration/organizations.spec.mjs tests/integration/audit.spec.mjs tests/integration/inventory.spec.mjs tests/integration/purchasing.spec.mjs tests/integration/pos.spec.mjs tests/integration/finance.spec.mjs tests/integration/fiscal.spec.mjs tests/integration/lots.spec.mjs tests/integration/supermarket.spec.mjs tests/integration/network.spec.mjs tests/integration/crm.spec.mjs tests/integration/reports.spec.mjs",
     "db:portable": "node scripts/local-postgres.mjs",
     "db:portable:stop": "node scripts/stop-postgres.mjs",
     "db:migrate": "node scripts/migrate.mjs",

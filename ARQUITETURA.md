@@ -1,5 +1,9 @@
 # Arquitetura proposta
 
+## Relatórios gerenciais — 12.1
+
+Serviço ReportsService somente consulta sob invictus_auth/RLS. Agregação numérica ocorre no PostgreSQL; reversões são eventos assinados pela data própria. Categorias usam o cadastro atual e saldos são atuais. Dois novos privilégios com dependências e exportação sensível/MFA. Migração 029 adiciona índices e RPC restrita de auditoria de exportação, mantendo 48 tabelas RLS e 45 capturas. CSV protege fórmulas, preserva decimais e recusa mais de cinco mil linhas. Guia em [Relatórios e indicadores](docs/RELATORIOS_INDICADORES.md).
+
 ## Clientes e atendimento — 11.1
 
 Seis tabelas crm com FORCE RLS e RPCs sem DML direto HTTP; 48 tabelas e 45 capturas verificadas no runtime. Versão, idempotência e lock transacional do tenant protegem exposição de crédito, estoque, recebíveis, pontos e entregas. Ponte de saída usa FEFO e devolução conserva custo/lotes originais. Migrações 026–028 aditivas; permissões por filial, MFA de escrita e dados pessoais removidos dos snapshots auditados. Guia em [Clientes, pedidos e entregas](docs/CLIENTES_PEDIDOS_ENTREGAS.md).

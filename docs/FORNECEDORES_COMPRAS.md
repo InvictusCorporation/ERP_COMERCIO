@@ -105,3 +105,7 @@ Lotes/validade, inventário aprovado e transferências com trânsito/recebimento
 ## Rede e distribuição — 10.1
 
 Compra central em /rede soma destinações e cria um pedido único na matriz/CD/depósito. Plano congelado impede edição avulsa do rascunho; aprovação/recebimento continuam no módulo existente, também acessíveis pela tela central. Após receber tudo, gerar distribuição cria apenas rascunhos de transferência. Estorno do recebimento bloqueia nova expedição vinculada até regularizar a compra. Guia em [Rede e distribuição](REDE_DISTRIBUICAO.md).
+
+## Indicadores e relatórios — 12.1
+
+Relatório de compras considera recebimentos efetivos e estornos com custo rateado, por data do evento, categoria atual e fornecedor. Pedidos apenas aprovados não contam como mercadoria recebida. Veja [Relatórios e indicadores](RELATORIOS_INDICADORES.md).

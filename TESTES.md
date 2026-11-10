@@ -1,5 +1,13 @@
 # Testes e evidências
 
+## Relatórios, dashboards e indicadores — 12.1 — 10/11/2026
+
+- npm.cmd test: 64 testes unitários aprovados; seis novos cobrem datas, filtros/dimensões, proteção contra fórmulas, negativos e casas decimais, limite de linhas e tamanho UTF-8 do CSV.
+- npm.cmd run test:integration: 269 testes aprovados na rodada completa; vinte da suíte nova com agrupador verificam origens, custo histórico, devoluções por data, período anterior, ABC, pendências, caixa, compras rateadas/estornos, perdas, validade, RLS/custos, MFA/CSRF, auditoria, paginação de 5.001 SKUs e recusas sem truncamento.
+- Rodada completa de produção isolada: 166 cenários, 163 aprovados e três falhas (persistência da seleção de filial do operador, retorno da pesagem e detalhe de produção). Revalidação de organizações/supermercado: 19/21, com os treze de supermercado aprovados e dois de organizações ainda falhando. O teste de seleção foi corrigido para aguardar o valor controlado confirmado pelo servidor antes de recarregar; a suíte final de organizações aprovou 8/8, incluindo persistência do cadastro. Todos os 166 cenários tiveram aprovação entre as rodadas, sem repetição automática; não houve rodada única inteiramente verde. Os treze casos novos de relatórios passaram, incluindo CSV baixado/auditado, filtros, falha sem dado antigo, acesso restrito, configurações, quatro larguras e filtros móveis. Execução via build web isolado e npx.cmd playwright test --config .local/reports-playwright.config.ts. O modo dev anterior foi interrompido após 62 aprovações e timeout de recarga de produtos, reproduzido isoladamente; o chunk JavaScript/HMR ficava pendente sob pressão de memória. O fluxo de produtos passou na rodada de produção. Capturas finais de desktop/celular inspecionadas.
+- Build de contratos/API/web e typecheck aprovados. Migração 029 aplicada localmente (29 no total), nenhum dado comercial ou exportação fictícia criado no banco de uso; contagens comerciais anteriores preservadas. Mantidas 48 tabelas FORCE RLS e 45 capturas no runtime; RPC de exportação restrita, sem EXECUTE público. PostgreSQL portátil iniciado nesta tarefa encerrado com dados preservados.
+- Dados fictícios somente nos bancos isolados; capturas .local/reports-dashboard-*.png e .local/reports-products-*.png e CSV de interface .local/reports-export-ui.csv. Sem publicação, envio externo ou pagamentos de provedor.
+
 ## Clientes, pedidos e entregas — 11.1 — 10/11/2026
 
 - npm.cmd test: 58 testes unitários aprovados, incluindo CPF/CNPJ opcional, contato/endereço, precisão de peso, condições do pedido, pontos inteiros e dados de entrega.

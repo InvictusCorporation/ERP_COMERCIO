@@ -1,5 +1,9 @@
 # Pendências
 
+## Incremento 12.1 — relatórios e gestão entregues localmente
+
+Dashboards, indicadores, filtros, onze relatórios paginados e CSV auditado implementados. Complementos: DRE/classificação contábil, metas/orçamentos, categoria histórica, identificação única do responsável em pedidos antigos, preferências, relatórios agendados/envio, PDF/XLSX nativos, saldos históricos, previsão, IA e BI. Sem integrações externas presumidas. Guia em [Relatórios e indicadores](docs/RELATORIOS_INDICADORES.md).
+
 ## Incremento 11.1 — clientes e atendimento entregues localmente
 
 Cadastro/histórico, crediário aprovado, recebíveis, pontos, pedidos/estoque e entregas manuais implementados. Complementos: governança do cliente entre filiais, juros/cobrança externa, relatórios de inadimplência, expiração/campanhas/cashback, desconto automático por pontos, canais digitais, parcialização, integração fiscal de pedidos e transportadoras. Nenhuma integração ou publicação presumida. Guia em [Clientes, pedidos e entregas](docs/CLIENTES_PEDIDOS_ENTREGAS.md).
