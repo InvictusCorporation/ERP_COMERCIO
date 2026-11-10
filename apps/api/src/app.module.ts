@@ -1,3 +1,5 @@
+import {FinanceService} from "./modules/finance/finance.service";
+import {FinanceController} from "./modules/finance/finance.controller";
 import {PosService} from "./modules/pos/pos.service";
 import {PosController} from "./modules/pos/pos.controller";
 import { PurchasingService } from "./modules/purchasing/purchasing.service";
@@ -40,7 +42,7 @@ export class AppModule {
               OrganizationsController,
               AuditController,
               InventoryController,
-              PurchasingController, PosController,
+              PurchasingController, PosController, FinanceController,
             ]
           : []),
       ],
@@ -52,6 +54,8 @@ export class AppModule {
         ...(authConfig
           ? [
               {
+                provide: FinanceService,useFactory:(auth:AuthService)=>new FinanceService(auth),inject:[AuthService],
+              },{
                 provide: PosService,useFactory:(auth:AuthService)=>new PosService(auth),inject:[AuthService],
               },{
                 provide: PurchasingService,

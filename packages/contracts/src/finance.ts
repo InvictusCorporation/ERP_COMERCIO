@@ -1,0 +1,176 @@
+export const FINANCE_KINDS = { payable: 'Contas a pagar', receivable: 'Contas a receber' } as const;
+export const FINANCE_METHODS = { cash: 'Dinheiro', pix: 'Pix', debit: 'Débito', credit: 'Crédito', transfer: 'Transferência', other: 'Outro' } as const;
+export const FINANCE_ENTRY_KINDS = { opening: 'Saldo inicial', settlement: 'Baixa', reversal: 'Estorno', supply: 'Suprimento', withdraw: 'Sangria', transfer_in: 'Transferência recebida', transfer_out: 'Transferência enviada' } as const;
+export type FinancialAccount = {
+    id: string;
+    unitId: string;
+    name: string;
+    kind: 'cash' | 'bank';
+    openingDate: string;
+    openingAmount: string;
+    balance: string;
+    closedThrough: string | null;
+    active: boolean;
+    version: number;
+};
+export type FinancialTitle = {
+    id: string;
+    unitId: string;
+    number: string;
+    kind: keyof typeof FINANCE_KINDS;
+    counterparty: string;
+    description: string;
+    category: string;
+    reference: string;
+    notes: string;
+    issueDate: string;
+    dueDate: string;
+    amount: string;
+    paid: string;
+    remaining: string;
+    cancelled: boolean;
+    cancelReason: string | null;
+    installment: number;
+    installments: number;
+    version: number;
+    purchaseReceiptId: string | null;
+    sourceSnapshot: Record<string, unknown> | null;
+    status: 'open' | 'partial' | 'paid' | 'overdue' | 'cancelled';
+};
+export type FinancialSettlement = {
+    id: string;
+    accountId: string;
+    accountName: string;
+    principal: string;
+    interest: string;
+    fee: string;
+    discount: string;
+    cashAmount: string;
+    postedDate: string;
+    method: keyof typeof FINANCE_METHODS;
+    reference: string;
+    notes: string;
+    actorName: string;
+    reversedAt: string | null;
+    reversedBy: string | null;
+    reversalReason: string | null;
+};
+export type FinancialEntry = {
+    titleId: string | null;
+    id: string;
+    accountId: string;
+    accountName: string;
+    settlementId: string | null;
+    transferId: string | null;
+    reversalOf: string | null;
+    kind: keyof typeof FINANCE_ENTRY_KINDS;
+    amount: string;
+    balanceAfter: string;
+    postedDate: string;
+    description: string;
+    actorName: string;
+    createdAt: string;
+};
+export type FinancialClosing = {
+    id: string;
+    accountId: string;
+    throughDate: string;
+    expected: string;
+    counted: string;
+    difference: string;
+    notes: string;
+    actorName: string;
+    reopenedAt: string | null;
+    reopenedBy: string | null;
+    reopenReason: string | null;
+};
+export type FinanceOverview = {
+    unitId: string | null;
+    today: string;
+    accounts: FinancialAccount[];
+    capabilities: {
+        manage: boolean;
+        settle: boolean;
+        reverse: boolean;
+        cash: boolean;
+        purchases: boolean;
+        pos: boolean;
+    };
+    summary: {
+        payable: string;
+        receivable: string;
+        overduePayable: string;
+        overdueReceivable: string;
+        balance: string;
+    };
+};
+export type FinancialTitleDetail = {
+    title: FinancialTitle;
+    settlements: FinancialSettlement[];
+};
+export type FinancialAccountDetail = {
+    account: FinancialAccount;
+    closings: FinancialClosing[];
+    total: number;
+    page: number;
+};
+export type FinancialPage<T> = {
+    items: T[];
+    total: number;
+    page: number;
+};
+export type FinancialFlow = {
+    from: string;
+    to: string;
+    opening: string;
+    inflows: string;
+    outflows: string;
+    ending: string;
+    operatingIn: string;
+    operatingOut: string;
+    days: {
+        date: string;
+        inflow: string;
+        outflow: string;
+    }[];
+};
+export type FinanceAccountInput = {
+    id?: string;
+    version?: number;
+    unitId: string;
+    name: string;
+    kind: 'cash' | 'bank';
+    openingDate: string;
+    openingAmount: string;
+    active: boolean;
+    requestKey: string;
+};
+export type FinanceTitleInput = {
+    unitId: string;
+    kind: 'payable' | 'receivable';
+    counterparty: string;
+    description: string;
+    category: string;
+    reference: string;
+    notes: string;
+    issueDate: string;
+    dueDate: string;
+    amount: string;
+    installments: number;
+    intervalDays: number;
+    requestKey: string;
+};
+export type FinanceSettlementInput = {
+    titleId: string;
+    version: number;
+    accountId: string;
+    principal: string;
+    interest: string;
+    fee: string;
+    discount: string;
+    postedDate: string;
+    method: keyof typeof FINANCE_METHODS;
+    reference: string;
+    notes: string;
+    requestKey: string;
+};

@@ -1,5 +1,9 @@
 # Regras de negócio
 
+## Financeiro — 06.1
+
+Título não movimenta caixa até a baixa; parcelas conservam centavos. Principal e valor financeiro são distintos quando existem juros, encargos ou desconto. Não ultrapassar principal pendente ou deixar caixa físico negativo. Transferência entre contas da mesma filial confirma duas pernas e não é receita. Estorno preserva origem e gera contrapartida; cancelar título exige principal baixado zero. Conferência preserva diferença sem ajuste automático e congela período, com reabertura supervisionada. Recebimento importado tem título único; cancelar o vínculo antes de estornar a compra. Escrituração manual não envia dinheiro nem confirma pagamento externo, e não inclui PDV simulado. Regras e limites em [Financeiro](docs/FINANCEIRO.md).
+
 ## PDV de teste — 05.1
 
 Operador vende somente no próprio caixa aberto da filial autorizada. Quantidade base e preço de catálogo revalidados ao confirmar; desconto monetário exige permissão. Formas distintas somam o total e troco é somente dinheiro; caixa recebe líquido. Pendente/autorizado não baixa estoque. Confirmação, CMV histórico, dinheiro e auditoria são atômicos/idempotentes. Cancelamento antes de confirmar; após confirmar somente devolução integral rastreável, custo original e pagamento simulado devolvido. Caixa não fica negativo, não fecha com pendências e preserva diferença de contagem. Sandbox explícito, sem cobrança real ou documento fiscal, sempre bloqueado em produção. Detalhes em [PDV, vendas e caixa](docs/PDV_VENDAS.md).

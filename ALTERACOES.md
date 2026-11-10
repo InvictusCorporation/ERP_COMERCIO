@@ -1,5 +1,9 @@
 # Histórico de alterações
 
+## 09/11/2026 — Financeiro manual (06.1)
+
+Branch codex/financeiro-contas-caixa. Novas rotas privadas de financeiro, pagar/receber e caixa. Contas, títulos/parcelas, baixas parciais, juros/encargos/desconto informados, estornos, transferências, conferências e fluxo/extrato. Permissões com MFA/escopo e cinco fontes de auditoria. Vínculo explícito com recebimentos e bloqueio de estorno isolado da compra. Valores simulados do PDV separados. Guia em [Financeiro](docs/FINANCEIRO.md). Sem publicação ou comunicação bancária.
+
 ## 09/11/2026 — PDV, vendas e caixa (05.1)
 
 Branch codex/pdv-vendas-mobile. Rotas /pdv, /vendas e /caixa; visual responsivo conforme fotos, busca/câmera com ZXing alternativo, carrinho e pagamentos simulados. Confirmação atômica com estoque/CMV/caixa, troco/misto, cancelamento, devolução integral, fechamento, histórico, permissões por unidade e auditoria. Migrações 012/013/014 preservam anteriores. Sandbox bloqueado em produção; comprovante sem valor fiscal. Guia em [PDV, vendas e caixa](docs/PDV_VENDAS.md). Sem publicação.

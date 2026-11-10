@@ -638,6 +638,7 @@ test(
               "purchases.approve",
               "purchases.receive",
                 "pos.read", "pos.sell", "pos.cash", "pos.cash.manage", "pos.discount", "pos.refund",
+                "finance.read", "finance.manage", "finance.settle", "finance.reverse", "finance.cash",
             ],
           );
         },

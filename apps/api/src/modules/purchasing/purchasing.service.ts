@@ -35,6 +35,7 @@ export class PurchasingService {
         throw new ConflictException(
           "Cadastro ou confirmação já registrado. Atualize a consulta.",
         );
+      if (code === "P0501") throw new ConflictException("Estorne as baixas e cancele o título financeiro vinculado antes de estornar o recebimento.");
       if (code === "23514")
         throw new ConflictException(
           "Pedido desatualizado ou operação incompatível com o estado atual. Confira quantidades, valores e regras de estorno.",

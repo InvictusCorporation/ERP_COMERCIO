@@ -1,5 +1,9 @@
 # Arquitetura proposta
 
+## Financeiro — 06.1
+
+Cinco tabelas em finance com RLS forçada e funções restritas. Títulos e liquidações parciais com numeric/versão/idempotência; ledger imutável projeta saldo, estorno gera contrapartida e transferência cria duas pernas atômicas. Conferências congelam períodos de caixa. Importação explícita de recebimento preserva origem e bloqueia estorno isolado da compra. Auditoria transacional: 27 tabelas verificadas e 24 capturas. Financeiro manual não incorpora caixa simulado do PDV nem aciona banco. Guia em [Financeiro](docs/FINANCEIRO.md).
+
 ## PDV — 05.1
 
 Módulo pos com quatro tabelas em FORCE RLS, funções restritas para vendas/pagamentos/caixa e ponte para movimentos de estoque. Confirmação e devolução atômicas, CMV congelado, numeric, versão, locks e idempotência. API sem DML direto. Migrações aditivas 012/013/014; verificador agora exige 22 tabelas e 19 capturas. Câmera local com detector nativo ou ZXing sob demanda. Pagamento local_sandbox, bloqueio incondicional em produção. Guia em [PDV, vendas e caixa](docs/PDV_VENDAS.md).

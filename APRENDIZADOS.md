@@ -1,5 +1,9 @@
 # Aprendizados e decisões reutilizáveis
 
+## Financeiro — 09/11/2026
+
+Principal quitado e dinheiro movimentado precisam de campos distintos para juros/desconto e baixas parciais. Parcela conserva o total por arredondamento cumulativo. Saldo inicial e transferências entram no fluxo, sem virar faturamento. Recebimentos líquidos descontam estornos; ledger preserva ambas as operações. Conferência de caixa não deve ocultar diferença com ajuste automático. Origem de compra precisa de trava financeira para não estornar estoque com obrigação ativa. O PDV de teste não pode contaminar a escrituração manual.
+
 ## PDV — 09/11/2026
 
 A saída de venda precisa de origem validada no domínio e custo congelado no próprio movimento, sem conceder edição manual de estoque ao caixa. Devolução após compra nova recompõe custo original e preserva último custo. Troco não é receita de caixa. Mudança de turno precisa renovar as chaves locais, preservando tentativas de uma abertura ainda não reconciliada. Chave deve sobreviver à resposta perdida; reconciliação por histórico evita iniciar outra venda. Câmera exige liberação de tracks e pausa antirrepetição. Detector nativo tem disponibilidade limitada, exigindo alternativa testada. Cancelamento expôs colisão parâmetro/coluna reason; correção em migração nova 013 sem reescrever 012.

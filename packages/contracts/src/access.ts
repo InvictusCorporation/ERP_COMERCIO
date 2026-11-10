@@ -1,4 +1,9 @@
 export const PERMISSIONS = [
+{"key":"finance.read","label":"Consultar o financeiro","description":"Consultar títulos, contas e extratos das unidades autorizadas."},
+{"key":"finance.manage","label":"Gerenciar contas e títulos","description":"Cadastrar contas, criar títulos e ajustar vencimentos; exige duas etapas."},
+{"key":"finance.settle","label":"Registrar pagamentos e recebimentos","description":"Baixar valores informados manualmente, sem envio de dinheiro; exige duas etapas."},
+{"key":"finance.reverse","label":"Estornar baixas e reabrir caixa","description":"Registrar correções rastreáveis e reabrir o último fechamento; exige duas etapas."},
+{"key":"finance.cash","label":"Controlar caixa financeiro","description":"Suprimento, sangria, transferência interna e conferência; exige duas etapas."},
 {key:'pos.read',label:'Consultar PDV, vendas e caixas',description:'Consultar vendas, custos e caixas nas unidades autorizadas.'},
 {key:'pos.sell',label:'Operar vendas no PDV',description:'Criar e finalizar vendas no próprio caixa; exige consulta, caixa e duas etapas.'},
 {key:'pos.cash',label:'Abrir e fechar o próprio caixa',description:'Abrir e conferir o próprio caixa na unidade; exige duas etapas.'},

@@ -1,5 +1,9 @@
 # Pendências
 
+## Incremento 06.1 — financeiro manual entregue localmente
+
+Contas a pagar/receber, parcelas, baixas e estornos, caixa/banco manual, fluxo/extrato, transferência interna e conferência, com escopo e auditoria. Compras têm geração explícita de título por recebimento. PDV simulado continua separado. Próximos: provedores/recebíveis, conciliação bancária, CRM/crediário, renegociação, DRE/consolidação e homologação operacional. Guia em [Financeiro](docs/FINANCEIRO.md).
+
 ## Incremento 05.1 — PDV de teste entregue localmente
 
 PDV desktop/mobile, caixa, rascunhos, simulação explícita de pagamento misto/troco, baixa, devolução integral e auditoria integrados. Restam pagamento real/reconciliação (06), fiscal (07), devolução parcial, atacado/promoções, cliente/crediário, lote/peso/balança, offline, impressão/leitores e homologação em celulares físicos. Produção permanece bloqueada. Guia em [PDV, vendas e caixa](docs/PDV_VENDAS.md).

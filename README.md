@@ -1,5 +1,9 @@
 # Invictus ERP Comercial
 
+## Financeiro manual — 06.1
+
+Contas a pagar/receber, parcelas, baixas parciais, estornos e caixa financeiro por filial em /financeiro. Contas de caixa/banco, extrato/fluxo, transferências internas, conferência e vínculo com recebimentos de compras. Layout responsivo preto/branco/dourado. Escrituração manual sem envio de dinheiro ou integração bancária; PDV simulado permanece separado. Guia em [Financeiro](docs/FINANCEIRO.md).
+
 ## PDV e vendas — 05.1
 
 Disponível localmente em /pdv, /vendas e /caixa: catálogo/carrinho responsivo, câmera no celular, rascunhos, pagamentos mistos simulados, troco, baixa atômica, devolução integral e caixa auditável. Interface preto/branco/dourado conforme referências. Exclusivo de teste; sem cobranças e sem emissão fiscal, bloqueado em produção. Consulte [PDV, vendas e caixa](docs/PDV_VENDAS.md).

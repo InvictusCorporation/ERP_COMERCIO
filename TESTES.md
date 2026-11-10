@@ -1,5 +1,27 @@
 # Testes e evidências
 
+## Financeiro manual — 06.1 — 09/11/2026
+
+- PostgreSQL real em bancos isolados invictus_test_*, com fixtures fictícias; migrações 015/016 aditivas. Migrações 001–014 e escopo mestre preservados. Nenhuma operação bancária externa ou dado comercial fictício inserido no banco de desenvolvimento.
+- npm.cmd test: 27 testes unitários aprovados. Novos casos validam valores decimais, calendário, parcelas até 36, vencimento final até ano 9999, saldo/colunas forjadas e dados de cartão indevidos.
+- npm.cmd run test:integration: 161 testes aprovados, incluindo agrupadores. Financeiro acrescenta 15 subcenários e agrupador. Toda a regressão de identidade, acessos, unidades, auditoria, estoque, compras e PDV passou.
+- Abertura e criação de títulos idempotentes; parcelas de 100,01 conservam o total em centavos sem movimentar caixa. Baixa parcial separa principal de juros/encargos/desconto; valor líquido é escriturado. Excesso, saldo insuficiente e versões antigas são recusados.
+- Confirmações concorrentes com a mesma chave gravam uma baixa. Estorno cria contrapartida, conserva original e recompõe o principal; cancelar com baixas ativas é bloqueado. Falha no evento de auditoria do UPDATE final do título reverte baixa, ledger e saldo.
+- Transferência tem duas pernas e não vira receita. Testes verificam insuficiência na origem e falha na segunda perna (destino inativo), com saldo da origem preservado em ambos. Fluxo líquido desconta estornos e mantém saldo inicial/aportes/transferências separados dos títulos.
+- Conferência preserva esperado/contado/diferença e bloqueia período. Reabertura fica registrada, sem apagar conferência. Inativação com saldo, retrodatação de caixa e reuso de versão são recusados.
+- Recebimento de compra gera título único por valor do servidor, snapshot e documento. Estorno da compra com título ativo retorna conflito financeiro específico e reverte movimentos de estoque já iniciados. Cancelar o vínculo permite o estorno; origem não pode ser importada novamente.
+- Vinte e um títulos verificam paginação 20/1, filtros literais e classificação de vencidos. Financeiro limitado à filial recebe MFA obrigatório, baixa sem poder cadastrar ou movimentar caixa, não lê conta da filial alheia e perde acesso após revogação.
+- Papel HTTP sem INSERT/UPDATE/DELETE direto no ledger, títulos ou baixas. Categoria financeira e responsável integram auditoria unificada com correlação. Verificador exige 27 tabelas com FORCE RLS e 24 capturas ativas.
+- npm.cmd run test:e2e: 93 cenários aprovados na rodada integral final, incluindo 78 regressões e 15 cenários financeiros.
+- No navegador: conta inicial, parcelas, recebimento parcial, pagamento, estorno/cancelamento, saldo insuficiente, transferência, conferência/reabertura, importação de compras, detalhe pelo extrato e repetição após resposta perdida. PDV confirmado em sandbox não altera saldo ou contas a receber do financeiro manual.
+- Capturas de títulos, detalhe, caixa e fluxo nas larguras 360/390/768/1440 em .local/qa/financeiro*.png, com checagem de overflow global. Tabelas mantêm rolagem interna; formulários e abas se reorganizam no celular.
+- Primeiras rodadas detectaram seletores de teste de combobox e a opção oculta Parcial confundida com o indicador. Ajustados para nomes acessíveis dos controles e indicador de situação, sem mudar a regra de baixa que já passava no banco. Revisão móvel reorganizou abas em duas linhas para evitar sobreposição.
+- npm.cmd run build e npm.cmd run typecheck aprovados em contratos, API e web. Rotas financeiras privadas e dinâmicas; next-env restaurado sem caminho do cache de E2E.
+- Migrações 015/016 aplicadas no banco local. Verificação administrativa na base comercial confirmou zero linhas nas cinco tabelas financeiras; fixtures permaneceram nas bases isoladas.
+- Diff preparado e JavaScript público sem segredos da configuração local; nenhum arquivo privado rastreado, links Markdown válidos, escopo original idêntico e git diff --check aprovado.
+- Guia e limites em [Financeiro](docs/FINANCEIRO.md). Pagamentos/conciliação bancária externos, homologação contábil e em dispositivos físicos, DRE e publicação permanecem pendentes.
+
+
 ## PDV, vendas e caixa — 05.1 — 09/11/2026
 
 - Testes em bancos isolados invictus_test_*, com dados fictícios. Migrações aditivas 012–014; 001–011 e escopo original preservados. Banco local recebe somente estrutura/permissões, sem cadastros comerciais de teste.

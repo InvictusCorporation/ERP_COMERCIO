@@ -1,5 +1,9 @@
 # Módulos e dependências
 
+## Incremento 06.1 — financeiro manual por filial
+
+A pagar/receber, parcelas em dias corridos, baixas parciais com juros/encargos/desconto informados, estorno, contas, fluxo/extrato e caixa financeiro com transferência e conferência. Recebimentos de compras podem gerar título vinculado; caixa do PDV continua simulado e separado. Etapa 06 completa ainda depende de provedores, conciliação e demais complementos. Guia em [Financeiro](docs/FINANCEIRO.md).
+
 ## Incremento 05.1 — PDV web/mobile de teste
 
 Catálogo, carrinho, rascunho, formas mistas simuladas, confirmação vinculada ao estoque, cancelamento/devolução integral, comprovante sem valor fiscal e caixa operacional por unidade. Permissões próprias e auditoria unificada. Etapas 05/06/07 completas seguem pendentes, especialmente pagamentos/fiscal externos e homologação de dispositivos. Guia em [PDV, vendas e caixa](docs/PDV_VENDAS.md).
