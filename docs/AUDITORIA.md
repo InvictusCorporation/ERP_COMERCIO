@@ -105,3 +105,7 @@ Seis novas fontes na categoria Estoque: sector, weighed_product, scale, weighing
 ## Rede e distribuição — 10.1
 
 Transferências geram captura transacional nas duas pontas, com mesma entidade e correlação da solicitação. Cada unidade consulta o histórico no escopo atual. Compra central registra plano e distribuição na central; movimentos e eventos de lote preservam a origem. Falha de auditoria reverte expedição ou recebimento inteiro. Guia em [Rede e distribuição](REDE_DISTRIBUICAO.md).
+
+## Integração com clientes — 11.1
+
+Categoria customers com seis fontes adicionais e remoção de documento/contato/endereço do snapshot; lista de campos alterados conserva evidência de mudanças protegidas. Veja [Clientes, pedidos e entregas](CLIENTES_PEDIDOS_ENTREGAS.md).

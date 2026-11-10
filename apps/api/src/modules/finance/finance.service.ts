@@ -32,7 +32,7 @@ export class FinanceService {
             }).code;
             if (code === '23505')
                 throw new ConflictException('Nome, origem ou confirmação já registrada. Atualize a consulta.');
-            if (code === '23514')
+            if (code === '23514' || code === 'P1101')
                 throw new ConflictException('Operação financeira recusada. Confira saldo, principal pendente, versão, datas, conta ativa e período aberto.');
             if (code === '42501')
                 throw new ForbiddenException('Unidade ou operação financeira não autorizada.');

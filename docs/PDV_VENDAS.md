@@ -52,3 +52,7 @@ Pendentes: provedores de pagamento/webhooks assinados e reconciliação, NFC-e/N
 ## Venda por peso — 09.1
 
 KG abre conferência de bruto e tara no desktop/celular; etiqueta interna configurada adiciona PLU/gramas pelo mesmo caminho de busca/câmera. Pesagens agrupadas são conferidas novamente no servidor e ficam no snapshot da venda. Quantidade editada diretamente fica manual. Preço sempre atual, sem assumir preço impresso; setor inativo bloqueia confirmação, preservando cancelamento e devolução. Pagamentos continuam de teste. Guia em [Setores, pesagem e produção](SETORES_PESAGEM_PRODUCAO.md).
+
+## Integração com clientes — 11.1
+
+Seleção opcional de cliente com crm.read vincula a venda ao histórico como teste; simulações não geram recebíveis de clientes nem pontos. Veja [Clientes, pedidos e entregas](CLIENTES_PEDIDOS_ENTREGAS.md).

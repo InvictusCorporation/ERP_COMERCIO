@@ -1,5 +1,9 @@
 # Pendências
 
+## Incremento 11.1 — clientes e atendimento entregues localmente
+
+Cadastro/histórico, crediário aprovado, recebíveis, pontos, pedidos/estoque e entregas manuais implementados. Complementos: governança do cliente entre filiais, juros/cobrança externa, relatórios de inadimplência, expiração/campanhas/cashback, desconto automático por pontos, canais digitais, parcialização, integração fiscal de pedidos e transportadoras. Nenhuma integração ou publicação presumida. Guia em [Clientes, pedidos e entregas](docs/CLIENTES_PEDIDOS_ENTREGAS.md).
+
 ## Rede e distribuição — 10.1 entregue localmente
 
 Entregues painel e estoque consolidados, CDs da estrutura existente, transferências operacionais da mesma empresa legal com aprovação/trânsito/conferência integral e compra central com distribuição vinculada. Próximos: divergências/recebimento parcial de transferências, devolução/estorno supervisionado, reservas e separação, fiscal/transporte, interempresas, entrega direta multidestino, alteração de planos, metas, preços/promoções por filial, centros de custo e consolidação financeira/DRE. Guia em [Rede e distribuição](docs/REDE_DISTRIBUICAO.md).

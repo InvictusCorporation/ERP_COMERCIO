@@ -1,5 +1,9 @@
 # Aprendizados e decisões reutilizáveis
 
+## Relacionamento — 10/11/2026
+
+Limite disponível precisa considerar compromissos ainda não faturados para evitar duas reservas usando o mesmo crédito. Reserva global só é segura para pedidos se guardas protegem o total de compromissos em todos os movimentos, inclusive liberação e estorno genéricos. Devolução deve usar custo e lotes originais, preservar entradas posteriores e reverter benefícios usados sem esconder dívida de pontos. Auditoria pode comparar dados brutos e registrar campos alterados antes de remover contatos/endereço; assim alterações pessoais continuam comprovadas sem duplicar dados sensíveis no log.
+
 ## Rede e distribuição — 10/11/2026
 
 Custódia em trânsito deve ser um estado próprio, sem duplicar físico ou disponível. Custo de entrada no destino é o valor histórico expedido, preservando resíduos em seis casas; não recalcular pelo preço ou custo atual da filial. Lotes podem vencer em trânsito e precisam chegar com as mesmas datas. A autorização é da ponta da ação: conferir no destino não exige abrir todos os saldos da origem. Compra agregada e distribuição são eventos diferentes; gerar rascunhos não movimenta estoque e estorno do recebimento exige revalidar a expedição vinculada. CHECK deve tratar NULL explicitamente para não aceitar origem incompleta.

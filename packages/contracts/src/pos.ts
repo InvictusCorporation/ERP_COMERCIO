@@ -32,6 +32,7 @@ export type SaleItem = {
     measurement?: (import("./supermarket").WeightMeasurement|{source:"manual_quantity";quantity:string}) & {quantity?:string};
 };
 export type Sale = {
+ customerId:string|null;customer:{name:string;code:string}|null;
     id: string;
     number: string;
     unitId: string;
@@ -137,6 +138,7 @@ export type SalePage = {
     page: number;
 };
 export type SaveSaleInput = {
+ customerId?:string;
     id?: string;
     version?: number;
     registerId: string;

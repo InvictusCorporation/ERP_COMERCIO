@@ -1,5 +1,11 @@
 # Regras de negócio
 
+## Clientes, crédito e atendimento — 11.1
+
+Reserva exclusiva do pedido não pode ser liberada genericamente. Exposição de crédito soma principal pendente e pedidos reservados/separados, excluindo o próprio pedido no recheck; vencidos bloqueiam novo crédito. Conclusão registra estoque, parcelas/baixa manual, pontos e entrega atomicamente. Devolução integral exige estornar recebimentos e resolver rota; recompõe custo/lote original e reverte pontos sem apagar eventos. Entrega e recebimento bancário são registros manuais; PDV simulado não gera pontos ou crediário. Guia em [Clientes, pedidos e entregas](docs/CLIENTES_PEDIDOS_ENTREGAS.md).
+
+A prévia do pedido 11.1 usa milésimos de quantidade e centavos de preço, com o mesmo arredondamento positivo do servidor: 0,5 × R$ 2,01 resulta em R$ 1,01. O total salvo permanece calculado no banco.
+
 ## Rede e distribuição — 10.1
 
 Não contar mercadoria em trânsito como disponível em nenhuma ponta. Aprovação não reserva saldo; expedição revalida disponibilidade e registra custo/lotes históricos. Destino recebe valor exato expedido, sem renovar validade. Divergência preserva trânsito e não cria entrada silenciosa. Transferências exigem mesma empresa legal; criar/aprovar/cancelar exige duas pontas, expedir exige origem e receber exige destino. Compra central agrega destinações em um pedido congelado, recebe uma vez na central e depois gera rascunhos de transferência. Vínculo fiscal e reserva exclusiva do recebimento não são presumidos. Guia em [Rede e distribuição](docs/REDE_DISTRIBUICAO.md).

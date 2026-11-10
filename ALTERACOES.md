@@ -1,5 +1,9 @@
 # Histórico de alterações
 
+## 10/11/2026 — Clientes, crediário, fidelidade, pedidos e entregas (11.1)
+
+Branch codex/clientes-crediario-pedidos-entregas. Novas páginas responsivas e sete permissões; seis tabelas RLS/auditadas, migrações 026–028 sem alterar anteriores. Clientes com CPF/CNPJ opcional, contato/endereço, situação, adesão e histórico manual/PDV identificado. Limite considera dívida e pedidos reservados; conclusão gera parcelas ou baixa manual, protege reservas e lotes/custo. Fidelidade tem regra da filial, ganho, ajuste, resgate e reversão; entregas com designação, rota, tentativa/reentrega e recebedor. Auditoria oculta dados de contato/endereço. Sem publicação, cobrança externa ou emissão fiscal automática de pedidos. Guia em [Clientes, pedidos e entregas](docs/CLIENTES_PEDIDOS_ENTREGAS.md).
+
 ## 10/11/2026 — Gestão da rede e distribuição (10.1)
 
 Branch codex/rede-distribuicao-transferencias. Rota /rede com estrutura, estoque consolidado, comparativo e ranking por autorização. Transferências preservam custo/lotes e distinguem rascunho, aprovação, expedição, trânsito e recebimento; divergência não cria saldo parcial. Compras centrais criam pedido agregado congelado, recebimento único na central e distribuição por transferências. Migrações 022–025 aditivas, auditoria nas duas pontas e MFA/permissões existentes. Visual responsivo conforme fotos. Sem publicação, emissão fiscal de transporte ou comunicação externa. Guia em [Rede e distribuição](docs/REDE_DISTRIBUICAO.md).

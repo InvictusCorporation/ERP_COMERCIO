@@ -69,3 +69,7 @@ O recebimento manual de compra passou a criar movimentos vinculados, com fator a
 ## Rede e distribuição — 10.1
 
 Transferências operacionais preservam valor e lotes: expedição baixa origem e registra trânsito; conferência integral cria entrada no destino com o valor exato. Trânsito não integra o disponível e não admite estorno de movimento isolado. Reservas de lotes válidos continuam protegidas. Guia em [Rede e distribuição](REDE_DISTRIBUICAO.md).
+
+## Integração com clientes — 11.1
+
+Pedidos de clientes reservam estoque exclusivo e concluem com baixa FEFO. Liberações genéricas não consomem essas reservas; devolução integral preserva custos e lotes históricos. Veja [Clientes, pedidos e entregas](CLIENTES_PEDIDOS_ENTREGAS.md).

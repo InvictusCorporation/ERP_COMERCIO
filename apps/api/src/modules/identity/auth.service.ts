@@ -199,7 +199,7 @@ export class AuthService implements OnApplicationShutdown {
             p === "stock.read" ||
             p === "stock.manage" ||
             p === "suppliers.read" ||
-            p.startsWith("purchases.") || p.startsWith("pos.") || p.startsWith("finance.") || p.startsWith("fiscal."),
+            p.startsWith("purchases.") || p.startsWith("pos.") || p.startsWith("finance.") || p.startsWith("fiscal.") || p.startsWith("crm.") || p.startsWith("orders.") || p.startsWith("deliveries."),
         );
   }
   async withAccess<T>(

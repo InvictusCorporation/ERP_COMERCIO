@@ -71,3 +71,7 @@ Referências de produtos/estoque e PDV mobile orientam cabeçalhos pretos, super
 ## Rede e distribuição — 10.1
 
 Referência de gestão multiloja orienta a estrutura escura da rede, indicadores pretos, ícones/ações douradas, ranking e tabelas claras. As quatro abas distinguem consolidação, estoque, transferências e compras centrais. Origem, destino, conferência e trânsito ficam visíveis no detalhe. Celular reorganiza abas em duas colunas e empilha formulários; tabelas têm rolagem própria. Capturas exclusivamente fictícias em 360/390/768/1440px. Guia em [Rede e distribuição](REDE_DISTRIBUICAO.md).
+
+## Integração com clientes — 11.1
+
+Clientes, crédito, pontos, pedidos e entregas seguem cabeçalhos pretos, ícones e ações douradas e painéis claros. Grades se reorganizam e tabelas rolam internamente em 360/390/768/1440 px. Veja [Clientes, pedidos e entregas](CLIENTES_PEDIDOS_ENTREGAS.md).

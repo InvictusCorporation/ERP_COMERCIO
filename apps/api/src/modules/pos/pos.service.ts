@@ -5,7 +5,7 @@ import { AuthService } from '../identity/auth.service';
 import type { AuthConfig } from '../identity/auth-config';
 export function sandboxEnabled(config: Pick<AuthConfig, 'origin' | 'posSandbox'>, env = process.env.NODE_ENV) { if (env === 'production')
     return false; return config.posSandbox ?? ['127.0.0.1', 'localhost', '[::1]'].includes(new URL(config.origin).hostname); }
-const saleSelect = `id,number,unit_id AS "unitId",register_id AS "registerId",operator_id AS "operatorId",operator_name AS "operatorName",unit_snapshot AS unit,items,gross::text,discount::text,total::text,status,version,current_payment_id AS "paymentId",notes,reason,created_at AS "createdAt",confirmed_at AS "confirmedAt",returned_at AS "returnedAt",returned_by AS "returnedBy",sandbox`;
+const saleSelect = `CASE WHEN inventory.allowed(tenant_id,'crm.read',unit_id) THEN customer_id ELSE NULL END AS "customerId",CASE WHEN inventory.allowed(tenant_id,'crm.read',unit_id) THEN customer_snapshot ELSE NULL END AS customer,id,number,unit_id AS "unitId",register_id AS "registerId",operator_id AS "operatorId",operator_name AS "operatorName",unit_snapshot AS unit,items,gross::text,discount::text,total::text,status,version,current_payment_id AS "paymentId",notes,reason,created_at AS "createdAt",confirmed_at AS "confirmedAt",returned_at AS "returnedAt",returned_by AS "returnedBy",sandbox`;
 const registerSelect = `id,unit_id AS "unitId",code,operator_id AS "operatorId",operator_name AS "operatorName",opening_amount::text AS "openingAmount",opened_at AS "openedAt",closed_at AS "closedAt",closed_by AS "closedBy",counted::text,expected::text,difference::text,notes,pos.cash_balance(tenant_id,id)::text AS balance`;
 type Context = {
     permissions: Permission[];
@@ -30,7 +30,7 @@ export class PosService {
         if(code==='P0901')throw new ConflictException('Confira setor ativo, pesagem e origem da produção. Estorne produção pelo módulo Supermercado.');
         if (code === '23505')
             throw new ConflictException('Caixa, operação ou confirmação já registrada. Atualize a consulta.');
-        if (code === '23514')
+        if (code === '23514' || code === 'P1101')
             throw new ConflictException('Operação fora de sequência. Confira caixa aberto, preço atual, saldo, pagamentos, troco e versão da venda.');
         if (code === '42501')
             throw new ForbiddenException('Operador ou unidade não autorizado para esta ação.');

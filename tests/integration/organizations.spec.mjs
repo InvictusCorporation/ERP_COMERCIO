@@ -639,6 +639,7 @@ test(
               "purchases.receive",
                 "pos.read", "pos.sell", "pos.cash", "pos.cash.manage", "pos.discount", "pos.refund",
                 "finance.read", "finance.manage", "finance.settle", "finance.reverse", "finance.cash", "fiscal.read", "fiscal.manage", "fiscal.issue", "fiscal.cancel",
+                "crm.read","crm.manage","crm.credit","crm.loyalty","orders.read","orders.manage","deliveries.manage",
             ],
           );
         },

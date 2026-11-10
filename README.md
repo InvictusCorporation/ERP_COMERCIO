@@ -1,5 +1,9 @@
 # Invictus ERP Comercial
 
+## Clientes, crediário e atendimento — 11.1
+
+Novos /clientes, /pedidos e /entregas: cadastro e histórico por filial, aprovação de limite, recebíveis parcelados, pontos auditáveis, pedidos com reserva/separação/conclusão e entregas com recebedor e tentativas. Integração manual com estoque e financeiro; PDV vinculado continua simulado. Visual preto/branco/dourado e adaptação para celular. Guia em [Clientes, pedidos e entregas](docs/CLIENTES_PEDIDOS_ENTREGAS.md).
+
 ## Rede e distribuição — 10.1
 
 Disponível em /rede: unidades/CDs e estoque consolidado, comparativo por período, transferências aprovadas com expedição, trânsito e conferência, preservando custos e lotes; compras centralizadas com pedido único, recebimento no CD e distribuição por transferências. Visual responsivo preto/branco/dourado. Operações da mesma empresa legal, sem emissão fiscal de transporte ou integração externa. Guia em [Rede e distribuição](docs/REDE_DISTRIBUICAO.md).

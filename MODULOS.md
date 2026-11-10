@@ -1,5 +1,9 @@
 # Módulos e dependências
 
+## Relacionamento e atendimento — incremento 11.1
+
+Cadastro/histórico de clientes, crediário por filial e recebíveis no financeiro, regra/ledger de pontos, pedidos manuais ligados a reservas e baixa FEFO, devolução integral e entregas acompanhadas por estado. Consulta de clientes no PDV preserva distinção de pagamentos simulados. Integrações digitais, cobrança, cashback, transporte/fiscal e devoluções parciais seguem como complementos. Guia em [Clientes, pedidos e entregas](docs/CLIENTES_PEDIDOS_ENTREGAS.md).
+
 ## Rede e distribuição — incremento 10.1
 
 Consolidação por acesso, estrutura de unidades e CDs, estoque por SKU, transferências com aprovação/expedição/trânsito/recebimento integral, lotes e custos preservados. Compras centralizadas integram pedido e recebimento existentes e geram transferências por destino. Etapa 10 completa depende dos complementos de logística, fiscal, preços, metas e financeiro consolidado. Guia em [Rede e distribuição](docs/REDE_DISTRIBUICAO.md).

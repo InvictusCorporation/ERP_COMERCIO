@@ -1,4 +1,5 @@
 export const AUDIT_CATEGORIES = {
+ customers:"Clientes, pedidos e entregas",
   fiscal: "Fiscal",
   finance: "Financeiro",
   sales: "Vendas e pagamentos",
@@ -16,6 +17,12 @@ export const AUDIT_CATEGORIES = {
 } as const;
 export type AuditCategory = keyof typeof AUDIT_CATEGORIES;
 export const AUDIT_ACTIONS: Record<string, string> = {
+"customer_deliveries.created":"Entrega registrado","customer_deliveries.changed":"Entrega atualizado",
+"customer_orders.created":"Pedido de cliente registrado","customer_orders.changed":"Pedido de cliente atualizado",
+"customer_loyalty_events.created":"Movimento de pontos registrado","customer_loyalty_events.changed":"Movimento de pontos atualizado",
+"customer_loyalty_programs.created":"Programa de fidelidade registrado","customer_loyalty_programs.changed":"Programa de fidelidade atualizado",
+"customer_credit_profiles.created":"Perfil de crédito registrado","customer_credit_profiles.changed":"Perfil de crédito atualizado",
+"customer_customers.created":"Cliente registrado","customer_customers.changed":"Cliente atualizado",
 "transfer.created":"Transferência criada","transfer.changed":"Transferência atualizada","central_purchase.created":"Compra centralizada planejada","central_purchase.changed":"Distribuição centralizada atualizada",
 "sector.created":"Setor registrado",
 "sector.changed":"Setor alterado",
@@ -94,7 +101,8 @@ export const AUDIT_ACTIONS: Record<string, string> = {
   "context.changed": "Contexto de acesso atualizado",
 };
 export const AUDIT_FIELDS: Record<string, string> = {
-"source_id":"Unidade de origem","destination_id":"Unidade de destino","document_ref":"Referência documental","central_id":"Compra centralizada de origem","allocations":"Destinações planejadas","distributed":"Distribuição gerada","distributed_at":"Distribuída em","distributed_by":"Distribuída por","dispatched_at":"Expedida em","dispatched_by":"Expedida por","received_at":"Recebida em","received_by":"Recebida por","cancelled_by":"Cancelada por","cancelled_at":"Cancelada em","order_id":"Pedido de compra","transfer_line_id":"Item da transferência","transfer_role":"Ponta do movimento","last_action":"Última operação",
+customer_id:"Cliente",customer_order_id:"Pedido de cliente",customer_line_id:"Item do pedido de cliente",customer_role:"Operação do pedido de cliente",credit_limit:"Limite de crédito",enabled:"Habilitado",loyalty_opt_in:"Participa da fidelidade",cents_per_point:"Centavos por ponto",points:"Pontos",changedFields:"Campos alterados",delivery_fee:"Taxa de entrega",mode:"Atendimento",channel:"Origem do atendimento",payment:"Recebimento",interval_days:"Intervalo em dias",fulfilled_at:"Concluído em",recipient:"Recebedor",courier:"Entregador",scheduled_on:"Previsão da entrega",
+"source_id":"Unidade de origem","destination_id":"Unidade de destino","document_ref":"Referência documental","central_id":"Compra centralizada de origem","allocations":"Destinações planejadas","distributed":"Distribuição gerada","distributed_at":"Distribuída em","distributed_by":"Distribuída por","dispatched_at":"Expedida em","dispatched_by":"Expedida por","received_at":"Recebida em","received_by":"Recebida por","cancelled_by":"Cancelada por","cancelled_at":"Cancelada em","order_id":"Pedido de origem","transfer_line_id":"Item da transferência","transfer_role":"Ponta do movimento","last_action":"Última operação",
 sector_id:"Setor",weighted:"Vendido por peso",plu:"PLU",capacity:"Capacidade (kg)",resolution:"Resolução (kg)",prefix:"Prefixo da etiqueta",tare:"Tara",net:"Peso líquido",scale_id:"Balança",source:"Origem",recipe_id:"Ficha técnica",recipe_version:"Versão da ficha",yield_quantity:"Rendimento previsto",ingredients:"Insumos da ficha",input_items:"Consumo da produção",output_product_id:"Produto acabado",expected_quantity:"Rendimento previsto",actual_quantity:"Rendimento real",total_cost:"Custo consumido",output_lot_id:"Lote produzido",lot_code:"Código do lote",
 
 alert_days:"Antecedência do alerta",manufactured_on:"Fabricação",expires_on:"Vencimento",blocked:"Lote bloqueado",quantity_delta:"Variação no lote",lot_id:"Lote",loss_kind:"Tipo de perda",
@@ -154,7 +162,7 @@ reopen_reason: "Motivo da reabertura",
   cancel_reason: "Motivo do cancelamento",
   approved_by: "Aprovado por",
   approved_at: "Aprovado em",
-  document: "Referência do recebimento",
+  document: "Documento / referência",
   reversal_reason: "Motivo do estorno",
   reversed_by: "Estornado por",
   reversed_at: "Estornado em",

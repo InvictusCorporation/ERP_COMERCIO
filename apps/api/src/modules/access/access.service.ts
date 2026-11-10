@@ -50,6 +50,7 @@ const systemRoles: [string, Permission[]][] = [
       "purchases.receive", "pos.read", "pos.sell", "pos.cash", "pos.cash.manage", "pos.discount", "pos.refund",
       "finance.read", "finance.manage", "finance.settle", "finance.reverse", "finance.cash",
       "fiscal.read", "fiscal.manage", "fiscal.issue", "fiscal.cancel",
+      "crm.read","crm.manage","crm.credit","crm.loyalty","orders.read","orders.manage","deliveries.manage",
     ],
   ],
   ["Gerente", ["users.read", "organizations.read"]],
@@ -64,6 +65,7 @@ const systemRoles: [string, Permission[]][] = [
 const missing = () =>
   new NotFoundException("Registro não encontrado nesta empresa.");
 const sensitive = (p: Permission[]) =>
+    p.some(v=>["crm.manage","crm.credit","crm.loyalty","orders.manage","deliveries.manage"].includes(v)) ||
   p.includes("users.manage") ||
   p.includes("roles.manage") ||
   p.includes("organizations.manage") ||
@@ -352,6 +354,8 @@ export class AccessService {
           "Permissões não autorizadas para este perfil.",
         );
       await this.roles(c, ctx.tenantId);
+
+ if((permissions.includes('crm.read')&&!permissions.includes('organizations.read'))||(permissions.some(p=>['crm.manage','crm.credit','crm.loyalty','orders.read'].includes(p))&&!permissions.includes('crm.read'))||(permissions.includes('orders.read')&&!permissions.includes('products.read'))||(permissions.some(p=>['orders.manage','deliveries.manage'].includes(p))&&!permissions.includes('orders.read')))throw new BadRequestException('Inclua consultas de empresas, clientes e produtos necessárias a pedidos e entregas.');
  if((permissions.some(p=>p.startsWith('fiscal.')&&p!=='fiscal.read')&&!permissions.includes('fiscal.read'))||(permissions.includes('fiscal.manage')&&!permissions.includes('products.read')))throw new BadRequestException('Inclua consulta fiscal e consulta de produtos para preparar documentos.');
  if(permissions.some(p=>p.startsWith('finance.')&&p!=='finance.read')&&!permissions.includes('finance.read'))throw new BadRequestException('Inclua a consulta financeira antes de liberar alterações.');
  if((permissions.includes('pos.read')&&!permissions.includes('products.read'))||(permissions.some(p=>p.startsWith('pos.')&&p!=='pos.read')&&!permissions.includes('pos.read'))||(['pos.sell','pos.cash.manage','pos.refund'].some(p=>permissions.includes(p as Permission))&&!permissions.includes('pos.cash'))||(permissions.includes('pos.discount')&&!permissions.includes('pos.sell')))throw new BadRequestException('Inclua as consultas de produtos/PDV e as permissões de caixa/venda necessárias à ação.');

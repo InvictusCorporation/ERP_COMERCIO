@@ -115,3 +115,7 @@ As migrações 020/021 adicionam supermarket.sectors/product_profiles/scales/wei
 ## Rede e distribuição — 10.1
 
 Migrações 022–025 adicionam network.transfers/central_orders, FORCE RLS, funções restritas, campos de origem no ledger e validação completa do vínculo. Pontes preservam custo de seis casas, lotes e reservas; inicialização exige 42 tabelas protegidas/39 capturas. Não há dados comerciais criados automaticamente. Guia em [Rede e distribuição](REDE_DISTRIBUICAO.md).
+
+## Integração com clientes — 11.1
+
+Migrações 026–028 adicionam seis tabelas crm, vínculos de cliente/pedido e guardas em estoque, financeiro e PDV; total de 48 tabelas RLS e 45 capturas verificado por transação. Veja [Clientes, pedidos e entregas](CLIENTES_PEDIDOS_ENTREGAS.md).

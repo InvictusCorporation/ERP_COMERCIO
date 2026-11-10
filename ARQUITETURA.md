@@ -1,5 +1,9 @@
 # Arquitetura proposta
 
+## Clientes e atendimento — 11.1
+
+Seis tabelas crm com FORCE RLS e RPCs sem DML direto HTTP; 48 tabelas e 45 capturas verificadas no runtime. Versão, idempotência e lock transacional do tenant protegem exposição de crédito, estoque, recebíveis, pontos e entregas. Ponte de saída usa FEFO e devolução conserva custo/lotes originais. Migrações 026–028 aditivas; permissões por filial, MFA de escrita e dados pessoais removidos dos snapshots auditados. Guia em [Clientes, pedidos e entregas](docs/CLIENTES_PEDIDOS_ENTREGAS.md).
+
 ## Rede e distribuição — 10.1
 
 Duas tabelas em network com FORCE RLS e RPCs restritas; 42 tabelas e 39 capturas verificadas no runtime. Transferência mantém quantidade/custo/lotes em trânsito fora dos saldos de origem/destino; funções validam origem, sequência, versão, escopo e conferência. Ponte de custo preserva seis casas no destino e ponte FEFO registra lotes; reservas válidas são rechecadas após separação. Compra central envolve purchasing.save_order e plano imutável na mesma transação; recebimento permanece no módulo de Compras. Relatórios filtram cada módulo por autorização; valores de vendas são de teste. Guia em [Rede e distribuição](docs/REDE_DISTRIBUICAO.md).

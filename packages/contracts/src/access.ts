@@ -1,4 +1,6 @@
+import {CRM_PERMISSIONS} from './crm';
 export const PERMISSIONS = [
+...CRM_PERMISSIONS,
 {"key":"fiscal.read","label":"Consultar documentos fiscais","description":"Consultar documentos, cadastros e retornos nas filiais autorizadas."},
 {"key":"fiscal.manage","label":"Preparar e configurar o fiscal","description":"Configurar emitente/tributação e conferir rascunhos; exige consulta de produtos e duas etapas."},
 {"key":"fiscal.issue","label":"Transmitir e consultar homologação","description":"Solicitar emissão e reconciliar retornos externos no ambiente de homologação; exige duas etapas."},

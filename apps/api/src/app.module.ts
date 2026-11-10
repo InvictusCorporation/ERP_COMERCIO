@@ -1,3 +1,5 @@
+import {CrmService} from './modules/crm/crm.service';
+import {CrmController} from './modules/crm/crm.controller';
 import {NetworkService} from './modules/network/network.service';
 import {NetworkController} from './modules/network/network.controller';
 import {SupermarketService} from './modules/supermarket/supermarket.service';
@@ -52,7 +54,7 @@ export class AppModule {
               OrganizationsController,
               AuditController,
               InventoryController,
-              PurchasingController, PosController, FinanceController, FiscalController, LotsController, SupermarketController, NetworkController,
+              PurchasingController, PosController, FinanceController, FiscalController, LotsController, SupermarketController, NetworkController, CrmController,
             ]
           : []),
       ],
@@ -64,7 +66,9 @@ export class AppModule {
         ...(authConfig
           ? [
               {
-                provide: NetworkService,useFactory:(auth:AuthService)=>new NetworkService(auth),inject:[AuthService],
+                provide: CrmService, inject: [AuthService], useFactory: (auth:AuthService)=>new CrmService(auth),
+}, {
+provide: NetworkService,useFactory:(auth:AuthService)=>new NetworkService(auth),inject:[AuthService],
               },{
                 provide: SupermarketService,useFactory:(auth:AuthService)=>new SupermarketService(auth),inject:[AuthService],
               },{

@@ -65,7 +65,7 @@ export class InventoryService {
         throw new ConflictException(
           "Código interno, código de barras ou confirmação já registrado. Atualize a consulta.",
         );
-      if (code === "23514")
+      if (code === "23514" || code === "P1101")
         throw new ConflictException(
           "Confira o saldo disponível, a precisão da conversão e as regras de estorno. Código e unidade-base são permanentes.",
         );

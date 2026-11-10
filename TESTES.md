@@ -1,5 +1,13 @@
 # Testes e evidências
 
+## Clientes, pedidos e entregas — 11.1 — 10/11/2026
+
+- npm.cmd test: 58 testes unitários aprovados, incluindo CPF/CNPJ opcional, contato/endereço, precisão de peso, condições do pedido, pontos inteiros e dados de entrega.
+- npm.cmd run test:integration: 249 testes aprovados na rodada completa; vinte da nova suíte com agrupador, incluindo idempotência, MFA/CSRF, limites, vencidos, reservas concorrentes, parcelas/baixas/estornos, FEFO/custo histórico, pontos, entrega/reentrega, rollback de auditoria, dados pessoais e escopo real por filial.
+- npm.cmd run test:e2e: rodada completa com 152 cenários, 150 aprovados e dois conflitos de nome acessível no PDV identificados (busca por código e etiqueta de peso). O botão de clientes foi diferenciado; a revalidação final das três suítes afetadas (crm, pos e supermarket) aprovou 39 testes, incluindo os dois casos corrigidos e um caso adicional de seleção de cliente no PDV móvel. Dez casos novos da Etapa 11 cobrem cadastro/edição, limite, pontos, pedidos, entregas, quatro larguras e recuperação sem duplicação. Após a conferência da prévia fracionada, os dez testes de CRM passaram novamente, incluindo 0,5 × R$ 2,01 = R$ 1,01 na prévia e no pedido salvo. Não houve repetição automática de testes.
+- Build de contratos/API/web e typecheck aprovados. Migrações 026–028 aplicadas no banco local (28 no total), seis novas tabelas com FORCE RLS e sem DML direto HTTP, 45 capturas e 48 tabelas verificadas no runtime. Novas tabelas sem registros e contagens comerciais anteriores preservadas, inclusive rede. PostgreSQL portátil iniciado nesta tarefa encerrado com dados preservados.
+- Dados fictícios restritos aos bancos isolados; capturas locais em .local/crm-customers-*.png, .local/crm-order-*.png e .local/crm-delivery-*.png. Sem emissão, envio de mensagens, pagamentos externos ou publicação.
+
 ## Rede e distribuição — 10.1 — 10/11/2026
 
 - npm.cmd test: 53 testes unitários aprovados; validação de pontas distintas, precisão, itens/destinos únicos, documento de expedição, conferência e confirmações.

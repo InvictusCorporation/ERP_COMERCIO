@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { authRequest } from "../lib/auth-client";
 import {
   ArrowRight,
@@ -124,9 +124,10 @@ export function Workspace({
     | "suppliers"
     | "purchases"
     | "pos"
-    | "finance" | "fiscal" | "lots" | "supermarket" | "network";
+    | "finance" | "fiscal" | "lots" | "supermarket" | "network" | "crm";
 }) {
   const router = useRouter();
+  const pathname=usePathname();
   const [session, setSession] = useState(initialSession);
   const [sessionError, setSessionError] = useState("");
   useEffect(() => {
@@ -305,7 +306,7 @@ export function Workspace({
   }, [menuOpen]);
 
   const sectionTitle =
-    section === "network" ? "Gestão da rede e distribuição" : section === "supermarket" ? "Setores, pesagem e produção" : section === "lots" ? "Lotes, validade e perdas" : section === "fiscal" ? "Fiscal · NF-e e NFC-e" : section === "finance" ? "Financeiro" : section === "pos" ? "Vendas e PDV" : section === "suppliers"
+    section === "crm" ? "Clientes, pedidos e entregas" : section === "network" ? "Gestão da rede e distribuição" : section === "supermarket" ? "Setores, pesagem e produção" : section === "lots" ? "Lotes, validade e perdas" : section === "fiscal" ? "Fiscal · NF-e e NFC-e" : section === "finance" ? "Financeiro" : section === "pos" ? "Vendas e PDV" : section === "suppliers"
       ? "Fornecedores"
       : section === "purchases"
         ? "Compras e recebimentos"
@@ -317,7 +318,7 @@ export function Workspace({
               ? "Empresas e unidades"
               : "Usuários e permissões";
   const SectionIcon =
-    section === "network" ? Building2 : section === "supermarket" ? Store : section === "lots" ? Boxes : section === "fiscal" ? FileText : section === "finance" ? Wallet : section === "pos" ? ShoppingCart : section === "suppliers"
+    section === "crm" ? Users : section === "network" ? Building2 : section === "supermarket" ? Store : section === "lots" ? Boxes : section === "fiscal" ? FileText : section === "finance" ? Wallet : section === "pos" ? ShoppingCart : section === "suppliers"
       ? Truck
       : section === "purchases"
         ? ShoppingBag
@@ -425,6 +426,8 @@ export function Workspace({
               <span>Fornecedores</span>
             </Link>
           )}
+          {session.permissions.includes('crm.read') && <Link href="/clientes" className={`nav-item ${children && pathname==='/clientes'?'active':''}`} onClick={()=>setMenuOpen(false)}><Users size={21}/><span>Clientes e fidelidade</span></Link>}
+          {session.permissions.includes('orders.read') && <><Link href="/pedidos" className={`nav-item ${pathname==='/pedidos'?'active':''}`} onClick={()=>setMenuOpen(false)}><ClipboardList size={21}/><span>Pedidos</span></Link><Link href="/entregas" className={`nav-item ${pathname==='/entregas'?'active':''}`} onClick={()=>setMenuOpen(false)}><Truck size={21}/><span>Entregas</span></Link></>}
           {session.permissions.includes("organizations.read") && session.permissions.includes("stock.read") && session.permissions.includes("products.read") && <Link href="/rede" className={`nav-item ${children && section === "network" ? "active" : ""}`} onClick={() => setMenuOpen(false)}><Building2 size={21}/><span>Rede e distribuição</span></Link>}
           {session.permissions.includes("stock.read") && session.permissions.includes("products.read") && <Link href="/supermercado" className={`nav-item ${children && section === "supermarket" ? "active" : ""}`} onClick={() => setMenuOpen(false)}><Store size={21}/><span>Setores e produção</span></Link>}
           {session.permissions.includes("stock.read") && session.permissions.includes("products.read") && <Link href="/lotes" className={`nav-item ${children && section === "lots" ? "active" : ""}`} onClick={() => setMenuOpen(false)}><Boxes size={21}/><span>Lotes e validade</span></Link>}
@@ -453,7 +456,7 @@ export function Workspace({
                 label !== "Produtos" &&
                 label !== "Estoque" &&
                 label !== "Compras" && label !== "Vendas e PDV" && label !== "Financeiro" && label !== "Fiscal" &&
-                label !== "Fornecedores",
+                label !== "Fornecedores" && label !== "Clientes" && label !== "Entregas",
             )
             .map(([label, Icon]) => (
               <button
@@ -627,7 +630,7 @@ export function Workspace({
               </h1>
               <p>
                 {children
-                  ? section === "network" ? "Matriz, filiais, centros de distribuição e mercadorias em trânsito." : section === "supermarket" ? "Operação de supermercado, balcão e produção por filial." : section === "lots" ? "Controle por filial, descarte e reposição de mercadorias." : section === "fiscal" ? "Conferência, emissão em homologação e histórico por filial." : section === "finance" ? "Contas a pagar, a receber e caixa por filial." : section === "pos" ? "Venda no balcão, caixa e histórico por filial." : section === "suppliers"
+                  ? section === "crm" ? "Relacionamento, crediário, fidelidade e atendimento por filial." : section === "network" ? "Matriz, filiais, centros de distribuição e mercadorias em trânsito." : section === "supermarket" ? "Operação de supermercado, balcão e produção por filial." : section === "lots" ? "Controle por filial, descarte e reposição de mercadorias." : section === "fiscal" ? "Conferência, emissão em homologação e histórico por filial." : section === "finance" ? "Contas a pagar, a receber e caixa por filial." : section === "pos" ? "Venda no balcão, caixa e histórico por filial." : section === "suppliers"
                     ? "Parceiros, contatos e condições de abastecimento."
                     : section === "purchases"
                       ? "Planeje, aprove e confira as compras da sua unidade."

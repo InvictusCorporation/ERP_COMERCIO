@@ -64,3 +64,7 @@ Integração bancária/Pix/TEF/adquirentes, webhooks assinados, conciliação ba
 ## Execução local
 
 Use npm run db:portable para iniciar o PostgreSQL local e aplicar migrações; npm run dev inicia API e web. Reinicie API/web após migrações para carregar os módulos e verificações novos. Configurações privadas existentes são preservadas. npm run db:migrate aplica somente as migrações quando o banco já está ativo.
+
+## Integração com clientes — 11.1
+
+Recebíveis de pedidos de clientes possuem vínculo com cliente/filial/pedido. Conclusão pode gerar parcelas ou baixa manual; cancelamento isolado é bloqueado e devolução exige estornar baixas antes. Veja [Clientes, pedidos e entregas](CLIENTES_PEDIDOS_ENTREGAS.md).

@@ -89,3 +89,7 @@ products.read/products.manage e stock.read/stock.manage integram o catálogo. Es
 ## Fornecedores e compras
 
 suppliers.read/manage e purchases.read/manage/approve/receive acrescentados ao catálogo. Gerenciar fornecedor exige escopo global; ações de compra podem ser restritas à filial, com MFA nas escritas. Recebimento requer stock.manage explicitamente e suas consultas; comprador não ganha aprovação/recebimento automaticamente. Guia e dependências em [Fornecedores e compras](FORNECEDORES_COMPRAS.md).
+
+## Clientes, pedidos e entregas — 11.1
+
+Sete permissões novas, sem concessão automática a perfis não administrativos. Consulta de clientes exige empresas; pedidos exigem consulta de clientes e produtos. Escritas exigem MFA e dependem do escopo por filial; estoque e financeiro conservam suas autorizações próprias. Limite de crédito só é consultado com crm.credit ou finance.read. Veja [Clientes, pedidos e entregas](CLIENTES_PEDIDOS_ENTREGAS.md).

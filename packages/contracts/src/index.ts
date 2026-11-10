@@ -24,3 +24,5 @@ export * from "./lots";
 export * from "./supermarket";
 
 export * from "./network";
+
+export * from "./crm";

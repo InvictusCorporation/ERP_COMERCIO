@@ -48,6 +48,7 @@ const valueLabel = (key: string, value: unknown): string => {
       MOVEMENT_KINDS[value as keyof typeof MOVEMENT_KINDS] ||
       String(value)
     );
+  if(key === "changedFields" && Array.isArray(value))return value.map(k=>AUDIT_FIELDS[String(k)]||String(k)).join(", ");
   if (Array.isArray(value))
     return (
       value
