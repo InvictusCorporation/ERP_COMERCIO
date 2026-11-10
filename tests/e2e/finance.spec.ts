@@ -346,9 +346,11 @@ test('recebimento de compra gera uma conta a pagar com origem e bloqueia estorno
     await page.getByRole('button', {
         name: 'Compras', exact: true
     }).click();
+    const loaded=page.waitForResponse(r=>r.url().includes('/api/v1/finance/titles?kind=payable')&&r.request().method()==='GET');
     await page.getByRole('button', {
         name: 'Gerar conta a pagar', exact: true
     }).click();
+    await loaded;
     await expect(page.getByRole('status')).toContainText('Conta a pagar vinculada');
     await expect(page.getByText(/Origem: recebimento de compra/)).toBeVisible();
     const d = await (await page.request.get('/api/v1/purchasing/orders/' + p.order.id)).json();

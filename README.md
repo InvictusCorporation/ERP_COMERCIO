@@ -1,5 +1,9 @@
 # Invictus ERP Comercial
 
+## Lotes, validade e perdas — 08.1
+
+Novo módulo /lotes: classificação do saldo por filial, alertas, bloqueio, perdas/avarias, estorno auditado, relatório e reposição sugerida. PDV baixa lotes válidos por vencimento e devolve aos mesmos lotes; entradas de compras ficam pendentes de classificação quando há controle. Visual responsivo preto/branco/dourado, mantendo o custo médio. Guia em [Lotes, validade e perdas](docs/LOTES_VALIDADE_PERDAS.md).
+
 ## Fiscal — 07.1
 
 Disponível em /fiscal: NF-e/NFC-e a partir das vendas, emitente e tributação por filial, conferência, histórico, consulta e cancelamento em homologação. Visual responsivo preto/branco/dourado. Adaptador opcional Focus NFe, desabilitado por padrão; testado com transporte sintético, sem emissão externa real. Produção bloqueada. Guia e requisitos para habilitar homologação em [Fiscal](docs/FISCAL.md).

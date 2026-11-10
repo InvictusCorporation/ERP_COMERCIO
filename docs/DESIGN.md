@@ -58,3 +58,8 @@ Lista clara e editor lateral com cabeçalho preto, métricas escuras e ícones/a
 ## Fiscal — 07.1
 
 Referências de produtos/estoque e rede orientam quatro indicadores escuros, tabela clara de documentos, conferência e tributação no editor lateral. Cabeçalhos pretos, ícones dourados, ação principal ouro e estados legíveis. Celular reorganiza editor e campos em uma coluna, mantém tabela com rolagem própria e menu recolhível. Contexto de homologação e integração aparece junto das ações. Número/chave/protocolo não são ilustrativos; telas vazias usam mensagens reais. Capturas usam somente fixtures fictícias e emissão externa desabilitada.
+
+
+## Lotes, validade e perdas — 08.1
+
+Referência de produtos/estoque orienta tabela e editor lateral com cabeçalho preto, ícones dourados e ação principal amarela. Indicadores mostram contagens reais de lotes, vencimento e classificação pendente. Perdas têm total pelo custo histórico; reposição compara saldo e limites por produto/unidade. No celular, campos empilham, abas reorganizam e tabelas têm rolagem interna. As capturas usam somente fixtures fictícias, sem dados de referência apresentados como operação real.

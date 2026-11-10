@@ -1,3 +1,5 @@
+import {LotsService} from "./modules/lots/lots.service";
+import {LotsController} from "./modules/lots/lots.controller";
 import {FiscalService} from "./modules/fiscal/fiscal.service";
 import {FiscalController} from "./modules/fiscal/fiscal.controller";
 import type {FiscalGateway} from "./modules/fiscal/focus.gateway";
@@ -46,7 +48,7 @@ export class AppModule {
               OrganizationsController,
               AuditController,
               InventoryController,
-              PurchasingController, PosController, FinanceController, FiscalController,
+              PurchasingController, PosController, FinanceController, FiscalController, LotsController,
             ]
           : []),
       ],
@@ -58,6 +60,8 @@ export class AppModule {
         ...(authConfig
           ? [
               {
+                provide: LotsService,useFactory:(auth:AuthService)=>new LotsService(auth),inject:[AuthService],
+              },{
                 provide: FiscalService,useFactory:(auth:AuthService)=>new FiscalService(auth,fiscalGateway),inject:[AuthService],
               },{
                 provide: FinanceService,useFactory:(auth:AuthService)=>new FinanceService(auth),inject:[AuthService],

@@ -124,7 +124,7 @@ export function Workspace({
     | "suppliers"
     | "purchases"
     | "pos"
-    | "finance" | "fiscal";
+    | "finance" | "fiscal" | "lots";
 }) {
   const router = useRouter();
   const [session, setSession] = useState(initialSession);
@@ -305,7 +305,7 @@ export function Workspace({
   }, [menuOpen]);
 
   const sectionTitle =
-    section === "fiscal" ? "Fiscal · NF-e e NFC-e" : section === "finance" ? "Financeiro" : section === "pos" ? "Vendas e PDV" : section === "suppliers"
+    section === "lots" ? "Lotes, validade e perdas" : section === "fiscal" ? "Fiscal · NF-e e NFC-e" : section === "finance" ? "Financeiro" : section === "pos" ? "Vendas e PDV" : section === "suppliers"
       ? "Fornecedores"
       : section === "purchases"
         ? "Compras e recebimentos"
@@ -317,7 +317,7 @@ export function Workspace({
               ? "Empresas e unidades"
               : "Usuários e permissões";
   const SectionIcon =
-    section === "fiscal" ? FileText : section === "finance" ? Wallet : section === "pos" ? ShoppingCart : section === "suppliers"
+    section === "lots" ? Boxes : section === "fiscal" ? FileText : section === "finance" ? Wallet : section === "pos" ? ShoppingCart : section === "suppliers"
       ? Truck
       : section === "purchases"
         ? ShoppingBag
@@ -425,6 +425,7 @@ export function Workspace({
               <span>Fornecedores</span>
             </Link>
           )}
+          {session.permissions.includes("stock.read") && session.permissions.includes("products.read") && <Link href="/lotes" className={`nav-item ${children && section === "lots" ? "active" : ""}`} onClick={() => setMenuOpen(false)}><Boxes size={21}/><span>Lotes e validade</span></Link>}
           {session.permissions.includes("fiscal.read") && <Link href="/fiscal" className={`nav-item ${children && section === "fiscal" ? "active" : ""}`} onClick={() => setMenuOpen(false)}><FileText size={21}/><span>Fiscal</span></Link>}
 {session.permissions.includes("finance.read") && <Link href="/financeiro" className={`nav-item ${children && section === "finance" ? "active" : ""}`}><Wallet size={21}/><span>Financeiro</span></Link>}
           {session.permissions.includes("pos.read") && <Link href="/pdv" className={`nav-item ${children && section === "pos" ? "active" : ""}`}><ShoppingCart size={21}/><span>Vendas e PDV</span></Link>}
@@ -624,7 +625,7 @@ export function Workspace({
               </h1>
               <p>
                 {children
-                  ? section === "fiscal" ? "Conferência, emissão em homologação e histórico por filial." : section === "finance" ? "Contas a pagar, a receber e caixa por filial." : section === "pos" ? "Venda no balcão, caixa e histórico por filial." : section === "suppliers"
+                  ? section === "lots" ? "Controle por filial, descarte e reposição de mercadorias." : section === "fiscal" ? "Conferência, emissão em homologação e histórico por filial." : section === "finance" ? "Contas a pagar, a receber e caixa por filial." : section === "pos" ? "Venda no balcão, caixa e histórico por filial." : section === "suppliers"
                     ? "Parceiros, contatos e condições de abastecimento."
                     : section === "purchases"
                       ? "Planeje, aprove e confira as compras da sua unidade."

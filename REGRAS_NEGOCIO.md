@@ -1,5 +1,9 @@
 # Regras de negócio
 
+## Lotes, validade e perdas — 08.1
+
+Controle ativado por produto/filial é permanente; saldo desconhecido não recebe datas inventadas. Classificar não altera físico/custo e exige saldo sem reservas. Vencimento anterior ao dia America/Fortaleza ou bloqueio impede venda; PDV verifica novamente na confirmação e consome por vencimento. Devolução recompõe os lotes originais sem renovar datas. Perda exige lote, quantidade, tipo e motivo; descarte e estoque são atômicos e idempotentes. Estorno preserva original e segue a regra de último movimento. Reposição é sugestão por limites e saldo vendável, sem pedido/preço/descarte automático. Guia em [Lotes, validade e perdas](docs/LOTES_VALIDADE_PERDAS.md).
+
 ## Fiscal — 07.1
 
 Documento tem origem em venda confirmada, com itens/valores do servidor e um documento ativo por venda. Configuração fiscal por filial, revisão explícita e bases tributárias informadas; não presumir classificação ou taxa. Conferência não representa autorização; chave/número/protocolo/arquivos dependem de retorno verificável em ambiente 2. Produção bloqueada, integração desabilitada por padrão. Cancelamento fiscal não estorna a venda e devolução do PDV exige regularizar fiscal ativo. Permissões separadas para consultar, configurar, emitir e cancelar, com MFA e escopo atual. Guia em [Fiscal](docs/FISCAL.md).

@@ -1,5 +1,9 @@
 # Arquitetura proposta
 
+## Lotes — 08.1
+
+Três tabelas em inventory com FORCE RLS e escrita por funções restritas: controles por produto/filial, lotes e eventos. Classificação distribui saldo existente, sem nova entrada/custo. Trigger transacional de movimentos integra compras, perdas, vendas e devoluções; reserva e confirmação verificam validade e bloqueio, baixa FEFO registra lotes por linha. Custos permanecem no ledger de estoque. API exige products.read/stock.read e stock.manage para alteração; catálogo do PDV consulta saldo vendável e detalhe da venda expõe rastreabilidade apenas no escopo autorizado. Verificação passa a 34 tabelas/31 capturas. Migrações 018/019 aditivas; guia em [Lotes, validade e perdas](docs/LOTES_VALIDADE_PERDAS.md).
+
 ## Fiscal — 07.1
 
 Migração 017 adiciona quatro tabelas com FORCE RLS; verificação exige 31 tabelas e 28 capturas. FiscalGateway separa domínio e transporte externo; implementação opcional Focus apenas em homologação. Operação persistida/auditada antes da rede, payload congelado, lease e idempotência; retorno normalizado com verificação de referência/CNPJ/modelo/protocolo/ambiente. Resultado perdido exige consulta da mesma referência, sem reenvio automático. Credencial vinculada a rede/unidade/CNPJ e excluída do ambiente web. Nenhuma nova baixa de estoque ou financeiro; devolução comercial protegida enquanto fiscal ativo. Guia em [Fiscal](docs/FISCAL.md).

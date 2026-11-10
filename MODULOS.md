@@ -1,5 +1,9 @@
 # Módulos e dependências
 
+## Estoque avançado — incremento 08.1
+
+Lotes por produto/filial, validade, bloqueio, classificação do estoque existente, descarte/estorno, relatório e reposição por saldo vendável. Baixa FEFO e devolução rastreada no PDV, sem alterar custeio. Compras aumentam saldo não classificado; conferência móvel pelo formulário responsivo. A etapa 08 completa ainda depende de recebimento detalhado, notificações, promoções aprovadas e previsão de demanda. Guia em [Lotes, validade e perdas](docs/LOTES_VALIDADE_PERDAS.md).
+
 ## Fiscal — incremento 07.1
 
 Preparação NF-e 55/NFC-e 65, configuração por filial/produto, snapshots, operações idempotentes, retorno verificável, cancelamento e arquivos privados. Permissões, MFA e auditoria integrados. Adaptador opcional exclusivo de homologação, desabilitado por padrão e validado apenas por transporte sintético. A etapa 07 completa, homologação real, RTC completo e produção seguem pendentes. Guia em [Fiscal](docs/FISCAL.md).

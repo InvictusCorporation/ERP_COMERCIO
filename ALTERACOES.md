@@ -1,5 +1,9 @@
 # Histórico de alterações
 
+## 10/11/2026 — Lotes, validade e perdas (08.1)
+
+Branch codex/lotes-validade-perdas. Novo /lotes responsivo conforme referências, controle por filial, classificação sem duplicar estoque, validade/bloqueio, perda/estorno, relatório e reposição sugerida. PDV reserva saldo válido, baixa FEFO e mostra lotes utilizados; devolução recompõe os mesmos lotes. Entradas de compra geram saldo não classificado e estorno não pode deixar lotes acima do físico. Três tabelas com RLS/auditoria e funções restritas, migrações 018/019 preservando anteriores. Lotes também aparecem ao reabrir a venda e no comprovante de teste. Regressão corrigiu mensagem de sucesso do vínculo financeiro apagada pela leitura automática da lista, sem alterar lançamentos. Guia em [Lotes, validade e perdas](docs/LOTES_VALIDADE_PERDAS.md). Sem serviços externos ou habilitação de produção.
+
 ## 09/11/2026 — Fiscal NF-e/NFC-e (07.1)
 
 Branch codex/fiscal-nfe-nfce. Rota /fiscal responsiva conforme referências, emitente/tributação por unidade, conferência por venda, documentos, histórico, operações e arquivos privados. Adaptador opcional Focus NFe homologação, bloqueio de produção, estados verificáveis e recuperação por consulta sem duplicar POST. Quatro permissões com MFA, auditoria e RLS; migração 017 preserva anteriores. Devolução do PDV protegida quando houver fiscal ativo. Transporte sintético nos testes, sem emissão real ou publicação. Regressão também corrigiu abertura prematura do fluxo financeiro antes da inicialização de unidade/datas; teste controla a resposta inicial para comprovar o bloqueio. Guia em [Fiscal](docs/FISCAL.md).

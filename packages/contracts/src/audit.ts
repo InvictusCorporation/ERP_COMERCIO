@@ -16,6 +16,7 @@ export const AUDIT_CATEGORIES = {
 } as const;
 export type AuditCategory = keyof typeof AUDIT_CATEGORIES;
 export const AUDIT_ACTIONS: Record<string, string> = {
+"lot_control.created":"Controle de lotes ativado", "lot_control.changed":"Alerta de validade alterado", "lot.created":"Lote cadastrado", "lot.changed":"Lote atualizado", "lot_event.created":"Operação de lote registrada",
 "fiscal_issuer.created":"Emitente fiscal configurado",
 "fiscal_issuer.changed":"Emitente fiscal alterado",
 "fiscal_product.created":"Tributação de produto configurada",
@@ -80,6 +81,7 @@ export const AUDIT_ACTIONS: Record<string, string> = {
   "context.changed": "Contexto de acesso atualizado",
 };
 export const AUDIT_FIELDS: Record<string, string> = {
+alert_days:"Antecedência do alerta",manufactured_on:"Fabricação",expires_on:"Vencimento",blocked:"Lote bloqueado",quantity_delta:"Variação no lote",lot_id:"Lote",loss_kind:"Tipo de perda",
 data:"Cadastro fiscal",
 reviewed_by:"Revisado por",
 model:"Modelo",

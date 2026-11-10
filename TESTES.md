@@ -1,5 +1,28 @@
 # Testes e evidências
 
+## Lotes, validade e perdas — 08.1 — 10/11/2026
+
+- npm.cmd test: 42 testes unitários aprovados, incluindo três novos casos de validação de lote, datas, quantidade, categoria, versão e rejeição de saldo/estado forjado.
+- npm.cmd run test:integration: 189 testes aprovados na rodada final, incluindo agrupadores. A suíte de lotes tem 14 subcenários e agrupador; toda a regressão de autenticação, acesso, unidades, auditoria, estoque, compras, PDV, financeiro e fiscal passou.
+- Bancos PostgreSQL reais isolados invictus_test_*, com fixtures fictícias. Migrações 018/019 aditivas; 001–017 e escopo original preservados. Nenhuma emissão fiscal, pagamento real ou comunicação a terceiros.
+- Classificação preserva quantidade e valor existentes. Datas/códigos inválidos, fabricação futura, precisão, excesso de saldo, confirmação reutilizada com outro payload e versões antigas são recusados. Mesma confirmação concorrente cria um lote e uma classificação.
+- FEFO consome somente lotes válidos e não bloqueados, divide por lote e registra por linha da venda; quantidade/custo médio permanecem coerentes. Devolução recompõe os mesmos lotes e valores. API do PDV expõe os lotes usados dentro do escopo da venda.
+- Bloqueio após reserva impede confirmação da venda e reverte pagamento, caixa e estoque. Vencimento no próprio dia ainda é vendável pela regra de dia America/Fortaleza; perda por vencimento não antecipa essa data.
+- Descarte é idempotente, altera lote/estoque uma vez e usa custo médio. Estorno preserva o original, recompõe quantidade/valor e entra no relatório separado do bruto. Falha forçada na auditoria do evento reverte descarte, lote e movimento juntos.
+- Recebimento de compra classificado não pode ser estornado se deixaria lotes acima do físico. Retirar classificação permite o estorno existente, sem segunda entrada. Saída genérica não consome lote identificado; perda manual de saldo não classificado também aparece no relatório.
+- Paginação de 20 lotes, filtros, sugestão de reposição por saldo vendável, período de relatório e alertas versionados testados. Mesmo código com vencimentos diferentes preserva duas identidades; repetição da mesma combinação é recusada.
+- Perfil limitado à filial não acessa lote alheio e não altera dados sem stock.manage/MFA. Papel HTTP sem INSERT/UPDATE direto em lotes/eventos. Verificador exige 34 tabelas com FORCE RLS e 31 capturas ativas.
+- Primeira execução do navegador: 12 cenários novos aprovados em 1,3 minuto, incluindo classificação, validade, bloqueio no PDV/rastreabilidade, descarte/estorno, relatório, resposta perdida, alertas, reposição e quatro larguras de tela. A rodada completa acrescenta o caso de mesmo código com vencimentos diferentes.
+- Revisão visual de desktop e celular nas capturas .local/screenshots/lotes-*.png. Formulários empilham campos; tabelas preservam rolagem própria. Capturas usam somente dados fictícios.
+- A fixture inicial do estorno de compras usava versão do recebimento; corrigida para a versão do pedido, conforme o contrato existente. Nenhuma regra de produção foi afrouxada para satisfazer testes.
+- Rodada integral de navegador: 118 aprovados e uma falha na confirmação visual da importação financeira. O trace mostrou HTTP 200 na criação e carregamento do título; a leitura automática após troca de aba limpava a mensagem de sucesso. Corrigido para preservar confirmações nas leituras automáticas. O teste agora aguarda a lista antes de conferir a mensagem.
+- Rodada direcionada final: dois cenários aprovados (financeiro corrigido e venda com lote/bloqueio, reabertura pelo histórico e lote no comprovante de teste). No conjunto das rodadas, os 119 cenários distintos foram aprovados; não foi uma rodada integral única sem falhas. Logs em .local/lots-all-e2e.log e .local/lots-final-e2e.log.
+- npm.cmd run build e npm.cmd run typecheck aprovados em contratos, API e web. /lotes é rota privada dinâmica; next-env normal restaurado sem caminho do cache de E2E.
+- Migrações 018/019 aplicadas no banco local sem dados comerciais. Verificação confirmou zero registros nas três tabelas de lotes, RLS forçada, 31 capturas ativas e as duas restrições de identidade/origem validadas. Migrações 001–017 preservadas.
+- Checagem final: diff preparado e JavaScript público sem segredos locais, nenhum arquivo privado rastreado, links Markdown válidos e escopo mestre idêntico ao anexo. git diff --check aprovado. Portas de teste 3001/3334 e PostgreSQL iniciado nesta tarefa encerrados, preservando dados.
+- Guia de uso, limites e próximos complementos em [Lotes, validade e perdas](docs/LOTES_VALIDADE_PERDAS.md).
+
+
 ## Fiscal NF-e/NFC-e — 07.1 — 09/11/2026
 
 - Testes em bancos PostgreSQL reais isolados invictus_test_*, com dados fictícios. Migração 017 aditiva, 001–016 e escopo original preservados.

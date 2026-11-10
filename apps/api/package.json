@@ -7,7 +7,7 @@
     "dev": "tsc -p tsconfig.json && node --watch dist/main.js",
     "start": "node dist/main.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "tsc -p tsconfig.json && node --test dist/config.spec.js dist/health/health.spec.js dist/modules/identity/auth.spec.js dist/modules/organizations/validation.spec.js dist/modules/audit/audit.spec.js dist/modules/inventory/validation.spec.js dist/modules/purchasing/validation.spec.js dist/modules/pos/validation.spec.js dist/modules/finance/validation.spec.js dist/modules/fiscal/fiscal.spec.js"
+    "test": "tsc -p tsconfig.json && node --test dist/config.spec.js dist/health/health.spec.js dist/modules/identity/auth.spec.js dist/modules/organizations/validation.spec.js dist/modules/audit/audit.spec.js dist/modules/inventory/validation.spec.js dist/modules/purchasing/validation.spec.js dist/modules/pos/validation.spec.js dist/modules/finance/validation.spec.js dist/modules/fiscal/fiscal.spec.js dist/modules/lots/validation.spec.js"
   },
   "dependencies": {
     "@invictus/contracts": "0.1.0",

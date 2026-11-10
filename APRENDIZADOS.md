@@ -1,5 +1,11 @@
 # Aprendizados e decisões reutilizáveis
 
+## Lotes — 10/11/2026
+
+Ordem física por vencimento e método contábil de custo são independentes. Classificar estoque já existente não pode criar outra entrada. Saldo físico não é igual ao vendável: desconhecido, vencido e bloqueado não sustentam reserva do PDV. A data pode mudar entre reserva e confirmação; checar novamente e reverter pagamento/caixa/estoque juntos. Devolução precisa dos lotes históricos, sem renovar validade. Estorno de compra deve impedir estoque físico abaixo da soma classificada. Relatório conserva perda bruta e contrapartida, sem apagar descarte.
+
+Uma confirmação de escrita não deve ser apagada por leitura automática após troca programática de aba; o teste precisa aguardar a lista e verificar que a confirmação permanece.
+
 ## Fiscal — 09/11/2026
 
 Timeout não comprova rejeição: referência estável e consulta evitam duplicidade. Auditoria antes da chamada externa deve confirmar a fila; falha após a rede exige conciliação, pois banco e provedor não compartilham transação. Protocolo completo e ambiente precisam ser verificados, sem criar chave localmente. CNPJ sozinho não identifica autorização entre clientes SaaS: credencial precisa de vínculo rede/unidade/CNPJ. Número comercial e número fiscal são identidades distintas. Bases e taxas explícitas evitam transformar preço de venda em hipótese tributária.

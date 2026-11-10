@@ -1,5 +1,9 @@
 # Pendências
 
+## Estoque avançado — 08.1 entregue localmente
+
+Lotes, alertas de validade, classificação sem duplicar saldo, bloqueio, perdas/avarias, estorno, relatório, reposição por limites e baixa/devolução rastreadas no PDV. Compras continuam uma entrada e exigem classificação posterior para produtos controlados. Pendentes: coleta no recebimento com origem/fornecedor, leitura GS1, inventário por lote aprovado, quarentena formal, XML de rastreabilidade, notificações agendadas, promoções com aprovação, previsão de demanda e homologação física. Custos médios e bloqueios de produção existentes preservados. Guia em [Lotes, validade e perdas](docs/LOTES_VALIDADE_PERDAS.md).
+
 ## Fiscal — 07.1 entregue localmente; homologação externa pendente
 
 Conferência, emitente/produtos por filial, documentos, operações, arquivos e auditoria implementados. Adaptador opcional Focus NFe homologação testado com transporte sintético; nenhum envio real. Falta definir provedor/piloto/UF/CRT, certificado/CSC, credenciamento e validar NF-e/NFC-e, XML/DANFE, rejeições e cancelamento reais com responsável fiscal. Produção permanece bloqueada. Próximos complementos: motor tributário/RTC, contingência, CC-e/inutilização, devolução fiscal, XML de compras, retenção e webhooks. Guia em [Fiscal](docs/FISCAL.md).
@@ -26,7 +30,7 @@ Próximos complementos: foto, fornecedores e dados fiscais de produto; compras/r
 
 ## Próximos passos
 
-- Próximo avanço: complementar compras (cotação/XML/devoluções conforme dependências) e preparar a integração financeira, seguindo o escopo.
+- Próximo avanço: complementar rastreabilidade no recebimento, notificações e previsão/reposição; Etapa 09 acrescenta setores, peso, balanças e produção conforme o escopo. Homologações externas do fiscal e financeiro continuam pendentes.
 - CI está preparada, mas sua execução no GitHub/Linux depende de publicação/autorização e permanece sem evidência remota.
 - Antes de produção: SMTP real, recuperação de fator perdido, infraestrutura/HTTPS, backup/restauração e política definitiva de retenção/arquivamento do histórico.
 

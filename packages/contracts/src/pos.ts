@@ -72,6 +72,7 @@ export type PosPayment = {
     createdAt: string;
 };
 export type SaleDetail = {
+    lotAllocations: import("./lots").SaleLot[];
     sale: Sale;
     payments: PosPayment[];
 };

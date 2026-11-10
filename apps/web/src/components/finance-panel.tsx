@@ -43,8 +43,8 @@ export function FinancePanel({ session, initialTab = 'payable' }: {
         setEntries({ items: [], total: 0, page: 0 });
         setFlow(null);
     } };
-    const execute = async (fn: () => Promise<void>) => { if (inFlight.current)
-        return; inFlight.current = true; setBusy(true); setError(''); setNotice(''); try {
+    const execute = async (fn: () => Promise<void>, clearNotice = true) => { if (inFlight.current)
+        return; inFlight.current = true; setBusy(true); setError(''); if (clearNotice) setNotice(''); try {
         await fn();
     }
     catch (e) {
@@ -82,7 +82,7 @@ export function FinancePanel({ session, initialTab = 'payable' }: {
             await loadTitles(); if (tab === 'accounts')
             await loadAccounts(); if (tab === 'sources')
             await loadSources(); if (tab === 'flow' && from && to)
-            await loadFlow(); }); /* refresh on navigation */ // eslint-disable-next-line react-hooks/exhaustive-deps
+            await loadFlow(); }, false); /* refresh on navigation */ // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tab, overview?.unitId]);
     const navigate = (next: Tab) => { if (busy)
         return; if (next === 'flow')
