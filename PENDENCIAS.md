@@ -1,5 +1,9 @@
 # Pendências
 
+## Rede e distribuição — 10.1 entregue localmente
+
+Entregues painel e estoque consolidados, CDs da estrutura existente, transferências operacionais da mesma empresa legal com aprovação/trânsito/conferência integral e compra central com distribuição vinculada. Próximos: divergências/recebimento parcial de transferências, devolução/estorno supervisionado, reservas e separação, fiscal/transporte, interempresas, entrega direta multidestino, alteração de planos, metas, preços/promoções por filial, centros de custo e consolidação financeira/DRE. Guia em [Rede e distribuição](docs/REDE_DISTRIBUICAO.md).
+
 ## Supermercado — 09.1 entregue localmente
 
 Implementados setores por filial, peso manual, etiquetas internas por gramas, fichas técnicas, consumo FEFO, custo exato de produção e estorno auditado. Etapa 09 completa pendente: informar equipamentos/protocolos, integrar e homologar hardware, carga de PLUs, formatos por preço/fabricante, impressão/rotulagem real, planejamento/ordens, subprodutos e custo indireto. Não houve comunicação física ou publicação. Guia em [Setores, pesagem e produção](docs/SETORES_PESAGEM_PRODUCAO.md).

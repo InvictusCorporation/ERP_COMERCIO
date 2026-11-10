@@ -1,5 +1,9 @@
 # Histórico de alterações
 
+## 10/11/2026 — Gestão da rede e distribuição (10.1)
+
+Branch codex/rede-distribuicao-transferencias. Rota /rede com estrutura, estoque consolidado, comparativo e ranking por autorização. Transferências preservam custo/lotes e distinguem rascunho, aprovação, expedição, trânsito e recebimento; divergência não cria saldo parcial. Compras centrais criam pedido agregado congelado, recebimento único na central e distribuição por transferências. Migrações 022–025 aditivas, auditoria nas duas pontas e MFA/permissões existentes. Visual responsivo conforme fotos. Sem publicação, emissão fiscal de transporte ou comunicação externa. Guia em [Rede e distribuição](docs/REDE_DISTRIBUICAO.md).
+
 ## 10/11/2026 — Setores, pesagem e produção (09.1)
 
 Branch codex/setores-balancas-producao. Rota /supermercado e navegação privada, setores/perfis KG por filial, balanças configuradas, pesagem manual, etiquetas vetoriais internas, fichas versionadas e produção atômica com custo integral, rendimento real, lotes e estorno. PDV móvel confere bruto/tara, decodifica PLU/gramas e conserva pesagens agrupadas. Migrações 020/021 aditivas, seis novas fontes auditadas e RLS. Hardware continua pendente de modelos e homologação. Guia em [Setores, pesagem e produção](docs/SETORES_PESAGEM_PRODUCAO.md). Sem publicação.

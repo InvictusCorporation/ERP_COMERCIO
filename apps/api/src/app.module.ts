@@ -1,3 +1,5 @@
+import {NetworkService} from './modules/network/network.service';
+import {NetworkController} from './modules/network/network.controller';
 import {SupermarketService} from './modules/supermarket/supermarket.service';
 import {SupermarketController} from './modules/supermarket/supermarket.controller';
 import {LotsService} from "./modules/lots/lots.service";
@@ -50,7 +52,7 @@ export class AppModule {
               OrganizationsController,
               AuditController,
               InventoryController,
-              PurchasingController, PosController, FinanceController, FiscalController, LotsController, SupermarketController,
+              PurchasingController, PosController, FinanceController, FiscalController, LotsController, SupermarketController, NetworkController,
             ]
           : []),
       ],
@@ -62,6 +64,8 @@ export class AppModule {
         ...(authConfig
           ? [
               {
+                provide: NetworkService,useFactory:(auth:AuthService)=>new NetworkService(auth),inject:[AuthService],
+              },{
                 provide: SupermarketService,useFactory:(auth:AuthService)=>new SupermarketService(auth),inject:[AuthService],
               },{
                 provide: LotsService,useFactory:(auth:AuthService)=>new LotsService(auth),inject:[AuthService],

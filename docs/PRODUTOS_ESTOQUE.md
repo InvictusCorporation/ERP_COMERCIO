@@ -65,3 +65,7 @@ Não há implantação, publicação, conta real criada automaticamente ou integ
 ## Integração posterior — 02.2 / 04.1
 
 O recebimento manual de compra passou a criar movimentos vinculados, com fator aprovado e valor rateado exato. O histórico de estoque indica a origem e direciona estorno pela compra. Alertas após receber sugerem revisão do preço sem alteração automática. As pendências anteriores de fornecedores/recebimento manual foram atendidas por este incremento; XML, fiscal, lotes e outros complementos continuam pendentes. Guia em [Fornecedores e compras](FORNECEDORES_COMPRAS.md).
+
+## Rede e distribuição — 10.1
+
+Transferências operacionais preservam valor e lotes: expedição baixa origem e registra trânsito; conferência integral cria entrada no destino com o valor exato. Trânsito não integra o disponível e não admite estorno de movimento isolado. Reservas de lotes válidos continuam protegidas. Guia em [Rede e distribuição](REDE_DISTRIBUICAO.md).

@@ -1,5 +1,9 @@
 # Regras de negócio
 
+## Rede e distribuição — 10.1
+
+Não contar mercadoria em trânsito como disponível em nenhuma ponta. Aprovação não reserva saldo; expedição revalida disponibilidade e registra custo/lotes históricos. Destino recebe valor exato expedido, sem renovar validade. Divergência preserva trânsito e não cria entrada silenciosa. Transferências exigem mesma empresa legal; criar/aprovar/cancelar exige duas pontas, expedir exige origem e receber exige destino. Compra central agrega destinações em um pedido congelado, recebe uma vez na central e depois gera rascunhos de transferência. Vínculo fiscal e reserva exclusiva do recebimento não são presumidos. Guia em [Rede e distribuição](docs/REDE_DISTRIBUICAO.md).
+
 ## Supermercado — 09.1
 
 Setor e PLU pertencem à filial; PLU e formato da balança são permanentes. Peso líquido = bruto − tara, com capacidade/resolução e conferência manual. Etiqueta contém peso, não preço, lote ou validade; PDV usa preço atual. Pesagem não movimenta estoque. Ficha revisada determina consumo; produção transfere custo integral aos produtos realmente obtidos e consome lotes válidos por vencimento. Validade de saída é conferida e limitada pelos insumos consumidos. Estorno completo preserva histórico e exige movimentos como últimos. Guia em [Setores, pesagem e produção](docs/SETORES_PESAGEM_PRODUCAO.md).

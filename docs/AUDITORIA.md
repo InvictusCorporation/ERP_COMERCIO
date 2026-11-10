@@ -101,3 +101,7 @@ Categorias suppliers e purchases capturam cadastro/inativação, rascunho, aprov
 ## Setores, pesagem e produção — 09.1
 
 Seis novas fontes na categoria Estoque: sector, weighed_product, scale, weighing, recipe e production. Capturas transacionais incluem configuração/versionamento, bruto/tara/líquido e snapshot da pesagem, ficha/insumos/rendimento, custo e reversão da produção. Falha de auditoria reverte também as alterações de estoque/lotes. Eventos de lote identificam consumo e saída de produção e suas contrapartidas. Históricos preservam os registros originais; consulta continua sujeita ao escopo atual da filial. Guia em [Setores, pesagem e produção](SETORES_PESAGEM_PRODUCAO.md).
+
+## Rede e distribuição — 10.1
+
+Transferências geram captura transacional nas duas pontas, com mesma entidade e correlação da solicitação. Cada unidade consulta o histórico no escopo atual. Compra central registra plano e distribuição na central; movimentos e eventos de lote preservam a origem. Falha de auditoria reverte expedição ou recebimento inteiro. Guia em [Rede e distribuição](REDE_DISTRIBUICAO.md).

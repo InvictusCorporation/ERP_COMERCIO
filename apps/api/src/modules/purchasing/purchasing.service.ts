@@ -32,6 +32,7 @@ export class PurchasingService {
     } catch (e) {
       const code = (e as { code?: string }).code;
       if (code === "P0801") throw new ConflictException("Controle de lotes: confira classificação, validade, bloqueio e reservas. Regularize os lotes antes de vender ou estornar a entrada.");
+      if(code === "P1001")throw new ConflictException("Operação vinculada à rede: confira estado da transferência, compra centralizada e escopo das unidades.");
       if (code === "23505")
         throw new ConflictException(
           "Cadastro ou confirmação já registrado. Atualize a consulta.",

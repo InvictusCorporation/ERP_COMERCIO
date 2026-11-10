@@ -1,5 +1,9 @@
 # Arquitetura proposta
 
+## Rede e distribuição — 10.1
+
+Duas tabelas em network com FORCE RLS e RPCs restritas; 42 tabelas e 39 capturas verificadas no runtime. Transferência mantém quantidade/custo/lotes em trânsito fora dos saldos de origem/destino; funções validam origem, sequência, versão, escopo e conferência. Ponte de custo preserva seis casas no destino e ponte FEFO registra lotes; reservas válidas são rechecadas após separação. Compra central envolve purchasing.save_order e plano imutável na mesma transação; recebimento permanece no módulo de Compras. Relatórios filtram cada módulo por autorização; valores de vendas são de teste. Guia em [Rede e distribuição](docs/REDE_DISTRIBUICAO.md).
+
 ## Supermercado — 09.1
 
 Seis tabelas em supermarket com FORCE RLS e RPCs restritas, sem DML direto do papel HTTP. Escopo por filial, products.read/stock.read e stock.manage/MFA. Ponte de movimentos aceita origem de produção somente nos estados internos transacionais; insumos e saída conservam custo em seis casas e rastreio FEFO, com estorno integral. Decoder restrito ao caixa resolve PLU/peso e campos do catálogo sem abrir SELECT de estoque. Metadados de pesagem são revalidados no servidor, inclusive somas agrupadas. Verificação passa a 40 tabelas/37 capturas. Guia em [Setores, pesagem e produção](docs/SETORES_PESAGEM_PRODUCAO.md).

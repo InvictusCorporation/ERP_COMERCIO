@@ -101,3 +101,7 @@ Páginas de listas/histórico vão de 0 a 1000. Busca de opções precisa ser re
 Cotação e propostas concorrentes, comparação e histórico agregado por produto/fornecedor/período, fornecedor principal/alternativo no produto, XML de NF-e com conferência fiscal, devolução vinculada, revisão após aprovação/recebimento e fechamento de saldo não entregue. Encargos fiscais não integram o custo desta primeira entrada manual. Parcelas, vencimentos e contas a pagar ficam no módulo financeiro; condições de pagamento são texto cadastral/contratual.
 
 Lotes/validade, inventário aprovado e transferências com trânsito/recebimento seguem etapas próprias. Não coletar lote/validade nesta tela como se já houvesse rastreamento. Não há pedido enviado automaticamente a fornecedor, e-mail/WhatsApp externo, pagamento, integração fiscal, publicação ou implantação. CI remota, SMTP, recuperação de fator perdido, backup/restauração e demais pendências de produção permanecem registradas.
+
+## Rede e distribuição — 10.1
+
+Compra central em /rede soma destinações e cria um pedido único na matriz/CD/depósito. Plano congelado impede edição avulsa do rascunho; aprovação/recebimento continuam no módulo existente, também acessíveis pela tela central. Após receber tudo, gerar distribuição cria apenas rascunhos de transferência. Estorno do recebimento bloqueia nova expedição vinculada até regularizar a compra. Guia em [Rede e distribuição](REDE_DISTRIBUICAO.md).

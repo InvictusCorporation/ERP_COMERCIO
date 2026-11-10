@@ -1,5 +1,9 @@
 # Aprendizados e decisões reutilizáveis
 
+## Rede e distribuição — 10/11/2026
+
+Custódia em trânsito deve ser um estado próprio, sem duplicar físico ou disponível. Custo de entrada no destino é o valor histórico expedido, preservando resíduos em seis casas; não recalcular pelo preço ou custo atual da filial. Lotes podem vencer em trânsito e precisam chegar com as mesmas datas. A autorização é da ponta da ação: conferir no destino não exige abrir todos os saldos da origem. Compra agregada e distribuição são eventos diferentes; gerar rascunhos não movimenta estoque e estorno do recebimento exige revalidar a expedição vinculada. CHECK deve tratar NULL explicitamente para não aceitar origem incompleta.
+
 ## Supermercado — 10/11/2026
 
 Código de circulação restrita não define sozinho o protocolo ou layout de uma balança. Configurar formato interno explícito e distinguir peso manual de leitura física evita atribuir ao sistema uma medição que ele não realizou. Somar gramas e centavos como inteiros conserva pesagens agrupadas. Validar novamente código/produto/soma no servidor impede que metadados alterem estoque. Transformação precisa conservar o custo total mesmo quando custo unitário arredonda; registrar perda adicional após consumir a receita duplicaria a baixa. Estorno multiforme deve ser uma única transação, com origem e último movimento conferidos.

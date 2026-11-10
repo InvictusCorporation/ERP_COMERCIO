@@ -67,3 +67,7 @@ Referência de produtos/estoque orienta tabela e editor lateral com cabeçalho p
 ## Setores, pesagem e produção — 09.1
 
 Referências de produtos/estoque e PDV mobile orientam cabeçalhos pretos, superfícies claras, quatro indicadores escuros e ações/ícones dourados. Seis abas por operação, seletores com busca no servidor, peso líquido destacado, prévia de etiqueta branca e ficha com insumos/unidades explícitos. Telas largas usam dois painéis; celular empilha campos, reorganiza abas em duas colunas e contém tabelas/seletores com rolagem própria. Pesagem no PDV abre diálogo com confirmação de bruto/tara; impressão mostra somente a etiqueta interna. Capturas exclusivamente fictícias em bancos de teste.
+
+## Rede e distribuição — 10.1
+
+Referência de gestão multiloja orienta a estrutura escura da rede, indicadores pretos, ícones/ações douradas, ranking e tabelas claras. As quatro abas distinguem consolidação, estoque, transferências e compras centrais. Origem, destino, conferência e trânsito ficam visíveis no detalhe. Celular reorganiza abas em duas colunas e empilha formulários; tabelas têm rolagem própria. Capturas exclusivamente fictícias em 360/390/768/1440px. Guia em [Rede e distribuição](REDE_DISTRIBUICAO.md).

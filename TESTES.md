@@ -1,5 +1,17 @@
 # Testes e evidências
 
+## Rede e distribuição — 10.1 — 10/11/2026
+
+- npm.cmd test: 53 testes unitários aprovados; validação de pontas distintas, precisão, itens/destinos únicos, documento de expedição, conferência e confirmações.
+- npm.cmd run test:integration: 229 testes aprovados na rodada final, incluindo 21 da suíte da rede com agrupador. Trânsito/custo, seis casas decimais, lotes/validade e fabricação opcional, reservas, divergências, auditoria, compra central, reversão de recebimento, RLS e operador restrito ao destino.
+- npm.cmd run test:e2e -- tests/e2e/network.spec.ts: 11 testes aprovados. Fluxo completo de transferência e compra central pela tela, conferência divergente, resposta perdida/consulta posterior indisponível sem duplicação e quatro tamanhos de tela.
+- npm.cmd run test:e2e: 143 testes aprovados em uma rodada completa final, sem repetição automática; toda a regressão anterior e os onze casos novos passaram.
+- Capturas fictícias em .local/network-dashboard-360.png, -390.png, -768.png, -1440.png e equivalentes network-transfer-*.png. Revisão visual de desktop e celular, campos empilhados e tabelas contidas; nenhum transbordamento horizontal do documento nas quatro larguras.
+- Build de contratos/API/web e typecheck aprovados. Migrações 022–025 aplicadas no banco local (25 no total), duas tabelas novas com FORCE RLS e sem DML direto do papel HTTP, 39 capturas e 42 tabelas verificadas no runtime. Novas tabelas sem registros e contagens comerciais anteriores preservadas, inclusive supermercado. PostgreSQL portátil iniciado nesta tarefa encerrado com dados preservados.
+- Nenhuma publicação, comunicação a fornecedores, pagamento real, documento fiscal de transporte ou operação externa. Os bancos de teste e imagens contêm exclusivamente dados fictícios.
+- Checagem final: diff e JavaScript público sem segredos locais, nenhum arquivo privado rastreado, links válidos, escopo mestre idêntico ao anexo e migrações 001–021 preservadas. git diff --check aprovado; portas 3001/3334/55432 encerradas.
+- Guia em [Rede e distribuição](docs/REDE_DISTRIBUICAO.md).
+
 ## Setores, pesagem e produção — 09.1 — 10/11/2026
 
 - npm.cmd test: 48 testes unitários aprovados; gramas/centavos inteiros, arredondamento, DV, precisão, capacidade/resolução, insumos únicos e metadados de pesagem.

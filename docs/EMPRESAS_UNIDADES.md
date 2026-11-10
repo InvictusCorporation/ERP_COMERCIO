@@ -76,3 +76,7 @@ Com os serviços anteriores parados, inicie `npm.cmd run db:portable` para aplic
 Evidências em [Testes](../TESTES.md). Estoques próprios, transferências, compras centralizadas, consolidação de resultados comerciais, fiscal e Master SaaS continuam nas etapas posteriores. O histórico detalhado da fundação foi integrado em 01.6; CI remota e condições de produção continuam pendentes.
 
 Guia do histórico: [Auditoria](AUDITORIA.md). A inativação do superior não gera uma alteração artificial em cada filho; a origem é registrada no cadastro realmente alterado e respeita o escopo do leitor.
+
+## Rede e distribuição — 10.1
+
+A rota /rede usa matriz, filiais, CDs e depósitos deste cadastro para consolidação, compra central e transferência operacional. Consulta/ação respeitam escopo atual; disponibilidade das unidades é reavaliada a cada comando. Não cria outra fronteira SaaS nem concede permissões ao selecionar consolidado. Guia em [Rede e distribuição](REDE_DISTRIBUICAO.md).

@@ -111,3 +111,7 @@ Migrações aditivas 010/011 acrescentam três tabelas purchasing em RLS forçad
 ## Supermercado — 09.1
 
 As migrações 020/021 adicionam supermarket.sectors/product_profiles/scales/weighings/recipes/runs, todas com FORCE RLS e leitura por filial; RPCs restritas fazem a escrita e seis capturas de auditoria integram estoque. Validação de inicialização exige quarenta tabelas protegidas e trinta e sete capturas ativas. Pesagens/fichas/produções mantêm snapshots; origens de produção no ledger permitem estorno integral sem substituir movimentos comerciais anteriores. Consulte [Setores, pesagem e produção](SETORES_PESAGEM_PRODUCAO.md).
+
+## Rede e distribuição — 10.1
+
+Migrações 022–025 adicionam network.transfers/central_orders, FORCE RLS, funções restritas, campos de origem no ledger e validação completa do vínculo. Pontes preservam custo de seis casas, lotes e reservas; inicialização exige 42 tabelas protegidas/39 capturas. Não há dados comerciais criados automaticamente. Guia em [Rede e distribuição](REDE_DISTRIBUICAO.md).

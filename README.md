@@ -1,5 +1,9 @@
 # Invictus ERP Comercial
 
+## Rede e distribuição — 10.1
+
+Disponível em /rede: unidades/CDs e estoque consolidado, comparativo por período, transferências aprovadas com expedição, trânsito e conferência, preservando custos e lotes; compras centralizadas com pedido único, recebimento no CD e distribuição por transferências. Visual responsivo preto/branco/dourado. Operações da mesma empresa legal, sem emissão fiscal de transporte ou integração externa. Guia em [Rede e distribuição](docs/REDE_DISTRIBUICAO.md).
+
 ## Setores, pesagem e produção — 09.1
 
 Novo módulo /supermercado: setores e perfis por filial, cadastro de balanças, bruto/tara, etiquetas internas por peso, fichas técnicas e produção atômica com custo e lotes. PDV móvel aceita peso manual e etiquetas com PLU/gramas, mantendo preto/branco/dourado. Equipamentos físicos ainda dependem de modelos e homologação. Guia em [Setores, pesagem e produção](docs/SETORES_PESAGEM_PRODUCAO.md).

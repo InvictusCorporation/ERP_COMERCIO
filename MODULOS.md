@@ -1,5 +1,9 @@
 # Módulos e dependências
 
+## Rede e distribuição — incremento 10.1
+
+Consolidação por acesso, estrutura de unidades e CDs, estoque por SKU, transferências com aprovação/expedição/trânsito/recebimento integral, lotes e custos preservados. Compras centralizadas integram pedido e recebimento existentes e geram transferências por destino. Etapa 10 completa depende dos complementos de logística, fiscal, preços, metas e financeiro consolidado. Guia em [Rede e distribuição](docs/REDE_DISTRIBUICAO.md).
+
 ## Supermercado — incremento 09.1
 
 Setores, produtos KG/PLU, configurações de balança, pesagem manual, etiquetas internas, fichas versionadas, produção/custeio/lotes e estorno integral. Integração ao PDV desktop/mobile sem alterar pagamentos simulados e bloqueios fiscais. Hardware, layouts de fabricante, planejamento e custo indireto seguem pendentes. Guia em [Setores, pesagem e produção](docs/SETORES_PESAGEM_PRODUCAO.md).

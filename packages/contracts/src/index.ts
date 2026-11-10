@@ -22,3 +22,5 @@ export * from "./fiscal";
 export * from "./lots";
 
 export * from "./supermarket";
+
+export * from "./network";
