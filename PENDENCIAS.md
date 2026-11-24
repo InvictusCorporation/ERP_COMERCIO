@@ -1,5 +1,13 @@
 # Pendências
 
+## Incremento 14.1 — estrutura do assistente e IA gerencial
+
+Painel responsivo, temas gerenciais autorizados por filial, rascunhos sem persistência e interface de adaptador desativada preparados. Conectar provedor/modelo, consultar evidências gerenciais, gerar respostas, definir retenção/histórico, limites e auditoria de IA permanecem posteriores. Não executa ações. [Guia](docs/ASSISTENTE_IA_GERENCIAL.md).
+
+## Incremento 13.2 — estrutura de cobrança e domínios
+
+Aba responsiva de acompanhamento, consulta autorizada de capacidades, contratos e interfaces de adaptadores desativados preparados. Provedor, domínio e hospedagem continuam a definir. Persistência de faturas/domínios, integrações, webhooks, conciliação, DNS/TLS e publicação ficam para a próxima etapa. [Guia](docs/COBRANCA_DOMINIOS_ESTRUTURA.md).
+
 ## Incremento 13.1 — plataforma comercial entregue localmente
 
 Catálogo, contrato administrativo, módulos/limites, identidade e Master com MFA implementados. Complementos: cobrança/provedor, preços definitivos, faturas/anualidade, onboarding público, provisionamento de produção, domínio/TLS/login por marca, documentos personalizados, suporte/SLA e telemetria. Sem promoção automática de usuário real, cobrança ou publicação. [Guia](docs/WHITE_LABEL_ASSINATURAS.md).

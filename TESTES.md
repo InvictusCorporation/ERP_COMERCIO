@@ -1,5 +1,22 @@
 # Testes e evidências
 
+## Assistente e IA gerencial — estrutura 14.1 — 10/11/2026
+
+- 75 testes unitários aprovados com a lista de `apps/api/dist/**/*.spec.js` e `node --test --test-concurrency=1`. Os dois novos casos cobrem validação estrita de perguntas/contexto e recusa de análise pelo adaptador desativado.
+- `node --test tests/integration/assistant.spec.mjs`: sete testes aprovados incluindo agrupador. Verificam sessão/perfil, filiais e temas autorizados, ausência de resposta gerada ou escrita operacional/auditoria, filial existente de outra rede, origem/CSRF/campos extras, restrição de funcionário, revogação e bloqueio comercial de relatórios.
+- TypeScript de contratos/API/web e build web de produção aprovados; build final inclui `/assistente`. Migrações 001–032 preservadas, sem tabelas ou dados operacionais novos. Bancos de testes separados.
+- A primeira execução de navegador aprovou o bloqueio de acesso; os dois cenários de rascunho chegaram à captura e falharam no seletor implícito da filial. O cenário de falha encontrou também o anunciador do Next no seletor genérico de alerta. Seletores corrigidos para combobox por nome acessível e alerta dentro do painel; resultados finais registrados abaixo.
+- Revalidação dirigida: os quatro cenários de `tests/e2e/assistant.spec.ts` produziram resultado aprovado na mesma rodada: sessão/perfil; preparo/troca de filial/recarga em 1440 px e 390 px; falha de atualização sem rascunho antigo. Sem transbordamento horizontal nas duas larguras. Capturas finais `.local/assistant-1440.png` e `.local/assistant-390.png` inspecionadas. Cabeçalho e contraste do menu ativo ajustados e incluídos no build final.
+- O executor permaneceu aberto no encerramento após os quatro resultados aprovados e foi interrompido; não se declara código de saída zero da execução de navegador. Serviços temporários encerrados com dados preservados. Nenhum modelo, chave ou provedor externo foi configurado.
+
+## Estrutura de cobrança e domínios — 13.2 — 10/11/2026
+
+- 73 testes unitários aprovados com execução sequencial: `Get-ChildItem apps/api/dist -Recurse -Filter '*.spec.js'` e `node --test --test-concurrency=1` com a lista de arquivos. A primeira rodada `npm.cmd test` teve 72 aprovações e timeout de 10 segundos no teste anterior de inicialização sem configuração. Esse caso passou isoladamente e na rodada sequencial completa. Dois casos novos verificam recusa dos adaptadores e validação sintática de hostname.
+- `node --test tests/integration/commercial.spec.mjs`: 24 testes aprovados, incluindo agrupador. O novo cenário verifica sessão, proprietário versus funcionário, recusa de POST e ausência de alterações nos eventos comerciais e financeiro. Demais cenários comerciais anteriores continuam aprovados.
+- `node node_modules/@playwright/test/cli.js test tests/e2e/commercial.spec.ts --grep 'estrutura de cobrança'`: os dois casos novos produziram resultado aprovado em 1440 e 390 px, com verificação de ausência de transbordamento horizontal e capturas `.local/commercial-integrations-1440.png` e `.local/commercial-integrations-390.png`, ambas inspecionadas. Detalhes do encerramento registrados abaixo.
+- Verificação TypeScript da API e web aprovada após corrigir assinatura do assert do teste novo. Sem alteração de migrações, sem persistência adicional e sem integração externa.
+- Build web de produção (`next build --webpack`) aprovado. O executor Playwright permaneceu aberto depois dos dois resultados aprovados e foi interrompido no encerramento; não se declara código de saída zero para essa execução. PostgreSQL temporário encerrado pelo comando do projeto, preservando dados.
+
 ## Plataforma comercial e white-label — 13.1 — 10/11/2026
 
 - npm.cmd test: 71 testes unitários aprovados; sete novos cobrem catálogo/dependências, limites indefinidos, centavos, vigência inclusiva/calendário, identificador/cor, PNG limitado e versões/campos desconhecidos.

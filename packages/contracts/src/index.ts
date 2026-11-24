@@ -29,3 +29,5 @@ export * from "./crm";
 
 export * from "./reports";
 export * from './commercial';
+export * from './commercial-integrations';
+export * from './assistant';

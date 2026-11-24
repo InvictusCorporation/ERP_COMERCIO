@@ -28,6 +28,8 @@ export class CommercialController {
     plans(
     @Req()
     r: Request) { return this.service.plans(this.raw(r)); }
+    @Get('integrations')
+    integrations(@Req() r: Request) { return this.service.integrations(this.raw(r)); }
     @Get('tenants')
     tenants(
     @Req()

@@ -2,6 +2,7 @@ import { ForbiddenException, ConflictException, BadRequestException, NotFoundExc
 import type { PoolClient } from 'pg';
 import type { CommercialOverview } from '@invictus/contracts';
 import { AuthService } from '../identity/auth.service';
+import { integrationStatus } from './integrations';
 export class CommercialService {
     constructor(private readonly auth: AuthService) { }
     private async errors<T>(work: () => Promise<T>): Promise<T> {
@@ -37,6 +38,15 @@ export class CommercialService {
             const flags = (await c.query("SELECT commercial.is_owner($1) AS owner,commercial.is_operator() AS operator,finance.today()::text AS today,EXISTS(SELECT 1 FROM identity.credentials WHERE user_id=$2 AND mfa_secret_enc IS NOT NULL) AS mfa", [ctx.tenantId, ctx.userId])).rows[0];
             const license = (await c.query('SELECT commercial.license($1) AS value', [ctx.tenantId])).rows[0].value;
             return { license, subscription: flags.owner ? await this.subscription(c, ctx.tenantId) : null, usage: flags.owner ? (await c.query('SELECT commercial.read_usage($1) AS value', [ctx.tenantId])).rows[0].value : null, isOwner: flags.owner, isOperator: flags.operator, canCustomize: flags.owner && flags.mfa, today: flags.today };
+        });
+    }
+    async integrations(raw: string) {
+        const session = await this.auth.session(raw);
+        return this.auth.withIdentity(raw, async (c) => {
+            await c.query("SELECT set_config('app.auth_tenant_id',$1,true)", [session.activeTenantId || '']);
+            const allowed = (await c.query('SELECT commercial.is_operator() OR commercial.is_owner($1) AS value', [session.activeTenantId])).rows[0].value;
+            if (!allowed) throw new ForbiddenException('Consulta restrita ao proprietário ou Master.');
+            return integrationStatus();
         });
     }
     private async subscription(c: PoolClient, id: string) { return (await c.query(`SELECT jsonb_build_object('tenantId',tenant_id,'plan',plan_snapshot,'enabledModules',enabled_modules,'state',state,'startsOn',starts_on,'endsOn',ends_on,'reason',reason,'version',version) AS value FROM commercial.subscriptions WHERE tenant_id=$1`, [id])).rows[0]?.value || null; }

@@ -1,5 +1,13 @@
 # Invictus ERP Comercial
 
+## Assistente e IA gerencial — estrutura 14.1
+
+Painel `/assistente` com temas por permissão, filial/período e preparo de perguntas como rascunhos transitórios. Interface responsiva preta, branca e dourada. IA desativada, sem respostas simuladas ou execução de ações. [Guia](docs/ASSISTENTE_IA_GERENCIAL.md).
+
+## Estrutura de cobrança e domínios — 13.2
+
+Nova aba Cobrança e domínios em `/plataforma`, com acompanhamento responsivo e integrações desativadas. Contratos e interfaces para conexão posterior, sem criar cobranças ou publicar endereços. [Estrutura e próximos passos](docs/COBRANCA_DOMINIOS_ESTRUTURA.md).
+
 ## Planos, assinatura e identidade — 13.1
 
 Painel /plataforma com visual preto, branco e dourado e adaptação móvel. Master separado, contratos manuais, módulos/limites, identidade por rede e auditoria. [Guia e habilitação local do Master](docs/WHITE_LABEL_ASSINATURAS.md). Teste com build de produção local: npm.cmd run test:e2e:production; os dados continuam isolados.

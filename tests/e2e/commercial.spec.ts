@@ -13,6 +13,20 @@ async function seed(page:Page,master=true){
  return {user,name,post,today,csrf:s.csrf,unit:co.matrixId};
 }
 async function tab(page:Page,name:string){await page.getByRole('navigation',{name:'Plataforma comercial',exact:true}).getByRole('button',{name,exact:true}).click();}
+
+for(const width of [1440,390]){
+ test(`estrutura de cobrança e domínios em ${width}px`,async({page})=>{
+  await page.setViewportSize({width,height:900});await seed(page,false);
+  await page.goto('/plataforma');await tab(page,'Cobrança e domínios');
+  await expect(page.getByRole('heading',{name:'Cobrança automática',exact:true})).toBeVisible();
+  await expect(page.getByRole('heading',{name:'Domínio personalizado',exact:true})).toBeVisible();
+  await expect(page.locator('.commercial-integration-card')).toHaveCount(2);
+  await expect(page.locator('.commercial-integration-card').first()).toContainText('Desativadas');
+  await expect(page.locator('.commercial-integration-card').last()).toContainText('Desativado');
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  await page.screenshot({path:`.local/commercial-integrations-${width}.png`,fullPage:true});
+ });
+}
 async function masterSubscriptions(page:Page,f:Awaited<ReturnType<typeof seed>>){await tab(page,'Master Invictus');await page.getByRole('navigation',{name:'Administração Master',exact:true}).getByRole('button',{name:'Redes e assinaturas',exact:true}).click();await page.getByLabel('Buscar rede',{exact:true}).fill(f.name);await page.getByRole('button',{name:'Consultar redes',exact:true}).click();await page.getByRole('button',{name:new RegExp(f.name)}).click();await expect(page.getByRole('form',{name:'Assinatura da rede',exact:true})).toBeVisible();}
 test('plataforma exige sessão e proprietário não recebe Master',async({page})=>{await page.goto('/plataforma');await expect(page).toHaveURL(/login/);await seed(page,false);await page.goto('/plataforma');await expect(page.getByRole('heading',{name:/Implantação anterior/})).toBeVisible();await expect(page.getByRole('button',{name:'Master Invictus',exact:true})).toHaveCount(0);expect((await page.request.get('/api/v1/commercial/plans')).status()).toBe(403);});
 test('proprietário personaliza sua identidade e preserva após recarga',async({page})=>{await seed(page,false);await page.goto('/plataforma');await tab(page,'Identidade visual');await page.getByLabel('Nome exibido',{exact:true}).fill('Mercado Aurora');await page.getByLabel('Mensagem da marca',{exact:true}).fill('O seu comércio em boas mãos');await page.getByRole('combobox',{name:'Cor de destaque',exact:true}).selectOption('#6ee7b7');await page.getByLabel('Identificador do endereço',{exact:true}).fill('aurora-'+Date.now());await page.getByRole('button',{name:'Salvar identidade',exact:true}).click();await expect(page.getByRole('status')).toContainText('Identidade visual salva');await expect(page.locator('.topbar-title strong')).toHaveText('Mercado Aurora');await page.reload();await expect(page.locator('.topbar-title strong')).toHaveText('Mercado Aurora');await tab(page,'Identidade visual');await expect(page.getByLabel('Nome exibido',{exact:true})).toHaveValue('Mercado Aurora');expect(await page.locator('.app-shell').evaluate(e=>getComputedStyle(e).getPropertyValue('--gold').trim())).toBe('#6ee7b7');});

@@ -1,4 +1,6 @@
 import {CommercialService} from './modules/commercial/commercial.service';
+import {AssistantController} from './modules/assistant/assistant.controller';
+import {AssistantService} from './modules/assistant/assistant.service';
 import {CommercialController} from './modules/commercial/commercial.controller';
 import {ReportsService} from './modules/reports/reports.service';
 import {ReportsController} from './modules/reports/reports.controller';
@@ -53,7 +55,7 @@ export class AppModule {
         HealthController,
         ...(authConfig
           ? [
-              AuthController,
+              AuthController, AssistantController,
               AccessController,
               OrganizationsController,
               AuditController,
@@ -69,6 +71,7 @@ export class AppModule {
         },
         ...(authConfig
           ? [
+              { provide: AssistantService, inject: [AuthService], useFactory: (auth: AuthService) => new AssistantService(auth) },
               {
                 provide: CommercialService, inject: [AuthService], useFactory: (auth:AuthService)=>new CommercialService(auth),
 }, {

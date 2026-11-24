@@ -56,4 +56,6 @@ Planos, contratos e identidade produzem histórico comercial e auditoria unifica
 
 ## Preparação posterior
 
+A estrutura inicial de cobrança e domínios está descrita em [Estrutura 13.2](COBRANCA_DOMINIOS_ESTRUTURA.md): painel de acompanhamento, contratos e adaptadores desativados. Integrações e persistência de faturas/domínios continuam posteriores.
+
 Cobrança/provedor e conciliação, preços definitivos, descontos, anualidade/pró-rata, faturas, contratação pública, onboarding de novas redes, domínio/TLS/login por marca, documentos personalizados, suporte/SLA, limites de uso/armazenamento, telemetria e homologação de produção são complementos. Nenhuma publicação, domínio, comunicação ou cobrança externa nesta entrega.
